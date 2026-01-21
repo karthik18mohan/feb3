@@ -2,13 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
+:root {
+  --paper: #fbf8f2;
+  --ink: #0b1b3b;
+  --muted: #3a4a6a;
+  --rule: rgba(11, 27, 59, 0.18);
+  --gold: #b08d57;
 }
 
 body {
-  @apply bg-ivory text-ink antialiased font-body;
+  @apply bg-paper text-ink antialiased font-body;
   letter-spacing: 0.01em;
+  background-color: var(--paper);
 }
 
 h1,
@@ -18,9 +23,9 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }
 
 ::selection {
-  background: rgba(123, 45, 45, 0.2);
+  background: rgba(11, 27, 59, 0.15);
 }

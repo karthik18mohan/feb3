@@ -1,120 +1,547 @@
+"use client";
+
 import Image from "next/image";
-import { HeroCarousel } from "@/components/HeroCarousel";
-import { SectionReveal } from "@/components/SectionReveal";
+import { useCallback, useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { Observer, ScrollToPlugin } from "gsap/all";
 import { TopNav } from "@/components/TopNav";
-import { Footer } from "@/components/Footer";
-import { historyBody, whoWeAreBody, whoWeAreHeading, whoWeAreImage } from "@/content/copy";
+
+type SectionId = "home" | "about" | "services";
+
+const SECTION_ORDER: SectionId[] = ["home", "about", "services"];
+
+const aboutParagraphs = [
+  "Founded on a vision to uphold the highest ideals of quality and integrity, Nathan & Co. has embraced excellence as a way of life for over six decades. Rooted in the firm's enduring values of ethics, transparency, and professionalism, every engagement reflects our unwavering commitment to these principles that define our legacy and purpose.",
+  "Since its inception, Nathan & Co. has evolved alongside the Indian economy- from the license era to liberalization, and onwards into today's dynamic digital age. Every generation of our firm has contributed to broadening our horizons, extending our expertise from traditional audit and taxation to modern domains such as risk advisory, virtual CFO services, and business consulting.",
+  "Through every chapter of growth, we have remained unwavering in our commitment to the core values of the Chartered Accountancy profession as enshrined in the Chartered Accountants Act, 1949 and the Code of Ethics prescribed by the Institute of Chartered Accountants of India (ICAI).",
+  "We combine deep technical expertise with a client-centric approach to assist businesses in confidently navigating their financial journeys from incorporation of start up to ultimate listed corporations."
+];
+
+const services = [
+  {
+    title: "Audit & Assurance",
+    body:
+      "Every engagement at Nathan & Co. is thoughtfully customized to meet clients' needs at every stage, ensuring impactful, timely, and value-driven outcomes.\n\nOur Audit and Assurance services cover a wide range of specialized engagements carried out in accordance with the applicable standards and regulations, includes:",
+    bullets: [
+      "Statutory Audit",
+      "Internal Audit",
+      "Process Audit",
+      "Concurrent Audit",
+      "Revenue Audit",
+      "Forensic Audit",
+      "Stock Audit",
+      "Asset Audit",
+      "Management Audit",
+      "Information System Audit"
+    ]
+  },
+  {
+    title: "Taxation & Compliance",
+    body:
+      "Our Regulatory and Compliance services are crafted to assist businesses in navigating reporting obligations with accuracy, timeliness, and integrity.\n\nEvery engagement is executed in complete alignment with applicable regulations, ensuring complete compliance with ethical and statutory requirements.\n\nThrough a robust compliance-driven approach, we support organizations in mitigating risks and maintaining the highest levels of governance.",
+    subSections: [
+      {
+        title: "Income tax and international taxation",
+        bullets: [
+          "Tax Planning and Advisory",
+          "Compliance Review",
+          "Assistance in filing Forms and Returns",
+          "Representations before relevant Authority"
+        ]
+      },
+      {
+        title: "GST and Other Indirect Taxation",
+        bullets: [
+          "Tax Registration",
+          "Tax Planning and Advisory",
+          "Assistance in Filing Forms and Returns",
+          "Compliance Review",
+          "Representations before relevant Authority"
+        ]
+      }
+    ]
+  },
+  {
+    title: "Corporate & Allied Laws",
+    body:
+      "At our Corporate & Allied Laws desk, we deliver comprehensive end-to-end guidance—from inception through growth and transformation to final exit—across companies, LLPs, trusts, and joint ventures.\nOur practice encompasses a wide spectrum of corporate governance and regulatory requirements delivered with integrity, independence, and adherence to statutory standards.\nWe work as your strategic partner to simplify regulatory complexities, mitigate compliance risks, and enable sustainable, long-term growth"
+  },
+  {
+    title: "Accounting & Bookkeeping Outsourcing",
+    body:
+      "Empowering businesses with cloud-based accounting, structured reporting, and agile operational support, delivered with strict adherence to professional standards and applicable Laws.",
+    bullets: [
+      "IFRS/USGAAP/IND-AS compliant bookkeeping.",
+      "Internal Financial control to suit business practices.",
+      "Liaison with Customer, Vendor, Banker & other Stakeholders.",
+      "Compliance of Various Statutes (PF/ESI/Gratuity/GST/TDS/Corporate Governance/FLA)"
+    ]
+  },
+  {
+    title: "Financial Planning & Analysis (FP&A)",
+    body:
+      "Structured Financial Planning and Performance Analysis enhanced with technology-enabled insights, supporting confident decisions, calculated risk management, and sustainable business growth.",
+    bullets: [
+      "Budgets & Forecasts.",
+      "Financial Analysis & Reporting.",
+      "Performance Monitoring including suitable enhancement.",
+      "Strategic Planning Support.",
+      "Decision Support & Data Visualization."
+    ]
+  },
+  {
+    title: "Virtual CFO Services",
+    body:
+      "Providing Strategic Financial Management through effective planning, oversight, and execution, ensuring sustainable financial discipline and long-term development.",
+    bullets: [
+      "Cash Flow Analysis & Planning.",
+      "Working Capital Management.",
+      "Developing Financial Strategy.",
+      "Monitoring Financial health & Corporate goals/KPIs.",
+      "Capital Structuring/Restructuring.",
+      "Risk Management & Advisory",
+      "Financial Reporting & Compliance"
+    ]
+  },
+  {
+    title: "Other Services",
+    body:
+      "Integrated financial, corporate, and strategic advisory — delivering insight-led solutions that align with your objectives, enabling businesses to grow, transform, and create sustained value.",
+    bullets: [
+      "End-to-end support for Startup & MSME",
+      "Forensic audit & Investigation",
+      "Valuation & Due Diligence review",
+      "Corporate Finance & Fundraising Avenues",
+      "Financial Reconstruction,revival &rehabilitation.",
+      "Acquisition,Amalgamations & Mergers.",
+      "Collaborations/Joint Ventures",
+      "ERP Implementations",
+      "IND AS implementations"
+    ]
+  }
+];
 
 export default function HomePage() {
+  const homeRef = useRef<HTMLElement | null>(null);
+  const aboutRef = useRef<HTMLElement | null>(null);
+  const servicesRef = useRef<HTMLElement | null>(null);
+  const heroBgRef = useRef<HTMLDivElement | null>(null);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentIndexRef = useRef(0);
+  const isAnimatingRef = useRef(false);
+  const prefersReducedMotionRef = useRef(false);
+
+  const getSectionByIndex = useCallback(
+    (index: number) => {
+      const map: Record<SectionId, HTMLElement | null> = {
+        home: homeRef.current,
+        about: aboutRef.current,
+        services: servicesRef.current
+      };
+
+      return map[SECTION_ORDER[index]];
+    },
+    []
+  );
+
+  useEffect(() => {
+    currentIndexRef.current = currentIndex;
+  }, [currentIndex]);
+
+  const animateToIndex = useCallback(
+    (nextIndex: number, triggerEvent?: Event) => {
+      const total = SECTION_ORDER.length;
+      const current = currentIndexRef.current;
+      if (nextIndex === current || nextIndex < 0 || nextIndex >= total) return;
+      const currentSection = getSectionByIndex(current);
+      const nextSection = getSectionByIndex(nextIndex);
+      if (!nextSection || !currentSection || isAnimatingRef.current) return;
+
+      triggerEvent?.preventDefault();
+      isAnimatingRef.current = true;
+      const prefersReduced = prefersReducedMotionRef.current;
+      const direction = nextIndex > current ? 1 : -1;
+      const currentTargets = currentSection.querySelectorAll("[data-animate]");
+      const nextTargets = nextSection.querySelectorAll("[data-animate]");
+
+      const timeline = gsap.timeline({
+        defaults: { ease: "power2.inOut" },
+        onComplete: () => {
+          currentIndexRef.current = nextIndex;
+          setCurrentIndex(nextIndex);
+          isAnimatingRef.current = false;
+        }
+      });
+
+      if (prefersReduced) {
+        timeline.to(window, {
+          scrollTo: { y: nextSection, autoKill: false },
+          duration: 0.45,
+          ease: "power1.inOut"
+        });
+        return;
+      }
+
+      timeline
+        .to(currentTargets, {
+          opacity: 0,
+          y: direction === 1 ? -12 : 12,
+          duration: 0.25,
+          stagger: 0.04,
+          ease: "power1.out"
+        })
+        .set(
+          nextTargets,
+          { opacity: 0, y: direction === 1 ? 18 : -18 },
+          "-=0.05"
+        )
+        .to(
+          window,
+          {
+            scrollTo: { y: nextSection, autoKill: false },
+            duration: 1,
+            ease: "power2.inOut"
+          },
+          "-=0.05"
+        )
+        .to(
+          nextTargets,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.08,
+            ease: "power2.out"
+          },
+          "-=0.4"
+        );
+    },
+    [getSectionByIndex]
+  );
+
+  const handleNavigate = useCallback(
+    (href: string) => {
+      const normalized = href.replace("#", "") as SectionId;
+      const targetIndex = SECTION_ORDER.indexOf(normalized);
+      if (targetIndex >= 0) {
+        animateToIndex(targetIndex);
+      }
+    },
+    [animateToIndex]
+  );
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollToPlugin, Observer);
+    const prefersMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    prefersReducedMotionRef.current = prefersMotion.matches;
+    const updateMotionPreference = (event: MediaQueryListEvent) => {
+      prefersReducedMotionRef.current = event.matches;
+    };
+    prefersMotion.addEventListener("change", updateMotionPreference);
+
+    document.documentElement.style.scrollBehavior = "auto";
+    const canScrollWithin = (event: Event | undefined, direction: "up" | "down") => {
+      if (!event) return false;
+      const target = event.target as HTMLElement | null;
+      const scrollable = target?.closest("[data-scrollable]") as HTMLElement | null;
+      if (!scrollable) return false;
+      if (direction === "down") {
+        return Math.ceil(scrollable.scrollTop + scrollable.clientHeight) < scrollable.scrollHeight;
+      }
+      return scrollable.scrollTop > 0;
+    };
+
+    const observer = Observer.create({
+      target: window,
+      type: "wheel,touch",
+      wheelSpeed: 0.9,
+      tolerance: 12,
+      preventDefault: false,
+      allowClicks: true,
+      onDown: (self) => {
+        if (isAnimatingRef.current) {
+          self.event?.preventDefault();
+          return;
+        }
+        if (canScrollWithin(self.event as Event, "down")) return;
+        if (currentIndexRef.current < SECTION_ORDER.length - 1) {
+          self.event?.preventDefault();
+          animateToIndex(currentIndexRef.current + 1, self.event as Event);
+        }
+      },
+      onUp: (self) => {
+        if (isAnimatingRef.current) {
+          self.event?.preventDefault();
+          return;
+        }
+        if (canScrollWithin(self.event as Event, "up")) return;
+        if (currentIndexRef.current > 0) {
+          self.event?.preventDefault();
+          animateToIndex(currentIndexRef.current - 1, self.event as Event);
+        }
+      }
+    });
+
+    if (!prefersReducedMotionRef.current && heroBgRef.current) {
+      gsap.fromTo(
+        heroBgRef.current,
+        { scale: 1.05 },
+        { scale: 1, duration: 1.1, ease: "power2.out" }
+      );
+    }
+
+    return () => {
+      observer.kill();
+      prefersMotion.removeEventListener("change", updateMotionPreference);
+    };
+  }, [animateToIndex]);
+
   return (
     <>
-      <TopNav />
-      <main>
-        <HeroCarousel />
-        <section id="who-we-are" className="flex min-h-screen w-full items-center py-20">
-          <div className="mx-auto w-full max-w-[1180px] px-6">
-            <SectionReveal>
-              <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.4em] text-deep-green/70">
-                    {whoWeAreHeading}
-                  </p>
-                  <h2 className="mt-4 text-4xl font-semibold text-ink sm:text-5xl">
-                    A heritage of elevated service and discretion.
-                  </h2>
-                  <p className="mt-6 whitespace-pre-line text-lg leading-relaxed text-ink/70 sm:text-xl">
-                    {whoWeAreBody}
-                  </p>
-                  <a
-                    href="#history"
-                    className="mt-8 inline-flex rounded-md border border-ink/20 bg-ink px-7 py-3 text-xs font-semibold uppercase tracking-[0.32em] text-ivory shadow-[0_18px_40px_rgba(44,42,38,0.25)] transition hover:-translate-y-0.5 hover:bg-ink/90"
-                  >
-                    READ MORE
-                  </a>
+      <TopNav activeSection={SECTION_ORDER[currentIndex]} onNavigate={handleNavigate} />
+      <main className="relative">
+        <section
+          id="home"
+          ref={homeRef}
+          className="relative isolate min-h-screen overflow-hidden"
+        >
+          <div ref={heroBgRef} className="absolute inset-0">
+            <Image
+              src="/images/1.jpg"
+              alt=""
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.7)] via-[rgba(11,27,59,0.58)] to-[rgba(11,27,59,0.46)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(176,141,87,0.16),transparent_40%)]" />
+          <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col justify-center px-6 py-28">
+            <div className="max-w-2xl space-y-7 text-paper">
+              <div data-animate className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-paper/80">
+                <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />
+                Chartered Accountants
+              </div>
+              <h1 data-animate className="text-5xl font-semibold sm:text-6xl md:text-7xl">
+                Nathan &amp; Co.
+              </h1>
+              <p data-animate className="text-lg uppercase tracking-[0.32em] text-paper/80">
+                Chartered Accountants
+              </p>
+              <p data-animate className="max-w-xl text-xl leading-relaxed text-paper/85">
+                Upholding the highest ideals of quality, integrity, and trust.
+              </p>
+              <div data-animate className="flex flex-wrap gap-4">
+                <button
+                  onClick={() => handleNavigate("#services")}
+                  className="rounded-full bg-paper px-6 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-ink shadow-[0_18px_40px_rgba(11,27,59,0.3)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_50px_rgba(11,27,59,0.34)]"
+                >
+                  What We Do
+                </button>
+                <button
+                  onClick={() => handleNavigate("#about")}
+                  className="rounded-full border border-[color:var(--rule)] px-6 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-paper transition hover:-translate-y-0.5 hover:border-paper/80 hover:bg-paper/10"
+                >
+                  Who We Are
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="about"
+          ref={aboutRef}
+          className="relative isolate min-h-screen overflow-hidden bg-paper"
+        >
+          <div className="absolute inset-0">
+            <Image src="/images/2.jpg" alt="" fill className="object-cover" sizes="100vw" />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(251,248,242,0.86)] via-[rgba(251,248,242,0.78)] to-[rgba(251,248,242,0.86)]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[rgba(11,27,59,0.18)] via-transparent to-[rgba(251,248,242,0.7)]" />
+          <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] items-center px-6 py-28">
+            <div className="grid w-full gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+              <div className="space-y-6">
+                <div data-animate className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-muted">
+                  <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />
+                  Who We Are
                 </div>
-                <div className="relative h-80 w-full overflow-hidden rounded-2xl border border-ink/15 shadow-[0_24px_60px_rgba(44,42,38,0.2)] sm:h-96">
-                  <Image
-                    src={whoWeAreImage}
-                    alt=""
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 40vw"
-                  />
+                <h2 data-animate className="text-4xl font-semibold text-ink sm:text-5xl">
+                  A heritage of elevated service and discretion.
+                </h2>
+                <div className="space-y-4">
+                  {aboutParagraphs.map((paragraph) => (
+                    <p
+                      key={paragraph}
+                      data-animate
+                      className="text-lg leading-relaxed text-muted sm:text-xl"
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
                 </div>
               </div>
-            </SectionReveal>
+              <div
+                data-animate
+                className="relative rounded-2xl border border-rule bg-paper/80 p-8 shadow-[0_24px_60px_rgba(11,27,59,0.12)] backdrop-blur"
+              >
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[rgba(11,27,59,0.04)] to-transparent" />
+                <div className="relative space-y-5">
+                  <p className="text-xs uppercase tracking-[0.38em] text-muted">
+                    Pillars
+                  </p>
+                  <h3 className="text-3xl font-semibold text-ink">Quality • Integrity • Trust</h3>
+                  <ul className="space-y-2 text-base leading-relaxed text-muted">
+                    <li className="flex items-start gap-3">
+                      <span className="mt-1 h-px w-6 shrink-0 bg-[color:var(--gold)]" aria-hidden />
+                      Precision in every mandate, anchored in ethics.
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="mt-1 h-px w-6 shrink-0 bg-[color:var(--gold)]" aria-hidden />
+                      Stewardship built on discretion and clarity.
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="mt-1 h-px w-6 shrink-0 bg-[color:var(--gold)]" aria-hidden />
+                      Guidance that honors legacy while embracing progress.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
-        <section id="what-we-do" className="flex min-h-screen w-full items-center py-20">
-          <div className="mx-auto w-full max-w-[1180px] px-6">
-            <SectionReveal>
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-deep-green/70">
-                WHAT WE DO
-              </p>
-              <h2 className="mt-4 text-4xl font-semibold text-ink sm:text-5xl">
-                Integrated advisory, audit, and assurance.
-              </h2>
-            </SectionReveal>
-            <SectionReveal>
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">
-                We pair rigorous statutory expertise with forward-looking guidance across audit,
-                taxation, risk advisory, and virtual CFO services to help you grow with clarity.
-              </p>
-            </SectionReveal>
+
+        <section
+          id="services"
+          ref={servicesRef}
+          className="relative isolate min-h-screen overflow-hidden"
+        >
+          <div className="absolute inset-0">
+            <Image src="/images/3.jpg" alt="" fill className="object-cover" sizes="100vw" />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.68)] via-[rgba(11,27,59,0.6)] to-[rgba(11,27,59,0.72)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_25%,rgba(176,141,87,0.14),transparent_38%)]" />
+          <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col justify-center px-6 py-28">
+            <div className="space-y-6 text-paper">
+              <div data-animate className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-paper/80">
+                <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />
+                What We Do
+              </div>
+              <div className="max-w-3xl space-y-3">
+                <h2 data-animate className="text-4xl font-semibold sm:text-5xl">
+                  Integrated advisory, audit, and assurance.
+                </h2>
+                <p data-animate className="text-lg leading-relaxed text-paper/80 sm:text-xl">
+                  Seamless support across audit, taxation, risk advisory, virtual CFO, and strategic consulting—delivered with the discipline of a heritage practice and the pace of modern business.
+                </p>
+              </div>
+              <div
+                data-scrollable
+                className="max-h-[68vh] overflow-y-auto pr-2"
+              >
+                <div className="grid gap-6 md:grid-cols-2">
+                  {services.map((service, index) => (
+                    <article
+                      key={service.title}
+                      data-animate
+                      className="group relative overflow-hidden rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-6 text-ink shadow-[0_20px_45px_rgba(11,27,59,0.18)] transition duration-300 ease-out hover:-translate-y-0.5 hover:border-paper hover:shadow-[0_24px_60px_rgba(11,27,59,0.22)]"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-[rgba(11,27,59,0.03)] to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+                      <div className="relative space-y-4">
+                        <div className="flex items-center gap-3">
+                          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--rule)] bg-paper/70 text-sm font-semibold text-ink">
+                            {index + 1}
+                          </span>
+                          <h3 className="text-xl font-semibold text-ink">{service.title}</h3>
+                        </div>
+                        <div className="space-y-3 text-sm leading-relaxed text-muted">
+                          {service.body.split("\n").map((chunk) => (
+                            <p key={chunk}>{chunk}</p>
+                          ))}
+                        </div>
+                        {service.bullets && (
+                          <ul className="space-y-2 text-sm leading-relaxed text-ink">
+                            {service.bullets.map((item) => (
+                              <li
+                                key={item}
+                                className="flex items-start gap-2 rounded-lg border border-transparent px-2 py-1 transition group-hover:border-[color:var(--rule)]"
+                              >
+                                <span className="mt-[6px] inline-block h-[9px] w-[9px] rounded-full border border-[color:var(--rule)] bg-[color:var(--paper)]" aria-hidden />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {service.subSections && (
+                          <div className="space-y-4">
+                            {service.subSections.map((sub) => (
+                              <div key={sub.title} className="space-y-2">
+                                <p className="text-xs uppercase tracking-[0.28em] text-muted">
+                                  {sub.title}
+                                </p>
+                                <ul className="space-y-2 text-sm leading-relaxed text-ink">
+                                  {sub.bullets.map((item) => (
+                                    <li
+                                      key={item}
+                                      className="flex items-start gap-2 rounded-lg border border-transparent px-2 py-1 transition group-hover:border-[color:var(--rule)]"
+                                    >
+                                      <span className="mt-[6px] inline-block h-[9px] w-[9px] rounded-full border border-[color:var(--rule)] bg-[color:var(--paper)]" aria-hidden />
+                                      <span>{item}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </section>
-        <section id="we-serve" className="flex min-h-screen w-full items-center py-20">
-          <div className="mx-auto w-full max-w-[1180px] px-6">
-            <SectionReveal>
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-deep-green/70">
-                WE SERVE
-              </p>
-              <h2 className="mt-4 text-4xl font-semibold text-ink sm:text-5xl">
-                Legacy enterprises and next-generation founders.
-              </h2>
-            </SectionReveal>
-            <SectionReveal>
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">
-                From family-owned conglomerates to ambitious startups, we tailor each engagement
-                with precision, discretion, and a deep understanding of your sector.
-              </p>
-            </SectionReveal>
-          </div>
-        </section>
-        <section id="history" className="flex min-h-screen w-full items-center py-20">
-          <div className="mx-auto w-full max-w-[1180px] px-6">
-            <SectionReveal>
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-deep-green/70">History</p>
-              <h2 className="mt-4 text-4xl font-semibold text-ink sm:text-5xl">
-                Stewardship across generations.
-              </h2>
-            </SectionReveal>
-            <SectionReveal>
-              <p className="mt-6 text-lg leading-relaxed text-ink/70 sm:text-xl">{historyBody}</p>
-            </SectionReveal>
-          </div>
-        </section>
-        <section id="contact" className="flex min-h-screen w-full items-center py-20">
-          <div className="mx-auto w-full max-w-[1180px] px-6">
-            <SectionReveal>
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-deep-green/70">
-                CONTACT
-              </p>
-              <h2 className="mt-4 text-4xl font-semibold text-ink sm:text-5xl">
-                Begin a discreet consultation.
-              </h2>
-            </SectionReveal>
-            <SectionReveal>
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">
-                Share your objectives and we will assemble the right advisory team for you. Reach
-                us at <span className="font-semibold text-ink">partners@nathanco.com</span> or
-                +91 (0) 11 0000 0000.
-              </p>
-            </SectionReveal>
-          </div>
-        </section>
-        <Footer />
+        <SectionProgress activeIndex={currentIndex} onNavigate={handleNavigate} />
       </main>
     </>
+  );
+}
+
+function SectionProgress({
+  activeIndex,
+  onNavigate
+}: {
+  activeIndex: number;
+  onNavigate: (href: string) => void;
+}) {
+  return (
+    <div className="pointer-events-none fixed bottom-8 left-1/2 z-40 flex -translate-x-1/2 items-center justify-center">
+      <div className="flex items-center gap-3 rounded-full border border-[color:var(--rule)] bg-paper/80 px-5 py-3 shadow-[0_18px_40px_rgba(11,27,59,0.18)] backdrop-blur">
+        <span className="text-[0.65rem] uppercase tracking-[0.32em] text-muted">
+          Sections
+        </span>
+        <div className="h-px w-12 bg-[color:var(--rule)]" aria-hidden />
+        <div className="flex items-center gap-2">
+          {SECTION_ORDER.map((id, index) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => onNavigate(`#${id}`)}
+              className={`pointer-events-auto flex h-8 w-8 items-center justify-center rounded-full border transition ${
+                activeIndex === index
+                  ? "border-ink bg-ink text-paper shadow-[0_12px_30px_rgba(11,27,59,0.25)]"
+                  : "border-[color:var(--rule)] text-muted hover:border-ink hover:text-ink"
+              }`}
+              aria-label={id}
+            >
+              {index === 0 ? "I" : index === 1 ? "II" : "III"}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
