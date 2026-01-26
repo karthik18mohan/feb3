@@ -131,6 +131,11 @@ export default function HomePage() {
   const currentIndexRef = useRef(0);
   const isAnimatingRef = useRef(false);
   const prefersReducedMotionRef = useRef(false);
+  const activeTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const activeScrollTweenRef = useRef<gsap.core.Tween | null>(null);
+  const scrollEndTimeoutRef = useRef<number | null>(null);
+  const transitionIdRef = useRef(0);
+  const lastTouchYRef = useRef<number | null>(null);
 
   const getSectionByIndex = useCallback(
     (index: number) => {
@@ -149,6 +154,72 @@ export default function HomePage() {
     currentIndexRef.current = currentIndex;
   }, [currentIndex]);
 
+  const ensureSectionVisible = useCallback((section: HTMLElement | null) => {
+    if (!section) return;
+    const targets = section.querySelectorAll("[data-animate]");
+    if (targets.length) {
+      gsap.set(targets, { opacity: 1, y: 0, clearProps: "opacity,transform" });
+    }
+  }, []);
+
+  const getNearestSectionIndex = useCallback(() => {
+    let nearestIndex = currentIndexRef.current;
+    let smallestDistance = Number.POSITIVE_INFINITY;
+
+    SECTION_ORDER.forEach((_, index) => {
+      const section = getSectionByIndex(index);
+      if (!section) return;
+      const distance = Math.abs(section.getBoundingClientRect().top);
+      if (distance < smallestDistance) {
+        smallestDistance = distance;
+        nearestIndex = index;
+      }
+    });
+
+    return nearestIndex;
+  }, [getSectionByIndex]);
+
+  const syncSectionToScroll = useCallback(() => {
+    const nearestIndex = getNearestSectionIndex();
+    const nearestSection = getSectionByIndex(nearestIndex);
+    if (!nearestSection) return;
+    if (currentIndexRef.current !== nearestIndex) {
+      currentIndexRef.current = nearestIndex;
+      setCurrentIndex(nearestIndex);
+    }
+    if (!isAnimatingRef.current) {
+      ensureSectionVisible(nearestSection);
+    }
+  }, [ensureSectionVisible, getNearestSectionIndex, getSectionByIndex]);
+
+  const snapToIndex = useCallback(
+    (index: number) => {
+      const targetSection = getSectionByIndex(index);
+      if (!targetSection) return;
+      if (activeScrollTweenRef.current) {
+        activeScrollTweenRef.current.kill();
+        activeScrollTweenRef.current = null;
+      }
+      isAnimatingRef.current = true;
+      activeScrollTweenRef.current = gsap.to(window, {
+        scrollTo: { y: targetSection, autoKill: false },
+        duration: 0.35,
+        ease: "power2.out",
+        onComplete: () => {
+          ensureSectionVisible(targetSection);
+          isAnimatingRef.current = false;
+          activeScrollTweenRef.current = null;
+        },
+        onInterrupt: () => {
+          isAnimatingRef.current = false;
+          activeScrollTweenRef.current = null;
+          syncSectionToScroll();
+        }
+      });
+    },
+    [ensureSectionVisible, getSectionByIndex, syncSectionToScroll]
+  );
+
   const animateToIndex = useCallback(
     (nextIndex: number, triggerEvent?: Event) => {
       const total = SECTION_ORDER.length;
@@ -159,30 +230,62 @@ export default function HomePage() {
       if (!nextSection || !currentSection || isAnimatingRef.current) return;
 
       triggerEvent?.preventDefault();
+      if (activeTimelineRef.current) {
+        activeTimelineRef.current.kill();
+        activeTimelineRef.current = null;
+      }
+      if (activeScrollTweenRef.current) {
+        activeScrollTweenRef.current.kill();
+        activeScrollTweenRef.current = null;
+      }
+      gsap.killTweensOf(window);
+      ensureSectionVisible(currentSection);
+      ensureSectionVisible(nextSection);
       isAnimatingRef.current = true;
+      transitionIdRef.current += 1;
+      const transitionId = transitionIdRef.current;
       const prefersReduced = prefersReducedMotionRef.current;
       const direction = nextIndex > current ? 1 : -1;
       const currentTargets = currentSection.querySelectorAll("[data-animate]");
       const nextTargets = nextSection.querySelectorAll("[data-animate]");
 
+      const finalize = () => {
+        if (transitionIdRef.current !== transitionId) return;
+        currentIndexRef.current = nextIndex;
+        setCurrentIndex(nextIndex);
+        ensureSectionVisible(nextSection);
+        isAnimatingRef.current = false;
+        activeTimelineRef.current = null;
+        activeScrollTweenRef.current = null;
+      };
+
+      const handleInterrupt = () => {
+        if (transitionIdRef.current !== transitionId) return;
+        isAnimatingRef.current = false;
+        activeTimelineRef.current = null;
+        activeScrollTweenRef.current = null;
+        syncSectionToScroll();
+      };
+
       const timeline = gsap.timeline({
         defaults: { ease: "power2.inOut" },
-        onComplete: () => {
-          currentIndexRef.current = nextIndex;
-          setCurrentIndex(nextIndex);
-          isAnimatingRef.current = false;
-        }
+        onComplete: finalize,
+        onInterrupt: handleInterrupt
       });
 
       if (prefersReduced) {
-        timeline.to(window, {
+        activeTimelineRef.current = null;
+        activeScrollTweenRef.current = gsap.to(window, {
           scrollTo: { y: nextSection, autoKill: false },
           duration: 0.45,
-          ease: "power1.inOut"
+          ease: "power1.inOut",
+          onComplete: finalize,
+          onInterrupt: handleInterrupt
         });
         return;
       }
 
+      activeTimelineRef.current = timeline;
       timeline
         .to(currentTargets, {
           opacity: 0,
@@ -232,6 +335,35 @@ export default function HomePage() {
   );
 
   useEffect(() => {
+    ensureSectionVisible(getSectionByIndex(currentIndexRef.current));
+  }, [ensureSectionVisible, getSectionByIndex]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!isAnimatingRef.current) {
+        syncSectionToScroll();
+      }
+      if (scrollEndTimeoutRef.current) {
+        window.clearTimeout(scrollEndTimeoutRef.current);
+      }
+      scrollEndTimeoutRef.current = window.setTimeout(() => {
+        if (isAnimatingRef.current) return;
+        snapToIndex(getNearestSectionIndex());
+      }, 160);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollEndTimeoutRef.current) {
+        window.clearTimeout(scrollEndTimeoutRef.current);
+        scrollEndTimeoutRef.current = null;
+      }
+    };
+  }, [getNearestSectionIndex, snapToIndex, syncSectionToScroll]);
+
+  useEffect(() => {
     gsap.registerPlugin(ScrollToPlugin, Observer);
     const prefersMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     prefersReducedMotionRef.current = prefersMotion.matches;
@@ -252,13 +384,48 @@ export default function HomePage() {
       return scrollable.scrollTop > 0;
     };
 
+    const getScrollableTarget = (event: Event | undefined) => {
+      if (!event) return null;
+      const target = event.target as HTMLElement | null;
+      return target?.closest("[data-scrollable]") as HTMLElement | null;
+    };
+
+    const getDirectionFromEvent = (event: Event | undefined) => {
+      if (!event) return null;
+      if ("deltaY" in event) {
+        return (event as WheelEvent).deltaY > 0 ? "down" : "up";
+      }
+      if (event.type === "touchstart" && "touches" in event) {
+        const touch = (event as TouchEvent).touches[0];
+        if (touch) {
+          lastTouchYRef.current = touch.clientY;
+        }
+        return null;
+      }
+      if (event.type === "touchmove" && "touches" in event) {
+        const touch = (event as TouchEvent).touches[0];
+        if (!touch) return null;
+        const lastY = lastTouchYRef.current ?? touch.clientY;
+        lastTouchYRef.current = touch.clientY;
+        return touch.clientY < lastY ? "down" : "up";
+      }
+      return null;
+    };
+
     const observer = Observer.create({
       target: window,
       type: "wheel,touch",
       wheelSpeed: 0.9,
       tolerance: 12,
-      preventDefault: false,
+      preventDefault: true,
       allowClicks: true,
+      ignoreCheck: (event) => {
+        const scrollable = getScrollableTarget(event as Event);
+        if (!scrollable) return false;
+        const direction = getDirectionFromEvent(event as Event);
+        if (!direction) return false;
+        return canScrollWithin(event as Event, direction);
+      },
       onDown: (self) => {
         if (isAnimatingRef.current) {
           self.event?.preventDefault();
