@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Observer, ScrollToPlugin } from "gsap/all";
+import { Playfair_Display } from "next/font/google";
 import { TopNav } from "@/components/TopNav";
 
 type SectionId = "home" | "about" | "services";
@@ -28,6 +29,27 @@ const SECTION_NAV_ITEMS: SectionNavItem[] = [
 ];
 
 const ROMAN_NUMERALS = ["I", "II", "III", "IV", "V", "VI"];
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap"
+});
+
+const landingSlides = [
+  {
+    src: "/images/landing-page/0.jpg",
+    caption: "Rooted in Heritage — Serving Since 1962"
+  },
+  {
+    src: "/images/landing-page/1.jpg",
+    caption: "Enlightened Across Generations"
+  },
+  {
+    src: "/images/landing-page/2.jpg",
+    caption: "Evolving from Manual to Digital Era"
+  }
+];
 
 const aboutParagraphs = [
   "Founded on a vision to uphold the highest ideals of quality and integrity, Nathan & Co. has embraced excellence as a way of life for over six decades. Rooted in the firm's enduring values of ethics, transparency, and professionalism, every engagement reflects our unwavering commitment to these principles that define our legacy and purpose.",
@@ -149,6 +171,7 @@ export default function HomePage() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [navActiveIndex, setNavActiveIndex] = useState(0);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const currentIndexRef = useRef(0);
   const isAnimatingRef = useRef(false);
   const prefersReducedMotionRef = useRef(false);
@@ -157,6 +180,7 @@ export default function HomePage() {
   const scrollEndTimeoutRef = useRef<number | null>(null);
   const transitionIdRef = useRef(0);
   const lastTouchYRef = useRef<number | null>(null);
+  const slideCount = landingSlides.length;
 
   const getSectionByIndex = useCallback(
     (index: number) => {
@@ -376,6 +400,24 @@ export default function HomePage() {
   }, [ensureSectionVisible, getSectionByIndex]);
 
   useEffect(() => {
+    const prefersMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (prefersMotion.matches) return;
+    const intervalId = window.setInterval(() => {
+      setActiveSlideIndex((prev) => (prev + 1) % slideCount);
+    }, 6500);
+
+    return () => window.clearInterval(intervalId);
+  }, [slideCount]);
+
+  const handlePrevSlide = useCallback(() => {
+    setActiveSlideIndex((prev) => (prev - 1 + slideCount) % slideCount);
+  }, [slideCount]);
+
+  const handleNextSlide = useCallback(() => {
+    setActiveSlideIndex((prev) => (prev + 1) % slideCount);
+  }, [slideCount]);
+
+  useEffect(() => {
     const handleScroll = () => {
       if (!isAnimatingRef.current) {
         syncSectionToScroll();
@@ -524,17 +566,56 @@ export default function HomePage() {
           className="relative isolate min-h-screen overflow-hidden"
         >
           <div ref={heroBgRef} className="absolute inset-0">
-            <Image
-              src="/images/1.jpg"
-              alt=""
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-            />
+            {landingSlides.map((slide, index) => (
+              <div
+                key={slide.src}
+                className={`absolute inset-0 transition-opacity duration-700 ${
+                  index === activeSlideIndex ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <Image
+                  src={slide.src}
+                  alt=""
+                  fill
+                  priority={index === 0}
+                  className="object-cover grayscale"
+                  sizes="100vw"
+                />
+                <div className="absolute inset-0 bg-[rgba(6,10,20,0.28)]" />
+              </div>
+            ))}
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.7)] via-[rgba(11,27,59,0.58)] to-[rgba(11,27,59,0.46)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(176,141,87,0.16),transparent_40%)]" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[rgba(6,10,20,0.9)] via-[rgba(6,10,20,0.35)] to-transparent pb-10 pt-16">
+            <p
+              className={`${playfairDisplay.className} mx-auto w-full max-w-[1180px] px-6 text-base text-slate-200 drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)] sm:text-xl md:text-2xl`}
+            >
+              {landingSlides[activeSlideIndex]?.caption}
+            </p>
+          </div>
+          <div className="absolute inset-0 z-20 flex items-center justify-between px-4 sm:px-6">
+            <button
+              type="button"
+              onClick={handlePrevSlide}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-paper/40 bg-[rgba(11,27,59,0.45)] text-paper shadow-[0_12px_30px_rgba(3,7,18,0.45)] transition hover:-translate-y-0.5 hover:border-paper/70 hover:bg-[rgba(11,27,59,0.6)]"
+              aria-label="Previous slide"
+            >
+              <span aria-hidden className="text-xl">
+                ‹
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={handleNextSlide}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-paper/40 bg-[rgba(11,27,59,0.45)] text-paper shadow-[0_12px_30px_rgba(3,7,18,0.45)] transition hover:-translate-y-0.5 hover:border-paper/70 hover:bg-[rgba(11,27,59,0.6)]"
+              aria-label="Next slide"
+            >
+              <span aria-hidden className="text-xl">
+                ›
+              </span>
+            </button>
+          </div>
           <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col justify-center px-6 py-28">
             <div className="max-w-2xl space-y-7 text-paper">
               <div data-animate className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-paper/80">
