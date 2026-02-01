@@ -10,10 +10,18 @@ import { motion } from "framer-motion";
 import { TopNav } from "@/components/TopNav";
 import { partners } from "@/content/partners";
 import { ClientsSection } from "@/components/ClientsSection";
+import { EnquirySection } from "@/components/EnquirySection";
 
-type SectionId = "home" | "about" | "services" | "partners" | "clients";
+type SectionId = "home" | "about" | "services" | "partners" | "clients" | "enquiry";
 
-const SECTION_ORDER: SectionId[] = ["home", "about", "services", "partners", "clients"];
+const SECTION_ORDER: SectionId[] = [
+  "home",
+  "about",
+  "services",
+  "partners",
+  "clients",
+  "enquiry"
+];
 
 type SectionNavItem = {
   id: string;
@@ -27,7 +35,8 @@ const SECTION_NAV_ITEMS: SectionNavItem[] = [
   { id: "who-we-are", label: "Who We Are", href: "#about", sectionId: "about" },
   { id: "what-we-do", label: "What We Do", href: "#services", sectionId: "services" },
   { id: "partners", label: "Partners", href: "#partners", sectionId: "partners" },
-  { id: "clients", label: "Clients", href: "#clients", sectionId: "clients" }
+  { id: "clients", label: "Clients", href: "#clients", sectionId: "clients" },
+  { id: "enquiry", label: "Enquiry", href: "#enquiry", sectionId: "enquiry" }
 ];
 
 const ROMAN_NUMERALS = ["I", "II", "III", "IV", "V", "VI"];
@@ -171,6 +180,7 @@ export default function HomePage() {
   const servicesRef = useRef<HTMLElement | null>(null);
   const partnersRef = useRef<HTMLElement | null>(null);
   const clientsRef = useRef<HTMLElement | null>(null);
+  const enquiryRef = useRef<HTMLElement | null>(null);
   const heroBgRef = useRef<HTMLDivElement | null>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -193,7 +203,8 @@ export default function HomePage() {
         about: aboutRef.current,
         services: servicesRef.current,
         partners: partnersRef.current,
-        clients: clientsRef.current
+        clients: clientsRef.current,
+        enquiry: enquiryRef.current
       };
 
       return map[SECTION_ORDER[index]];
@@ -873,6 +884,7 @@ export default function HomePage() {
           </div>
         </section>
         <ClientsSection id="clients" ref={clientsRef} />
+        <EnquirySection id="enquiry" ref={enquiryRef} />
         <SectionProgress activeIndex={navActiveIndex} onNavigate={handleSectionNav} />
       </main>
     </>
