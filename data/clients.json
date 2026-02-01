@@ -1,0 +1,10 @@
+[
+  { "id": "atlas", "name": "Atlas Group" },
+  { "id": "aurora", "name": "Aurora Holdings" },
+  { "id": "cobalt", "name": "Cobalt Industries" },
+  { "id": "daybreak", "name": "Daybreak Ventures" },
+  { "id": "evergreen", "name": "Evergreen Trust" },
+  { "id": "harbor", "name": "Harborline Partners" },
+  { "id": "summit", "name": "Summit Capital" },
+  { "id": "vertex", "name": "Vertex Logistics" }
+]
