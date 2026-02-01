@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Observer, ScrollToPlugin } from "gsap/all";
@@ -9,6 +10,24 @@ import { TopNav } from "@/components/TopNav";
 type SectionId = "home" | "about" | "services";
 
 const SECTION_ORDER: SectionId[] = ["home", "about", "services"];
+
+type SectionNavItem = {
+  id: string;
+  label: string;
+  href: string;
+  sectionId?: SectionId;
+};
+
+const SECTION_NAV_ITEMS: SectionNavItem[] = [
+  { id: "home", label: "Home", href: "#home", sectionId: "home" },
+  { id: "who-we-are", label: "Who We Are", href: "/who-we-are" },
+  { id: "what-we-do", label: "What We Do", href: "/what-we-do" },
+  { id: "our-clients", label: "Our Clients", href: "/our-clients" },
+  { id: "contact", label: "Contact", href: "/contact" },
+  { id: "faq", label: "FAQ", href: "/faq" }
+];
+
+const ROMAN_NUMERALS = ["I", "II", "III", "IV", "V", "VI"];
 
 const aboutParagraphs = [
   "Founded on a vision to uphold the highest ideals of quality and integrity, Nathan & Co. has embraced excellence as a way of life for over six decades. Rooted in the firm's enduring values of ethics, transparency, and professionalism, every engagement reflects our unwavering commitment to these principles that define our legacy and purpose.",
@@ -122,12 +141,14 @@ const services = [
 ];
 
 export default function HomePage() {
+  const router = useRouter();
   const homeRef = useRef<HTMLElement | null>(null);
   const aboutRef = useRef<HTMLElement | null>(null);
   const servicesRef = useRef<HTMLElement | null>(null);
   const heroBgRef = useRef<HTMLDivElement | null>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [navActiveIndex, setNavActiveIndex] = useState(0);
   const currentIndexRef = useRef(0);
   const isAnimatingRef = useRef(false);
   const prefersReducedMotionRef = useRef(false);
@@ -152,6 +173,7 @@ export default function HomePage() {
 
   useEffect(() => {
     currentIndexRef.current = currentIndex;
+    setNavActiveIndex(currentIndex);
   }, [currentIndex]);
 
   const ensureSectionVisible = useCallback((section: HTMLElement | null) => {
@@ -332,6 +354,21 @@ export default function HomePage() {
       }
     },
     [animateToIndex]
+  );
+
+  const handleSectionNav = useCallback(
+    (item: SectionNavItem, index: number) => {
+      setNavActiveIndex(index);
+      if (item.sectionId) {
+        const targetIndex = SECTION_ORDER.indexOf(item.sectionId);
+        if (targetIndex >= 0) {
+          animateToIndex(targetIndex);
+          return;
+        }
+      }
+      router.push(item.href);
+    },
+    [animateToIndex, router]
   );
 
   useEffect(() => {
@@ -684,7 +721,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        <SectionProgress activeIndex={currentIndex} onNavigate={handleNavigate} />
+        <SectionProgress activeIndex={navActiveIndex} onNavigate={handleSectionNav} />
       </main>
     </>
   );
@@ -695,7 +732,7 @@ function SectionProgress({
   onNavigate
 }: {
   activeIndex: number;
-  onNavigate: (href: string) => void;
+  onNavigate: (item: SectionNavItem, index: number) => void;
 }) {
   return (
     <div className="pointer-events-none fixed bottom-8 left-1/2 z-40 flex -translate-x-1/2 items-center justify-center">
@@ -704,20 +741,20 @@ function SectionProgress({
           Sections
         </span>
         <div className="h-px w-12 bg-[color:var(--rule)]" aria-hidden />
-        <div className="flex items-center gap-2">
-          {SECTION_ORDER.map((id, index) => (
+        <div className="flex max-w-[140px] items-center gap-2 overflow-x-auto pr-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:max-w-none md:overflow-visible">
+          {SECTION_NAV_ITEMS.map((item, index) => (
             <button
-              key={id}
+              key={item.id}
               type="button"
-              onClick={() => onNavigate(`#${id}`)}
+              onClick={() => onNavigate(item, index)}
               className={`pointer-events-auto flex h-8 w-8 items-center justify-center rounded-full border transition ${
                 activeIndex === index
                   ? "border-ink bg-ink text-paper shadow-[0_12px_30px_rgba(11,27,59,0.25)]"
                   : "border-[color:var(--rule)] text-muted hover:border-ink hover:text-ink"
               }`}
-              aria-label={id}
+              aria-label={item.label}
             >
-              {index === 0 ? "I" : index === 1 ? "II" : "III"}
+              {ROMAN_NUMERALS[index] ?? `${index + 1}`}
             </button>
           ))}
         </div>
