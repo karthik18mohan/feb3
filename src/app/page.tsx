@@ -346,7 +346,7 @@ export default function HomePage() {
         <section
           id="home"
           ref={homeRef}
-          className="relative isolate h-screen overflow-hidden"
+          className="relative isolate min-h-screen overflow-hidden"
         >
           <div
             ref={heroBgRef}
@@ -376,7 +376,7 @@ export default function HomePage() {
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.7)] via-[rgba(11,27,59,0.58)] to-[rgba(11,27,59,0.46)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(176,141,87,0.16),transparent_40%)]" />
-          <div className="relative z-10 mx-auto flex h-screen w-full max-w-[1180px] flex-col justify-center px-6 pb-20">
+          <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col justify-center px-6 pb-20">
             <div className="max-w-2xl space-y-7 text-paper">
               <div data-animate className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-paper/80">
                 <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />
@@ -395,13 +395,13 @@ export default function HomePage() {
         <section
           id="about"
           ref={aboutRef}
-          className="relative isolate h-screen overflow-hidden bg-paper"
+          className="relative isolate min-h-screen overflow-hidden bg-paper"
         >
           <div className="absolute inset-0">
             <Image src="/images/about/1.jpg" alt="" fill className="object-cover" sizes="100vw" />
           </div>
           <div className="absolute inset-0 bg-white/80" />
-          <div className="relative z-10 mx-auto flex h-screen w-full max-w-[1180px] items-center px-6 pt-28 pb-16">
+          <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] items-center px-6 pt-28 pb-16">
             <div className="grid w-full gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
               <div className="space-y-6">
                 <h2 data-animate className="text-4xl font-semibold text-ink sm:text-5xl">
@@ -452,14 +452,14 @@ export default function HomePage() {
         <section
           id="services"
           ref={servicesRef}
-          className="relative isolate h-screen overflow-hidden"
+          className="relative isolate min-h-screen overflow-hidden"
         >
           <div className="absolute inset-0">
             <Image src="/images/services/1.jpg" alt="" fill className="object-cover" sizes="100vw" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.68)] via-[rgba(11,27,59,0.6)] to-[rgba(11,27,59,0.72)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_25%,rgba(176,141,87,0.14),transparent_38%)]" />
-          <div className="relative z-10 mx-auto flex h-screen w-full max-w-[1180px] flex-col px-6 pt-28 pb-16">
+          <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-6 pt-28 pb-16">
             <div className="flex-shrink-0 space-y-6 text-paper">
               <div className="max-w-3xl space-y-3">
                 <h2 data-animate className="text-4xl font-semibold sm:text-5xl">
@@ -540,9 +540,9 @@ export default function HomePage() {
         <section
           id="partners"
           ref={partnersRef}
-          className="relative isolate h-screen overflow-hidden bg-paper"
+          className="relative isolate min-h-screen overflow-hidden bg-paper"
         >
-          <div className="flex h-screen flex-col pt-28">
+          <div className="flex min-h-screen flex-col pt-28">
             <div className="relative h-[30vh] min-h-[200px] w-full flex-shrink-0 overflow-hidden">
               <Image
                 src="/images/partners/1.jpg"

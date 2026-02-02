@@ -16,8 +16,8 @@ type ClientsSectionProps = {
 export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
   ({ id, className }, ref) => {
     return (
-      <section ref={ref} id={id} className={className ?? "w-full h-screen"}>
-        <div className="flex h-screen flex-col pt-28">
+      <section ref={ref} id={id} className={className ?? "w-full min-h-screen"}>
+        <div className="flex min-h-screen flex-col pt-28">
           <div className="relative h-[30vh] min-h-[200px] w-full flex-shrink-0 overflow-hidden">
             <Image
               src="/images/clients/1.jpg"

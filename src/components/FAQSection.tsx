@@ -27,7 +27,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
       <section
         ref={ref}
         id={id}
-        className={className ?? "relative isolate h-screen w-full overflow-hidden"}
+        className={className ?? "relative isolate min-h-screen w-full overflow-hidden"}
       >
         <div className="absolute inset-0">
           <Image
@@ -39,7 +39,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
           />
         </div>
 
-        <div className="relative z-10 mx-auto flex h-screen w-full max-w-[1180px] flex-col px-6 pb-16 pt-28 overflow-y-auto">
+        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-6 pb-16 pt-28 overflow-y-auto">
           <div className="text-left text-paper">
             <div className="mb-4 inline-flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-paper/75">
               <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />

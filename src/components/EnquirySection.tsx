@@ -45,7 +45,7 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
       <section
         ref={ref}
         id={id}
-        className={className ?? "relative isolate h-screen overflow-hidden"}
+        className={className ?? "relative isolate min-h-screen overflow-hidden"}
       >
         <div className="absolute inset-0">
           <Image
@@ -58,7 +58,7 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
         </div>
         <div className="absolute inset-0 bg-[rgba(6,10,20,0.72)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(176,141,87,0.2),transparent_45%)]" />
-        <div className="relative z-10 mx-auto flex h-screen w-full max-w-[1180px] items-center px-6 pt-28 pb-16 overflow-y-auto">
+        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] items-center px-6 pt-28 pb-16 overflow-y-auto">
           <div className="w-full rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-8 shadow-[0_24px_60px_rgba(11,27,59,0.25)] backdrop-blur sm:p-12">
             <div className="grid gap-10 md:grid-cols-2 md:gap-12">
               <div className="space-y-6">
