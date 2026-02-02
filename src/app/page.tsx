@@ -395,22 +395,18 @@ export default function HomePage() {
         <section
           id="about"
           ref={aboutRef}
-          className="relative isolate min-h-screen overflow-hidden bg-paper"
+          className="relative isolate h-screen overflow-hidden bg-paper"
         >
           <div className="absolute inset-0">
             <Image src="/images/about/1.jpg" alt="" fill className="object-cover" sizes="100vw" />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(251,248,242,0.86)] via-[rgba(251,248,242,0.78)] to-[rgba(251,248,242,0.86)]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[rgba(11,27,59,0.18)] via-transparent to-[rgba(251,248,242,0.7)]" />
-          <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] items-center px-6 pt-28 pb-16">
+          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(251,248,242,0.45)] via-[rgba(251,248,242,0.35)] to-[rgba(251,248,242,0.45)]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[rgba(11,27,59,0.08)] via-transparent to-[rgba(251,248,242,0.35)]" />
+          <div className="relative z-10 mx-auto flex h-screen w-full max-w-[1180px] items-center px-6 pt-28 pb-16">
             <div className="grid w-full gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
               <div className="space-y-6">
-                <div data-animate className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-muted">
-                  <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />
-                  Who We Are
-                </div>
                 <h2 data-animate className="text-4xl font-semibold text-ink sm:text-5xl">
-                  A heritage of elevated service and discretion.
+                  Who We Are
                 </h2>
                 <div className="space-y-4">
                   {aboutParagraphs.map((paragraph) => (
