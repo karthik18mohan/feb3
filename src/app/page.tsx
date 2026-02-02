@@ -11,8 +11,16 @@ import { TopNav } from "@/components/TopNav";
 import { partners } from "@/content/partners";
 import { ClientsSection } from "@/components/ClientsSection";
 import { EnquirySection } from "@/components/EnquirySection";
+import { FAQSection } from "@/components/FAQSection";
 
-type SectionId = "home" | "about" | "services" | "partners" | "clients" | "enquiry";
+type SectionId =
+  | "home"
+  | "about"
+  | "services"
+  | "partners"
+  | "clients"
+  | "enquiry"
+  | "faq";
 
 const SECTION_ORDER: SectionId[] = [
   "home",
@@ -20,7 +28,8 @@ const SECTION_ORDER: SectionId[] = [
   "services",
   "partners",
   "clients",
-  "enquiry"
+  "enquiry",
+  "faq"
 ];
 
 type SectionNavItem = {
@@ -36,10 +45,11 @@ const SECTION_NAV_ITEMS: SectionNavItem[] = [
   { id: "what-we-do", label: "What We Do", href: "#services", sectionId: "services" },
   { id: "partners", label: "Partners", href: "#partners", sectionId: "partners" },
   { id: "clients", label: "Clients", href: "#clients", sectionId: "clients" },
-  { id: "enquiry", label: "Enquiry", href: "#enquiry", sectionId: "enquiry" }
+  { id: "enquiry", label: "Enquiry", href: "#enquiry", sectionId: "enquiry" },
+  { id: "faq", label: "FAQ", href: "#faq", sectionId: "faq" }
 ];
 
-const ROMAN_NUMERALS = ["I", "II", "III", "IV", "V", "VI"];
+const ROMAN_NUMERALS = ["I", "II", "III", "IV", "V", "VI", "VII"];
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -181,6 +191,7 @@ export default function HomePage() {
   const partnersRef = useRef<HTMLElement | null>(null);
   const clientsRef = useRef<HTMLElement | null>(null);
   const enquiryRef = useRef<HTMLElement | null>(null);
+  const faqRef = useRef<HTMLElement | null>(null);
   const heroBgRef = useRef<HTMLDivElement | null>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -204,7 +215,8 @@ export default function HomePage() {
         services: servicesRef.current,
         partners: partnersRef.current,
         clients: clientsRef.current,
-        enquiry: enquiryRef.current
+        enquiry: enquiryRef.current,
+        faq: faqRef.current
       };
 
       return map[SECTION_ORDER[index]];
@@ -885,6 +897,7 @@ export default function HomePage() {
         </section>
         <ClientsSection id="clients" ref={clientsRef} />
         <EnquirySection id="enquiry" ref={enquiryRef} />
+        <FAQSection id="faq" ref={faqRef} />
         <SectionProgress activeIndex={navActiveIndex} onNavigate={handleSectionNav} />
       </main>
     </>
