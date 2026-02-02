@@ -384,9 +384,6 @@ export default function HomePage() {
               <h1 data-animate className="text-5xl font-semibold sm:text-6xl md:text-7xl">
                 Nathan &amp; Co.
               </h1>
-              <p data-animate className="text-lg uppercase tracking-[0.32em] text-paper/80">
-                Chartered Accountants
-              </p>
               <p data-animate className="max-w-xl text-xl leading-relaxed text-paper/85">
                 Upholding the highest ideals of quality, integrity, and trust.
               </p>
