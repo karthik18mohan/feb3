@@ -1,3 +1,7 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 type NavItem = { label: string; href: string };
 
 const NAV_ITEMS: NavItem[] = [
@@ -15,15 +19,26 @@ export function TopNav({
   activeSection?: string;
   onNavigate?: (href: string) => void;
 }) {
+  const pathname = usePathname();
+  const isLandingPage = pathname === "/";
+
+  const getHref = (hashHref: string) => {
+    return isLandingPage ? hashHref : `/${hashHref}`;
+  };
+
+  const getBrandHref = () => {
+    return isLandingPage ? "#home" : "/";
+  };
+
   return (
     <header className="sticky top-0 z-40 border-b border-rule bg-paper/90 backdrop-blur">
       <div className="mx-auto flex w-full max-w-[1180px] items-center justify-between gap-6 px-6 py-5">
         <div className="flex flex-wrap items-center gap-3">
           <a
-            href="#home"
+            href={getBrandHref()}
             className="text-sm font-semibold uppercase tracking-[0.26em] text-ink"
             onClick={(e) => {
-              if (onNavigate) {
+              if (onNavigate && isLandingPage) {
                 e.preventDefault();
                 onNavigate("#home");
               }
@@ -39,9 +54,9 @@ export function TopNav({
           {NAV_ITEMS.map((item) => (
             <a
               key={item.href}
-              href={item.href}
+              href={getHref(item.href)}
               onClick={(e) => {
-                if (onNavigate) {
+                if (onNavigate && isLandingPage) {
                   e.preventDefault();
                   onNavigate(item.href);
                 }
