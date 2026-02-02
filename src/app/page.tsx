@@ -438,13 +438,6 @@ export default function HomePage() {
     return () => window.clearInterval(intervalId);
   }, [slideCount]);
 
-  const handlePrevSlide = useCallback(() => {
-    setActiveSlideIndex((prev) => (prev - 1 + slideCount) % slideCount);
-  }, [slideCount]);
-
-  const handleNextSlide = useCallback(() => {
-    setActiveSlideIndex((prev) => (prev + 1) % slideCount);
-  }, [slideCount]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -622,28 +615,6 @@ export default function HomePage() {
             >
               {landingSlides[activeSlideIndex]?.caption}
             </p>
-          </div>
-          <div className="absolute inset-0 z-20 flex items-center justify-between px-4 sm:px-6">
-            <button
-              type="button"
-              onClick={handlePrevSlide}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-paper/40 bg-[rgba(11,27,59,0.45)] text-paper shadow-[0_12px_30px_rgba(3,7,18,0.45)] transition hover:-translate-y-0.5 hover:border-paper/70 hover:bg-[rgba(11,27,59,0.6)]"
-              aria-label="Previous slide"
-            >
-              <span aria-hidden className="text-xl">
-                ‹
-              </span>
-            </button>
-            <button
-              type="button"
-              onClick={handleNextSlide}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-paper/40 bg-[rgba(11,27,59,0.45)] text-paper shadow-[0_12px_30px_rgba(3,7,18,0.45)] transition hover:-translate-y-0.5 hover:border-paper/70 hover:bg-[rgba(11,27,59,0.6)]"
-              aria-label="Next slide"
-            >
-              <span aria-hidden className="text-xl">
-                ›
-              </span>
-            </button>
           </div>
           <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col justify-center px-6 py-28">
             <div className="max-w-2xl space-y-7 text-paper">
