@@ -649,7 +649,7 @@ export default function HomePage() {
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.7)] via-[rgba(11,27,59,0.58)] to-[rgba(11,27,59,0.46)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(176,141,87,0.16),transparent_40%)]" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[rgba(6,10,20,0.9)] via-[rgba(6,10,20,0.35)] to-transparent pb-10 pt-16">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-50 bg-gradient-to-t from-[rgba(6,10,20,0.9)] via-[rgba(6,10,20,0.35)] to-transparent pb-10 pt-16">
             <div className="mx-auto w-full max-w-[1180px] px-6 space-y-6">
               <p
                 className={`${playfairDisplay.className} text-base text-slate-200 drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)] sm:text-xl md:text-2xl`}
