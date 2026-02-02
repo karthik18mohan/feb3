@@ -7,7 +7,6 @@ import gsap from "gsap";
 import { Observer, ScrollToPlugin } from "gsap/all";
 import { Playfair_Display } from "next/font/google";
 import { motion } from "framer-motion";
-import { TopNav } from "@/components/TopNav";
 import { partners } from "@/content/partners";
 import { ClientsSection } from "@/components/ClientsSection";
 import { EnquirySection } from "@/components/EnquirySection";
@@ -614,7 +613,6 @@ export default function HomePage() {
 
   return (
     <>
-      <TopNav activeSection={SECTION_ORDER[currentIndex]} onNavigate={handleNavigate} />
       <main className="relative">
         <section
           id="home"
