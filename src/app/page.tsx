@@ -387,20 +387,6 @@ export default function HomePage() {
               <p data-animate className="max-w-xl text-xl leading-relaxed text-paper/85">
                 Upholding the highest ideals of quality, integrity, and trust.
               </p>
-              <div data-animate className="flex flex-wrap gap-4">
-                <button
-                  onClick={() => handleNavigate("#services")}
-                  className="rounded-full bg-paper px-6 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-ink shadow-[0_18px_40px_rgba(11,27,59,0.3)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_50px_rgba(11,27,59,0.34)]"
-                >
-                  What We Do
-                </button>
-                <button
-                  onClick={() => handleNavigate("#about")}
-                  className="rounded-full border border-[color:var(--rule)] px-6 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-paper transition hover:-translate-y-0.5 hover:border-paper/80 hover:bg-paper/10"
-                >
-                  Who We Are
-                </button>
-              </div>
             </div>
           </div>
         </section>
