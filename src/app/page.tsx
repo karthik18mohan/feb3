@@ -345,7 +345,7 @@ export default function HomePage() {
         <section
           id="home"
           ref={homeRef}
-          className="relative isolate min-h-screen overflow-hidden"
+          className="relative isolate h-screen overflow-hidden"
         >
           <div
             ref={heroBgRef}
@@ -375,30 +375,7 @@ export default function HomePage() {
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.7)] via-[rgba(11,27,59,0.58)] to-[rgba(11,27,59,0.46)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(176,141,87,0.16),transparent_40%)]" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-50 bg-gradient-to-t from-[rgba(6,10,20,0.9)] via-[rgba(6,10,20,0.35)] to-transparent pb-10 pt-16">
-            <div className="mx-auto w-full max-w-[1180px] px-6 space-y-6">
-              <p
-                className={`${playfairDisplay.className} text-base text-slate-200 drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)] sm:text-xl md:text-2xl`}
-              >
-                {landingSlides[activeSlideIndex]?.caption}
-              </p>
-              <div className="flex items-center justify-center gap-3 pointer-events-auto">
-                {landingSlides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setActiveSlideIndex(index)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      index === activeSlideIndex
-                        ? 'w-8 bg-paper shadow-[0_0_12px_rgba(251,248,242,0.5)]'
-                        : 'w-2 bg-paper/40 hover:bg-paper/60'
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col justify-center px-6 py-28">
+          <div className="relative z-10 mx-auto flex h-screen w-full max-w-[1180px] flex-col justify-center px-6 py-20">
             <div className="max-w-2xl space-y-7 text-paper">
               <div data-animate className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-paper/80">
                 <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />
@@ -651,7 +628,14 @@ export default function HomePage() {
         <ClientsSection id="clients" ref={clientsRef} />
         <EnquirySection id="enquiry" ref={enquiryRef} />
         <FAQSection id="faq" ref={faqRef} />
-        <SectionProgress activeIndex={navActiveIndex} onNavigate={handleSectionNav} />
+        <SectionProgress
+          activeIndex={navActiveIndex}
+          onNavigate={handleSectionNav}
+          activeSlideIndex={activeSlideIndex}
+          setActiveSlideIndex={setActiveSlideIndex}
+          landingSlides={landingSlides}
+          playfairDisplayClassName={playfairDisplay.className}
+        />
       </main>
     </>
   );
@@ -659,13 +643,46 @@ export default function HomePage() {
 
 function SectionProgress({
   activeIndex,
-  onNavigate
+  onNavigate,
+  activeSlideIndex,
+  setActiveSlideIndex,
+  landingSlides,
+  playfairDisplayClassName
 }: {
   activeIndex: number;
   onNavigate: (item: SectionNavItem, index: number) => void;
+  activeSlideIndex: number;
+  setActiveSlideIndex: (index: number) => void;
+  landingSlides: Array<{ src: string; caption: string }>;
+  playfairDisplayClassName: string;
 }) {
+  const isOnHome = activeIndex === 0;
+
   return (
-    <div className="pointer-events-none fixed bottom-8 left-1/2 z-40 flex -translate-x-1/2 items-center justify-center">
+    <div className="pointer-events-none fixed bottom-8 left-1/2 z-40 flex -translate-x-1/2 flex-col items-center justify-center gap-3">
+      {isOnHome && (
+        <>
+          <div className="flex items-center justify-center gap-3 pointer-events-auto">
+            {landingSlides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveSlideIndex(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === activeSlideIndex
+                    ? 'w-8 bg-paper shadow-[0_0_12px_rgba(251,248,242,0.5)]'
+                    : 'w-2 bg-paper/40 hover:bg-paper/60'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+          <p
+            className={`${playfairDisplayClassName} text-center text-base text-paper drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)] sm:text-xl max-w-[600px] px-4`}
+          >
+            {landingSlides[activeSlideIndex]?.caption}
+          </p>
+        </>
+      )}
       <div className="flex items-center gap-3 rounded-full border border-[color:var(--rule)] bg-paper/80 px-5 py-3 shadow-[0_18px_40px_rgba(11,27,59,0.18)] backdrop-blur">
         <span className="text-[0.65rem] uppercase tracking-[0.32em] text-muted">
           Sections
