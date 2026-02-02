@@ -119,7 +119,7 @@ export function TopNav({
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`lg:hidden fixed inset-0 top-[73px] bg-paper/95 backdrop-blur-md transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 top-[73px] bg-paper backdrop-blur-xl transition-all duration-300 ${
           isMobileMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
