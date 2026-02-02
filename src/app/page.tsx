@@ -11,6 +11,7 @@ import { partners } from "@/content/partners";
 import { ClientsSection } from "@/components/ClientsSection";
 import { EnquirySection } from "@/components/EnquirySection";
 import { FAQSection } from "@/components/FAQSection";
+import { TopNav } from "@/components/TopNav";
 
 type SectionId =
   | "home"
@@ -613,6 +614,10 @@ export default function HomePage() {
 
   return (
     <>
+      <TopNav
+        activeSection={SECTION_ORDER[currentIndex]}
+        onNavigate={handleNavigate}
+      />
       <main className="relative">
         <section
           id="home"
