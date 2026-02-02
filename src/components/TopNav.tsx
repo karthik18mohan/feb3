@@ -56,7 +56,9 @@ export function TopNav({
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 border-b border-rule bg-paper/70 backdrop-blur-md transition-all duration-300">
+    <header className={`fixed top-0 left-0 right-0 z-40 border-b border-rule bg-paper/70 backdrop-blur-md transition-all duration-300 ${
+      isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+    }`}>
       <div className="mx-auto flex w-full max-w-[1180px] items-center justify-between gap-6 px-6 py-5">
         <div className="flex flex-wrap items-center gap-3">
           <a

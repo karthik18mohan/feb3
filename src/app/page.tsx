@@ -340,6 +340,7 @@ export default function HomePage() {
       <TopNav
         activeSection={SECTION_ORDER[navActiveIndex]}
         onNavigate={handleNavigate}
+        isVisible={navActiveIndex !== 0}
       />
       <main className="relative">
         <section
