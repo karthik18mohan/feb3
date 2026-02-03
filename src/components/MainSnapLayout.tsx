@@ -44,7 +44,7 @@ export function MainSnapLayout({
       panels.forEach(({ ref, id }) => {
         if (!ref.current) return;
         const rect = ref.current.getBoundingClientRect();
-        const distance = Math.abs(rect.top);
+        const distance = Math.abs(rect.left);
         if (distance < minDistance) {
           minDistance = distance;
           nearestPanel = id;
@@ -63,9 +63,9 @@ export function MainSnapLayout({
   return (
     <div
       ref={outerContainerRef}
-      className="h-screen overflow-y-auto scroll-smooth"
+      className="h-screen overflow-x-auto overflow-y-hidden scroll-smooth flex"
       style={{
-        scrollSnapType: "y mandatory"
+        scrollSnapType: "x mandatory"
       }}
     >
       <SnapPanel ref={aboutPanelRef} id="panel-about">
@@ -89,11 +89,11 @@ const SnapPanel = forwardRef<HTMLDivElement, { children: ReactNode; id: string }
       <div
         ref={ref}
         id={id}
-        className="min-h-screen"
+        className="min-w-[100vw] h-screen flex-shrink-0"
         style={{ scrollSnapAlign: "start" }}
       >
         <div
-          className="h-screen overflow-y-auto"
+          className="h-screen w-screen overflow-y-auto"
           style={{ overscrollBehavior: "contain" }}
         >
           {children}
