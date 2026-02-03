@@ -512,7 +512,7 @@ export default function HomePage() {
               </motion.p>
             </div>
             <div className="flex-1 mt-6">
-              <div className="grid grid-cols-3 gap-4 md:gap-5 lg:gap-6 auto-rows-fr">
+              <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-6">
                 {servicesData.map((service, index) => {
                   const isOdd = index % 2 === 0;
                   return (

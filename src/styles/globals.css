@@ -26,8 +26,13 @@ html {
 body {
   @apply bg-paper text-ink antialiased font-body;
   letter-spacing: 0.01em;
+  line-height: 1.65;
   background-color: var(--paper);
   overflow-x: hidden;
+}
+
+section[id] {
+  scroll-margin-top: calc(var(--nav-h) + 1.5rem);
 }
 
 h1,
