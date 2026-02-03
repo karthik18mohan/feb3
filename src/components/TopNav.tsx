@@ -59,14 +59,14 @@ export function TopNav({
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-40 border-b border-rule bg-paper/70 backdrop-blur-md transition-all duration-300 ${
+    <header className={`fixed top-0 left-0 right-0 z-40 min-h-[var(--nav-h)] border-b border-rule bg-paper/70 backdrop-blur-md transition-all duration-300 ${
       isVisible ? "translate-y-0 opacity-100 shadow-[0_4px_16px_rgba(11,27,59,0.08)]" : "-translate-y-full opacity-0 pointer-events-none shadow-none"
     }`}>
       <div className="mx-auto flex w-full max-w-[1180px] items-center justify-between gap-6 px-6 py-5">
         <div className="flex flex-wrap items-center gap-3">
           <a
             href={getBrandHref()}
-            className="text-sm font-semibold uppercase tracking-[0.26em] text-ink"
+            className="rounded-sm text-sm font-semibold uppercase tracking-[0.26em] text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
             onClick={(e) => {
               if (onNavigate && isLandingPage) {
                 e.preventDefault();
@@ -94,7 +94,7 @@ export function TopNav({
               <a
                 href={getHref(item.href)}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="relative pb-1 text-muted transition-colors duration-200 hover:text-ink group"
+                className="group relative rounded-sm pb-1 text-muted transition-colors duration-200 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
               >
                 {item.label}
                 <span
@@ -113,7 +113,7 @@ export function TopNav({
         {/* Mobile Hamburger Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden flex flex-col gap-1.5 w-6 h-6 justify-center items-center group"
+          className="lg:hidden flex h-6 w-6 flex-col items-center justify-center gap-1.5 rounded-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
           aria-label="Toggle mobile menu"
           aria-expanded={isMobileMenuOpen}
         >
@@ -137,7 +137,7 @@ export function TopNav({
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`lg:hidden fixed inset-0 top-[73px] bg-paper backdrop-blur-xl transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 top-[var(--nav-h)] bg-paper backdrop-blur-xl transition-all duration-300 ${
           isMobileMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -149,7 +149,7 @@ export function TopNav({
               key={item.href}
               href={getHref(item.href)}
               onClick={(e) => handleNavClick(e, item.href)}
-              className={`text-lg uppercase tracking-[0.3em] transition hover:text-ink ${
+              className={`rounded-sm text-lg uppercase tracking-[0.3em] transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
                 activeSection === item.href.replace("#", "")
                   ? "text-ink font-semibold"
                   : "text-muted"

@@ -30,34 +30,44 @@ export function MainSnapLayout({
   useEffect(() => {
     const outerContainer = outerContainerRef.current;
     if (!outerContainer) return;
+    let rafId: number | null = null;
 
     const handleScroll = () => {
-      const panels = [
-        { ref: aboutPanelRef, id: "about" as PanelId },
-        { ref: workPanelRef, id: "work" as PanelId },
-        { ref: contactPanelRef, id: "contact" as PanelId }
-      ];
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(() => {
+        const panels = [
+          { ref: aboutPanelRef, id: "about" as PanelId },
+          { ref: workPanelRef, id: "work" as PanelId },
+          { ref: contactPanelRef, id: "contact" as PanelId }
+        ];
 
-      let nearestPanel: PanelId = "about";
-      let minDistance = Infinity;
+        let nearestPanel: PanelId = "about";
+        let minDistance = Infinity;
 
-      panels.forEach(({ ref, id }) => {
-        if (!ref.current) return;
-        const rect = ref.current.getBoundingClientRect();
-        const distance = Math.abs(rect.left);
-        if (distance < minDistance) {
-          minDistance = distance;
-          nearestPanel = id;
+        panels.forEach(({ ref, id }) => {
+          if (!ref.current) return;
+          const rect = ref.current.getBoundingClientRect();
+          const distance = Math.abs(rect.left);
+          if (distance < minDistance) {
+            minDistance = distance;
+            nearestPanel = id;
+          }
+        });
+
+        if (nearestPanel !== activePanel) {
+          onPanelChange(nearestPanel);
         }
+        rafId = null;
       });
-
-      if (nearestPanel !== activePanel) {
-        onPanelChange(nearestPanel);
-      }
     };
 
     outerContainer.addEventListener("scroll", handleScroll, { passive: true });
-    return () => outerContainer.removeEventListener("scroll", handleScroll);
+    return () => {
+      outerContainer.removeEventListener("scroll", handleScroll);
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+      }
+    };
   }, [activePanel, onPanelChange, aboutPanelRef, workPanelRef, contactPanelRef]);
 
   return (
