@@ -10,6 +10,7 @@ import { ClientsSection } from "@/components/ClientsSection";
 import { EnquirySection } from "@/components/EnquirySection";
 import { FAQSection } from "@/components/FAQSection";
 import { TopNav } from "@/components/TopNav";
+import { VisionPurposeFlow } from "@/components/VisionPurposeFlow";
 import { fadeUp, fadeUpFast, fadeLeft, fadeRight, staggerContainer, scaleYReveal, viewportConfig, viewportConfigPartial, stagger, durations, PREMIUM_EASE } from "@/lib/motion";
 
 type SectionId =
@@ -424,48 +425,7 @@ export default function HomePage() {
                   ))}
                 </motion.div>
               </div>
-              <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportConfig}
-                className="relative rounded-2xl border border-rule bg-paper/80 p-8 shadow-[0_24px_60px_rgba(11,27,59,0.12)] backdrop-blur"
-              >
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[rgba(11,27,59,0.04)] to-transparent" />
-                <motion.div
-                  className="absolute left-0 top-0 bottom-0 w-px bg-[color:var(--gold)] origin-top"
-                  variants={scaleYReveal}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={viewportConfig}
-                />
-                <div className="relative space-y-5">
-                  <p className="text-xs uppercase tracking-[0.38em] text-muted">
-                    Pillars
-                  </p>
-                  <h3 className="text-3xl font-semibold text-ink">Quality • Integrity • Trust</h3>
-                  <motion.ul
-                    variants={staggerContainer(0.09)}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={viewportConfig}
-                    className="space-y-2 text-base leading-relaxed text-muted"
-                  >
-                    <motion.li variants={fadeUpFast} className="flex items-start gap-3">
-                      <span className="mt-1 h-px w-6 shrink-0 bg-[color:var(--gold)]" aria-hidden />
-                      Precision in every mandate, anchored in ethics.
-                    </motion.li>
-                    <motion.li variants={fadeUpFast} className="flex items-start gap-3">
-                      <span className="mt-1 h-px w-6 shrink-0 bg-[color:var(--gold)]" aria-hidden />
-                      Stewardship built on discretion and clarity.
-                    </motion.li>
-                    <motion.li variants={fadeUpFast} className="flex items-start gap-3">
-                      <span className="mt-1 h-px w-6 shrink-0 bg-[color:var(--gold)]" aria-hidden />
-                      Guidance that honors legacy while embracing progress.
-                    </motion.li>
-                  </motion.ul>
-                </div>
-              </motion.div>
+              <VisionPurposeFlow />
             </div>
           </div>
         </section>
