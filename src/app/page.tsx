@@ -155,6 +155,7 @@ const services = [
 
 export default function HomePage() {
   const [activePanel, setActivePanel] = useState<PanelId>("about");
+  const [activeSection, setActiveSection] = useState<string>("home");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const slideCount = landingSlides.length;
   const touchStartXRef = useRef<number | null>(null);
@@ -198,6 +199,49 @@ export default function HomePage() {
     return () => window.clearInterval(intervalId);
   }, [slideCount]);
 
+  useEffect(() => {
+    const sections = [
+      { ref: homeRef, id: "home" },
+      { ref: aboutRef, id: "about" },
+      { ref: partnersRef, id: "partners" },
+      { ref: servicesRef, id: "services" },
+      { ref: clientsRef, id: "clients" },
+      { ref: enquiryRef, id: "enquiry" },
+      { ref: faqRef, id: "faq" }
+    ];
+
+    const observerOptions = {
+      root: null,
+      rootMargin: "-20% 0px -20% 0px",
+      threshold: 0
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.id;
+          setActiveSection(sectionId);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    sections.forEach(({ ref }) => {
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+    });
+
+    return () => {
+      sections.forEach(({ ref }) => {
+        if (ref.current) {
+          observer.unobserve(ref.current);
+        }
+      });
+    };
+  }, []);
+
   const handlePrevSlide = useCallback(() => {
     setActiveSlideIndex((prev) => (prev - 1 + slideCount) % slideCount);
   }, [slideCount]);
@@ -231,7 +275,7 @@ export default function HomePage() {
     touchEndXRef.current = null;
   }, [handleNextSlide, handlePrevSlide]);
 
-  const isOnHome = activePanel === "about";
+  const isOnHome = activeSection === "home";
 
   const aboutPanel = (
     <>
