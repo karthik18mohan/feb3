@@ -473,64 +473,74 @@ export default function HomePage() {
                 data-scrollable
                 className="flex-1 min-h-0 overflow-y-auto pr-2 mt-6"
               >
-                <div className="grid gap-6 md:grid-cols-2">
-                  {services.map((service, index) => (
-                    <article
-                      key={service.title}
-                      data-animate
-                      className="group relative overflow-hidden rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-6 text-ink shadow-[0_20px_45px_rgba(11,27,59,0.18)] transition duration-300 ease-out hover:-translate-y-0.5 hover:border-paper hover:shadow-[0_24px_60px_rgba(11,27,59,0.22)]"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-br from-[rgba(11,27,59,0.03)] to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
-                      <div className="relative space-y-4">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--rule)] bg-paper/70 text-sm font-semibold text-ink">
-                            {index + 1}
-                          </span>
-                          <h3 className="text-xl font-semibold text-ink">{service.title}</h3>
-                        </div>
-                        <div className="space-y-3 text-sm leading-relaxed text-muted">
-                          {service.body.split("\n").map((chunk) => (
-                            <p key={chunk}>{chunk}</p>
-                          ))}
-                        </div>
-                        {service.bullets && (
-                          <ul className="space-y-2 text-sm leading-relaxed text-ink">
-                            {service.bullets.map((item) => (
-                              <li
-                                key={item}
-                                className="flex items-start gap-2 rounded-lg border border-transparent px-2 py-1 transition group-hover:border-[color:var(--rule)]"
-                              >
-                                <span className="mt-[6px] inline-block h-[9px] w-[9px] rounded-full border border-[color:var(--rule)] bg-[color:var(--paper)]" aria-hidden />
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        {service.subSections && (
-                          <div className="space-y-4">
-                            {service.subSections.map((sub) => (
-                              <div key={sub.title} className="space-y-2">
-                                <p className="text-xs uppercase tracking-[0.28em] text-muted">
-                                  {sub.title}
-                                </p>
-                                <ul className="space-y-2 text-sm leading-relaxed text-ink">
-                                  {sub.bullets.map((item) => (
-                                    <li
-                                      key={item}
-                                      className="flex items-start gap-2 rounded-lg border border-transparent px-2 py-1 transition group-hover:border-[color:var(--rule)]"
-                                    >
-                                      <span className="mt-[6px] inline-block h-[9px] w-[9px] rounded-full border border-[color:var(--rule)] bg-[color:var(--paper)]" aria-hidden />
-                                      <span>{item}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
+                <div className="grid gap-4 md:gap-5 lg:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
+                  {services.map((service, index) => {
+                    const isLarge = index === 0 || index === 3;
+                    return (
+                      <article
+                        key={service.title}
+                        data-animate
+                        className={`group relative overflow-hidden rounded-xl border border-[color:var(--rule)] bg-paper/85 p-5 text-ink shadow-[0_20px_45px_rgba(11,27,59,0.18)] transition duration-300 ease-out hover:-translate-y-0.5 hover:border-paper hover:shadow-[0_24px_60px_rgba(11,27,59,0.22)] ${
+                          isLarge ? 'md:col-span-2 lg:col-span-2' : ''
+                        }`}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-[rgba(11,27,59,0.03)] to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+                        <div className="relative space-y-3">
+                          <div className="flex items-center gap-3">
+                            <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[color:var(--rule)] bg-paper/70 text-sm font-semibold text-ink">
+                              {index + 1}
+                            </span>
+                            <h3 className="text-lg font-semibold text-ink">{service.title}</h3>
+                          </div>
+                          <div className="space-y-2 text-sm leading-relaxed text-muted line-clamp-4">
+                            {service.body.split("\n").slice(0, 1).map((chunk) => (
+                              <p key={chunk}>{chunk}</p>
                             ))}
                           </div>
-                        )}
-                      </div>
-                    </article>
-                  ))}
+                          {service.bullets && (
+                            <ul className="space-y-1.5 text-xs leading-relaxed text-ink">
+                              {service.bullets.slice(0, 3).map((item) => (
+                                <li
+                                  key={item}
+                                  className="flex items-start gap-2 rounded-lg border border-transparent px-2 py-1 transition group-hover:border-[color:var(--rule)]"
+                                >
+                                  <span className="mt-[5px] inline-block h-[7px] w-[7px] rounded-full border border-[color:var(--rule)] bg-[color:var(--paper)]" aria-hidden />
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                              {service.bullets.length > 3 && (
+                                <li className="px-2 py-1 text-muted/60">
+                                  +{service.bullets.length - 3} more
+                                </li>
+                              )}
+                            </ul>
+                          )}
+                          {service.subSections && (
+                            <div className="space-y-3">
+                              {service.subSections.slice(0, 1).map((sub) => (
+                                <div key={sub.title} className="space-y-1.5">
+                                  <p className="text-[0.65rem] uppercase tracking-[0.26em] text-muted">
+                                    {sub.title}
+                                  </p>
+                                  <ul className="space-y-1.5 text-xs leading-relaxed text-ink">
+                                    {sub.bullets.slice(0, 3).map((item) => (
+                                      <li
+                                        key={item}
+                                        className="flex items-start gap-2 rounded-lg border border-transparent px-2 py-1 transition group-hover:border-[color:var(--rule)]"
+                                      >
+                                        <span className="mt-[5px] inline-block h-[7px] w-[7px] rounded-full border border-[color:var(--rule)] bg-[color:var(--paper)]" aria-hidden />
+                                        <span>{item}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
             </div>
