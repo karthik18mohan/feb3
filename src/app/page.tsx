@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { Playfair_Display } from "next/font/google";
 import { motion } from "framer-motion";
 import { partners } from "@/content/partners";
@@ -191,7 +190,6 @@ export default function HomePage() {
   const clientsRef = useRef<HTMLElement | null>(null);
   const enquiryRef = useRef<HTMLElement | null>(null);
   const faqRef = useRef<HTMLElement | null>(null);
-  const heroBgRef = useRef<HTMLDivElement | null>(null);
 
   const [navActiveIndex, setNavActiveIndex] = useState(0);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -323,18 +321,6 @@ export default function HomePage() {
     };
   }, [getNearestSectionIndex, navActiveIndex]);
 
-  useEffect(() => {
-    const prefersMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    if (!prefersMotion.matches && heroBgRef.current) {
-      gsap.fromTo(
-        heroBgRef.current,
-        { scale: 1.05 },
-        { scale: 1, duration: 1.1, ease: "power2.out" }
-      );
-    }
-  }, []);
-
   return (
     <>
       <TopNav
@@ -349,8 +335,7 @@ export default function HomePage() {
           className="relative isolate min-h-screen overflow-hidden"
         >
           <div
-            ref={heroBgRef}
-            className="absolute inset-0"
+            className="absolute inset-0 hero-bg-motion"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -382,10 +367,17 @@ export default function HomePage() {
                 <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />
                 Chartered Accountants
               </div>
-              <h1 data-animate className="text-5xl font-semibold sm:text-6xl md:text-7xl">
+              <h1
+                data-animate
+                className="hero-title text-5xl font-semibold sm:text-6xl md:text-7xl"
+              >
                 Nathan &amp; Co.
               </h1>
-              <p data-animate className="max-w-xl text-xl leading-relaxed text-paper/85">
+              <div className="hero-divider" aria-hidden />
+              <p
+                data-animate
+                className="hero-tagline max-w-xl text-xl leading-relaxed text-paper/85"
+              >
                 Upholding the highest ideals of quality, integrity, and trust.
               </p>
             </div>
