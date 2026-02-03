@@ -551,8 +551,6 @@ export default function HomePage() {
                 className="object-cover"
                 sizes="100vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.78)] via-[rgba(11,27,59,0.62)] to-[rgba(11,27,59,0.72)]" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(176,141,87,0.18),transparent_40%)]" />
               <div className="absolute inset-0 flex items-center justify-center px-6">
                 <motion.h2
                   variants={fadeUp}
