@@ -5,11 +5,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Playfair_Display } from "next/font/google";
 import { motion } from "framer-motion";
 import { partners } from "@/content/partners";
+import { servicesData } from "@/content/services";
 import { ClientsSection } from "@/components/ClientsSection";
 import { EnquirySection } from "@/components/EnquirySection";
 import { FAQSection } from "@/components/FAQSection";
 import { TopNav } from "@/components/TopNav";
 import { VisionPurposeFlow } from "@/components/VisionPurposeFlow";
+import { ServiceModal } from "@/components/ServiceModal";
 import { MainSnapLayout, PanelId, scrollToPanel } from "@/components/MainSnapLayout";
 import { fadeUp, fadeUpFast, fadeLeft, fadeRight, staggerContainer, viewportConfig, viewportConfigPartial, stagger, durations, PREMIUM_EASE } from "@/lib/motion";
 
@@ -157,6 +159,8 @@ export default function HomePage() {
   const [activePanel, setActivePanel] = useState<PanelId>("about");
   const [activeSection, setActiveSection] = useState<string>("home");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
+  const [activeServiceId, setActiveServiceId] = useState<string | null>(null);
   const slideCount = landingSlides.length;
   const touchStartXRef = useRef<number | null>(null);
   const touchEndXRef = useRef<number | null>(null);
@@ -187,6 +191,19 @@ export default function HomePage() {
     if (panelId) {
       scrollToPanel(panelId);
     }
+  }, []);
+
+  const handleServiceClick = useCallback((serviceId: string) => {
+    setActiveServiceId(serviceId);
+    setIsServiceModalOpen(true);
+  }, []);
+
+  const handleServiceModalClose = useCallback(() => {
+    setIsServiceModalOpen(false);
+  }, []);
+
+  const handleServiceChange = useCallback((serviceId: string) => {
+    setActiveServiceId(serviceId);
   }, []);
 
   useEffect(() => {
@@ -496,11 +513,13 @@ export default function HomePage() {
             </div>
             <div className="flex-1 mt-6">
               <div className="grid grid-cols-3 gap-4 md:gap-5 lg:gap-6 auto-rows-fr">
-                {services.map((service, index) => {
+                {servicesData.map((service, index) => {
                   const isOdd = index % 2 === 0;
                   return (
-                    <motion.article
-                      key={service.title}
+                    <motion.button
+                      key={service.id}
+                      type="button"
+                      onClick={() => handleServiceClick(service.id)}
                       variants={isOdd ? fadeLeft : fadeRight}
                       initial="hidden"
                       whileInView="visible"
@@ -514,13 +533,13 @@ export default function HomePage() {
                         y: -3,
                         transition: { duration: durations.hover, ease: PREMIUM_EASE }
                       }}
-                      className="group relative flex min-h-[120px] items-center justify-center overflow-hidden rounded-xl border border-[color:var(--rule)] bg-paper/85 p-5 text-center text-ink shadow-[0_20px_45px_rgba(11,27,59,0.18)] transition-shadow duration-300 ease-out hover:border-[color:var(--gold)] hover:shadow-[0_24px_60px_rgba(11,27,59,0.22)]"
+                      className="group relative flex min-h-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-[color:var(--rule)] bg-paper/85 p-5 text-center text-ink shadow-[0_20px_45px_rgba(11,27,59,0.18)] transition-shadow duration-300 ease-out hover:border-[color:var(--gold)] hover:shadow-[0_24px_60px_rgba(11,27,59,0.22)]"
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-[rgba(11,27,59,0.03)] to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
                       <div className="relative">
                         <h3 className="text-lg font-semibold text-ink">{service.title}</h3>
                       </div>
-                    </motion.article>
+                    </motion.button>
                   );
                 })}
               </div>
@@ -567,6 +586,12 @@ export default function HomePage() {
           isOnHome={isOnHome}
         />
       </main>
+      <ServiceModal
+        isOpen={isServiceModalOpen}
+        activeServiceId={activeServiceId}
+        onClose={handleServiceModalClose}
+        onServiceChange={handleServiceChange}
+      />
     </>
   );
 }
