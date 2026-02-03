@@ -8,6 +8,7 @@
   --muted: #3a4a6a;
   --rule: rgba(11, 27, 59, 0.18);
   --gold: #b08d57;
+  --nav-h: 4.5rem;
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-duration-entry: 720ms;
   --motion-duration-hover: 240ms;
@@ -18,10 +19,15 @@
   --motion-scale-bg: 1.04;
 }
 
+html {
+  scroll-padding-top: var(--nav-h);
+}
+
 body {
   @apply bg-paper text-ink antialiased font-body;
   letter-spacing: 0.01em;
   background-color: var(--paper);
+  overflow-x: hidden;
 }
 
 h1,
@@ -101,6 +107,11 @@ h6 {
 
   .motion-stagger-4 {
     transition-delay: calc(var(--motion-stagger-step) * 4);
+  }
+
+  .section-shell {
+    padding-top: calc(var(--nav-h) + 1.5rem);
+    scroll-margin-top: calc(var(--nav-h) + 1.5rem);
   }
 }
 

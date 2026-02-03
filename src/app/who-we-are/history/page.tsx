@@ -16,13 +16,13 @@ export default function HistoryPage() {
             src="/images/about/1.jpg"
             alt=""
             fill
-            className="object-cover"
+            className="object-cover object-center"
             sizes="100vw"
             priority
           />
         </div>
         <div className="absolute inset-0 bg-white/80" />
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-6 pt-28 pb-16 overflow-y-auto">
+        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-6 pb-16 overflow-y-auto overscroll-contain section-shell">
           <div className="w-full max-w-4xl space-y-8">
             <SectionReveal>
               <h1 className="text-4xl font-semibold text-ink sm:text-5xl">History</h1>

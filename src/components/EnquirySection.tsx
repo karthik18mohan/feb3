@@ -54,13 +54,13 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
             src="/images/enquiry/1.jpg"
             alt=""
             fill
-            className="object-cover"
+            className="object-cover object-center"
             sizes="100vw"
           />
         </div>
         <div className="absolute inset-0 bg-[rgba(6,10,20,0.72)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(176,141,87,0.2),transparent_45%)]" />
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] items-center px-6 pt-28 pb-16 overflow-y-auto">
+        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] items-center px-6 pb-16 overflow-y-auto overscroll-contain section-shell">
           <div className="w-full rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-8 shadow-[0_24px_60px_rgba(11,27,59,0.25)] backdrop-blur sm:p-12">
             <div className="grid gap-10 md:grid-cols-2 md:gap-12">
               <motion.div
@@ -193,7 +193,7 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
                   type="submit"
                   whileHover={{ y: -2 }}
                   transition={{ duration: 0.2 }}
-                  className="group inline-flex items-center justify-center gap-2 rounded-full border border-ink bg-ink px-6 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-paper shadow-[0_18px_40px_rgba(11,27,59,0.2)] transition-shadow hover:shadow-[0_22px_45px_rgba(11,27,59,0.25)]"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full border border-ink bg-ink px-6 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-paper shadow-[0_18px_40px_rgba(11,27,59,0.2)] transition-shadow hover:shadow-[0_22px_45px_rgba(11,27,59,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
                 >
                   Send
                   <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
