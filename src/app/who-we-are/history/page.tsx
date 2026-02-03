@@ -10,7 +10,7 @@ export default function HistoryPage() {
   return (
     <>
       <TopNav isVisible={true} />
-      <main className="relative isolate h-screen overflow-hidden">
+      <main className="relative isolate min-h-screen overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="/images/about/1.jpg"
@@ -22,7 +22,7 @@ export default function HistoryPage() {
           />
         </div>
         <div className="absolute inset-0 bg-white/80" />
-        <div className="relative z-10 mx-auto flex h-screen w-full max-w-[1180px] flex-col px-6 pt-28 pb-16 overflow-y-auto">
+        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-6 pt-28 pb-16 overflow-y-auto">
           <div className="w-full max-w-4xl space-y-8">
             <SectionReveal>
               <h1 className="text-4xl font-semibold text-ink sm:text-5xl">History</h1>
