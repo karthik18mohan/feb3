@@ -157,11 +157,11 @@ export const reducedMotionVariants = {
 };
 
 export const viewportConfig = {
-  once: false,
+  once: true,
   amount: 0.6 as const,
 };
 
 export const viewportConfigPartial = {
-  once: false,
+  once: true,
   amount: 0.35 as const,
 };

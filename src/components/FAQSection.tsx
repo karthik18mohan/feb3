@@ -36,12 +36,12 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
             src="/images/faq/1.jpg"
             alt=""
             fill
-            className="object-cover"
+            className="object-cover object-center"
             sizes="100vw"
           />
         </div>
 
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-6 pb-16 pt-28 overflow-y-auto">
+        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-6 pb-16 overflow-y-auto overscroll-contain section-shell">
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -81,7 +81,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
                   <button
                     type="button"
                     onClick={() => handleToggle(index)}
-                    className="flex w-full items-center justify-between gap-6 text-left text-lg font-semibold text-ink transition hover:text-ink/80"
+                    className="flex w-full items-center justify-between gap-6 text-left text-lg font-semibold text-ink transition hover:text-ink/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
                     aria-expanded={isExpanded}
                     aria-controls={`faq-answer-${index}`}
                   >

@@ -21,14 +21,14 @@ export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
   ({ id, className }, ref) => {
     return (
       <section ref={ref} id={id} className={className ?? "w-full min-h-screen"}>
-        <div className="flex min-h-screen flex-col pt-28">
+        <div className="flex min-h-screen flex-col section-shell">
           <div className="relative h-[30vh] min-h-[200px] w-full flex-shrink-0 overflow-hidden">
             <Image
               src="/images/clients/1.jpg"
               alt="Clients hero background"
               fill
               priority
-              className="object-cover"
+              className="object-cover object-center"
               sizes="100vw"
             />
             <div className="absolute inset-0 bg-ink/55" />
@@ -46,7 +46,7 @@ export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
             </div>
           </div>
 
-          <div className="flex-1 min-h-0 overflow-y-auto bg-paper py-12">
+          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-paper py-12">
             <div className="mx-auto w-full max-w-[1180px] px-6">
               <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
                 {(clients as Client[]).map((client, index) => (

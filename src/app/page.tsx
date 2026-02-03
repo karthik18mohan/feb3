@@ -319,7 +319,7 @@ export default function HomePage() {
                 alt=""
                 fill
                 priority={index === 0}
-                className="object-cover grayscale"
+                className="object-cover object-center grayscale"
                 sizes="100vw"
               />
               <div className="absolute inset-0 bg-[rgba(6,10,20,0.28)]" />
@@ -357,10 +357,10 @@ export default function HomePage() {
         className="relative isolate min-h-screen overflow-hidden bg-paper"
       >
         <div className="absolute inset-0">
-          <Image src="/images/about/1.jpg" alt="" fill className="object-cover" sizes="100vw" />
+          <Image src="/images/about/1.jpg" alt="" fill className="object-cover object-center" sizes="100vw" />
         </div>
         <div className="absolute inset-0 bg-white/80" />
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] items-center px-6 pt-28 pb-16">
+        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] items-center px-6 pb-16 section-shell">
           <div className="grid w-full gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
             <div className="space-y-6">
               <motion.h2
@@ -400,13 +400,13 @@ export default function HomePage() {
         ref={partnersRef}
         className="relative isolate min-h-screen overflow-hidden"
       >
-        <div className="flex min-h-screen flex-col pt-28">
+        <div className="flex min-h-screen flex-col section-shell">
           <div className="relative h-[30vh] min-h-[200px] w-full flex-shrink-0 overflow-hidden">
             <Image
               src="/images/partners/1.jpg"
               alt=""
               fill
-              className="object-cover"
+              className="object-cover object-center"
               sizes="100vw"
             />
             <div className="absolute inset-0 flex items-center justify-center px-6">
@@ -423,7 +423,7 @@ export default function HomePage() {
           </div>
           <div
             data-scrollable
-            className="flex-1 min-h-0 overflow-y-auto bg-paper px-6 py-8"
+            className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-paper px-6 py-8"
           >
             <div className="mx-auto w-full max-w-[1180px] space-y-8">
               <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -450,7 +450,7 @@ export default function HomePage() {
                         src={partner.image}
                         alt={partner.name}
                         fill
-                        className="object-cover"
+                        className="object-cover object-center"
                         sizes="(min-width: 1024px) 22vw, (min-width: 640px) 42vw, 80vw"
                       />
                     </div>
@@ -485,11 +485,11 @@ export default function HomePage() {
         className="relative isolate min-h-screen overflow-hidden"
       >
         <div className="absolute inset-0">
-          <Image src="/images/services/1.jpg" alt="" fill className="object-cover" sizes="100vw" />
+          <Image src="/images/services/1.jpg" alt="" fill className="object-cover object-center" sizes="100vw" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.68)] via-[rgba(11,27,59,0.6)] to-[rgba(11,27,59,0.72)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_25%,rgba(176,141,87,0.14),transparent_38%)]" />
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-6 pt-28 pb-16">
+        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-6 pb-16 section-shell">
           <div className="flex-shrink-0 space-y-6 text-paper">
             <div className="max-w-3xl space-y-3">
               <motion.h2
@@ -533,7 +533,7 @@ export default function HomePage() {
                         y: -3,
                         transition: { duration: durations.hover, ease: PREMIUM_EASE }
                       }}
-                      className="group relative flex min-h-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-[color:var(--rule)] bg-paper/85 p-5 text-center text-ink shadow-[0_20px_45px_rgba(11,27,59,0.18)] transition-shadow duration-300 ease-out hover:border-[color:var(--gold)] hover:shadow-[0_24px_60px_rgba(11,27,59,0.22)]"
+                      className="group relative flex min-h-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-[color:var(--rule)] bg-paper/85 p-5 text-center text-ink shadow-[0_20px_45px_rgba(11,27,59,0.18)] transition-shadow duration-300 ease-out hover:border-[color:var(--gold)] hover:shadow-[0_24px_60px_rgba(11,27,59,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-[rgba(11,27,59,0.03)] to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
                       <div className="relative">
@@ -627,7 +627,7 @@ function PanelProgress({
               <button
                 key={index}
                 onClick={() => setActiveSlideIndex(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
+                className={`h-2 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
                   index === activeSlideIndex
                     ? 'w-8 bg-paper shadow-[0_0_12px_rgba(251,248,242,0.5)]'
                     : 'w-2 bg-paper/40 hover:bg-paper/60'
@@ -663,7 +663,7 @@ function PanelProgress({
                 duration: 0.4,
                 ease: PREMIUM_EASE
               }}
-              className="pointer-events-auto group relative flex h-8 w-8 items-center justify-center rounded-full border shadow-[0_12px_30px_rgba(11,27,59,0.25)]"
+              className="pointer-events-auto group relative flex h-8 w-8 items-center justify-center rounded-full border shadow-[0_12px_30px_rgba(11,27,59,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
               style={{
                 boxShadow: activeIndex === index ? "0 12px 30px rgba(11, 27, 59, 0.25)" : "none"
               }}
