@@ -20,17 +20,20 @@ type ClientsSectionProps = {
 export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
   ({ id, className }, ref) => {
     return (
-      <section ref={ref} id={id} className={className ?? "h-screen w-screen overflow-hidden"}>
+      <section
+        ref={ref}
+        id={id}
+        className={className ?? "h-screen w-screen overflow-hidden"}
+        style={{
+          backgroundColor: "var(--ink)",
+          backgroundImage: "url('/images/clients/texture/1.jpg')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "auto",
+          backgroundPosition: "center"
+        }}
+      >
         <div className="flex h-full flex-col section-shell">
           <div className="relative h-[clamp(160px,28vh,240px)] w-full flex-shrink-0 overflow-hidden">
-            <Image
-              src="/images/clients/1.jpg"
-              alt="Clients hero background"
-              fill
-              priority
-              className="object-cover object-center"
-              sizes="100vw"
-            />
             <div className="absolute inset-0 bg-ink/55" />
             <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-ink/55 to-ink/70" />
             <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">

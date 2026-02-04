@@ -399,16 +399,16 @@ export default function HomePage() {
         id="partners"
         ref={partnersRef}
         className="relative isolate h-screen w-screen overflow-hidden"
+        style={{
+          backgroundColor: "var(--ink)",
+          backgroundImage: "url('/images/partners/texture/1.jpg')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "auto",
+          backgroundPosition: "center"
+        }}
       >
         <div className="flex h-full flex-col section-shell">
           <div className="relative h-[clamp(160px,28vh,240px)] w-full flex-shrink-0 overflow-hidden">
-            <Image
-              src="/images/partners/1.jpg"
-              alt=""
-              fill
-              className="object-cover object-center"
-              sizes="100vw"
-            />
             <div className="absolute inset-0 flex items-center justify-center px-6">
               <motion.h2
                 variants={fadeUp}

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { forwardRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, fadeUpFast, viewportConfig, viewportConfigPartial, durations, stagger, PREMIUM_EASE } from "@/lib/motion";
@@ -30,16 +29,14 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
         ref={ref}
         id={id}
         className={className ?? "relative isolate h-screen w-screen overflow-hidden"}
+        style={{
+          backgroundColor: "var(--ink)",
+          backgroundImage: "url('/images/faq/texture/1.jpg')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "auto",
+          backgroundPosition: "center"
+        }}
       >
-        <div className="absolute inset-0">
-          <Image
-            src="/images/faq/1.jpg"
-            alt=""
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-        </div>
 
         <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col px-6 section-shell">
           <motion.div
