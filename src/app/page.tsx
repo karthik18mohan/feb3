@@ -14,7 +14,7 @@ import { TopNav } from "@/components/TopNav";
 import { VisionPurposeFlow } from "@/components/VisionPurposeFlow";
 import { ServiceModal } from "@/components/ServiceModal";
 import { MainSnapLayout, PanelId, scrollToPanel } from "@/components/MainSnapLayout";
-import { fadeUp, fadeUpFast, fadeLeft, fadeRight, staggerContainer, viewportConfig, viewportConfigPartial, stagger, durations, PREMIUM_EASE } from "@/lib/motion";
+import { fadeUp, fadeUpFast, fadeLeft, fadeRight, fadeIn, staggerContainer, scaleXReveal, stagger, durations, PREMIUM_EASE, useInViewReplay } from "@/lib/motion";
 
 const ROMAN_NUMERALS = ["I", "II", "III"];
 
@@ -72,6 +72,14 @@ const landingSlides = [
     caption: "Evolving from Manual to Digital Era"
   }
 ];
+
+const heroBgVariants = {
+  hidden: { scale: 1.04 },
+  visible: {
+    scale: 1,
+    transition: { duration: 14, ease: "linear" }
+  }
+};
 
 const aboutParagraphs = [
   "Founded on a vision to uphold the highest ideals of quality and integrity, Nathan & Co. has embraced excellence as a way of life for over six decades. Rooted in the firm's enduring values of ethics, transparency, and professionalism, every engagement reflects our unwavering commitment to these principles that define our legacy and purpose.",
@@ -190,6 +198,8 @@ export default function HomePage() {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
   const [activeServiceId, setActiveServiceId] = useState<string | null>(null);
+  const sectionReveal = useInViewReplay({ amount: 0.6 });
+  const sectionRevealPartial = useInViewReplay({ amount: 0.35 });
   const slideCount = landingSlides.length;
   const touchStartXRef = useRef<number | null>(null);
   const touchEndXRef = useRef<number | null>(null);
@@ -362,8 +372,10 @@ export default function HomePage() {
         ref={homeRef}
         className="relative isolate h-screen w-screen overflow-hidden"
       >
-        <div
+        <motion.div
           className="absolute inset-0 hero-bg-motion"
+          variants={heroBgVariants}
+          {...sectionReveal}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
@@ -386,28 +398,43 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-[rgba(6,10,20,0.28)]" />
             </div>
           ))}
-        </div>
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.7)] via-[rgba(11,27,59,0.58)] to-[rgba(11,27,59,0.46)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(176,141,87,0.16),transparent_40%)]" />
         <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col justify-center px-6 py-[clamp(2rem,6vh,5rem)]">
           <div className="max-w-2xl space-y-[clamp(1rem,2.5vh,1.75rem)] text-paper">
-            <div data-animate className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-paper/80">
+            <motion.div
+              variants={fadeUpFast}
+              transition={{ duration: durations.entryFast, ease: PREMIUM_EASE }}
+              {...sectionReveal}
+              className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-paper/80"
+            >
               <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />
               Chartered Accountants
-            </div>
-            <h1
-              data-animate
-              className="hero-title text-[clamp(2.5rem,5vw,4.5rem)] font-semibold"
+            </motion.div>
+            <motion.h1
+              variants={fadeUp}
+              transition={{ duration: durations.entry, ease: PREMIUM_EASE, delay: 0.1 }}
+              {...sectionReveal}
+              className="text-[clamp(2.5rem,5vw,4.5rem)] font-semibold"
             >
               Nathan &amp; Co.
-            </h1>
-            <div className="hero-divider" aria-hidden />
-            <p
-              data-animate
-              className="hero-tagline max-w-xl text-[clamp(1.05rem,2.1vw,1.35rem)] leading-relaxed text-paper/85"
+            </motion.h1>
+            <motion.div
+              variants={scaleXReveal}
+              transition={{ duration: durations.entry, ease: PREMIUM_EASE, delay: 0.3 }}
+              {...sectionReveal}
+              className="hero-divider"
+              aria-hidden
+            />
+            <motion.p
+              variants={fadeUpFast}
+              transition={{ duration: durations.entryFast, ease: PREMIUM_EASE, delay: 0.4 }}
+              {...sectionReveal}
+              className="max-w-xl text-[clamp(1.05rem,2.1vw,1.35rem)] leading-relaxed text-paper/85"
             >
               Upholding the highest ideals of quality, integrity, and trust.
-            </p>
+            </motion.p>
           </div>
         </div>
       </section>
@@ -426,18 +453,14 @@ export default function HomePage() {
             <div className="space-y-[clamp(1rem,2.2vh,1.75rem)]">
               <motion.h2
                 variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportConfig}
+                {...sectionReveal}
                 className="text-[clamp(2rem,3.5vw,3rem)] font-semibold text-ink"
               >
                 Who We Are
               </motion.h2>
               <motion.div
                 variants={staggerContainer(stagger.normal)}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportConfig}
+                {...sectionReveal}
                 className="space-y-[clamp(0.75rem,1.6vh,1.25rem)]"
               >
                 {aboutParagraphs.map((paragraph) => (
@@ -473,9 +496,7 @@ export default function HomePage() {
             <div className="absolute inset-0 flex items-center justify-center px-6">
               <motion.h2
                 variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportConfig}
+                {...sectionReveal}
                 className="text-center text-[clamp(2rem,3.5vw,3rem)] font-semibold text-paper drop-shadow-[0_12px_30px_rgba(3,7,18,0.55)]"
               >
                 Our Partners
@@ -492,9 +513,7 @@ export default function HomePage() {
                   <motion.div
                     key={partner.name}
                     variants={fadeUp}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={viewportConfigPartial}
+                    {...sectionRevealPartial}
                     transition={{
                       duration: durations.entry,
                       delay: index * stagger.tight,
@@ -516,9 +535,8 @@ export default function HomePage() {
                       />
                     </div>
                     <motion.p
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={viewportConfigPartial}
+                      variants={fadeIn}
+                      {...sectionRevealPartial}
                       transition={{
                         duration: durations.entryFast,
                         delay: index * stagger.tight + 0.1,
@@ -556,18 +574,14 @@ export default function HomePage() {
             <div className="max-w-3xl space-y-[clamp(0.5rem,1.4vh,1rem)]">
               <motion.h2
                 variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportConfig}
+                {...sectionReveal}
                 className="text-[clamp(2rem,3.5vw,3rem)] font-semibold"
               >
                 What We Do
               </motion.h2>
               <motion.p
                 variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportConfig}
+                {...sectionReveal}
                 className="text-[clamp(0.98rem,1.25vw,1.2rem)] leading-relaxed text-paper/80"
               >
                 Seamless support across audit, taxation, risk advisory, virtual CFO, and strategic consulting—delivered with the discipline of a heritage practice and the pace of modern business.
@@ -583,9 +597,7 @@ export default function HomePage() {
                       type="button"
                       onClick={() => handleServiceClick(service.id)}
                       variants={isOdd ? fadeLeft : fadeRight}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={viewportConfigPartial}
+                      {...sectionRevealPartial}
                       transition={{
                         duration: durations.entry,
                         delay: index * stagger.relaxed,

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { forwardRef } from "react";
 import { motion } from "framer-motion";
 import { Footer } from "@/components/Footer";
-import { fadeUp, fadeUpFast, viewportConfig, viewportConfigPartial, durations, stagger, PREMIUM_EASE } from "@/lib/motion";
+import { fadeUp, fadeUpFast, durations, stagger, PREMIUM_EASE, useInViewReplay } from "@/lib/motion";
 
 import clients from "../../data/clients.json";
 
@@ -20,6 +20,9 @@ type ClientsSectionProps = {
 
 export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
   ({ id, className }, ref) => {
+    const sectionReveal = useInViewReplay({ amount: 0.6 });
+    const sectionRevealPartial = useInViewReplay({ amount: 0.35 });
+
     return (
       <section
         ref={ref}
@@ -40,9 +43,7 @@ export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
             <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
               <motion.h1
                 variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportConfig}
+                {...sectionReveal}
                 className="font-heading text-4xl font-semibold text-paper sm:text-5xl lg:text-6xl"
               >
                 Our Clients
@@ -57,9 +58,7 @@ export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
                   <motion.div
                     key={client.id}
                     variants={fadeUpFast}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={viewportConfigPartial}
+                    {...sectionRevealPartial}
                     transition={{
                       duration: durations.entry,
                       delay: index * 0.05,

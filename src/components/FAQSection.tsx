@@ -3,7 +3,7 @@
 import { forwardRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Footer } from "@/components/Footer";
-import { fadeUp, fadeUpFast, viewportConfig, viewportConfigPartial, durations, stagger, PREMIUM_EASE } from "@/lib/motion";
+import { fadeUp, fadeUpFast, durations, stagger, PREMIUM_EASE, useInViewReplay } from "@/lib/motion";
 
 import faqs from "../../data/faqs.json";
 
@@ -20,6 +20,8 @@ type FAQSectionProps = {
 export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
   ({ id, className }, ref) => {
     const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
+    const sectionReveal = useInViewReplay({ amount: 0.6 });
+    const sectionRevealPartial = useInViewReplay({ amount: 0.35 });
 
     const handleToggle = (index: number) => {
       setExpandedIndex((prev) => (prev === index ? null : index));
@@ -42,9 +44,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
         <div className="relative z-10 mx-auto flex w-full max-w-[1180px] flex-1 flex-col px-6 section-shell">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
+            {...sectionReveal}
             className="text-left text-paper"
           >
             <div className="mb-4 inline-flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-paper/75">
@@ -66,9 +66,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
                 <motion.div
                   key={faq.question}
                   variants={fadeUpFast}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={viewportConfigPartial}
+                  {...sectionRevealPartial}
                   transition={{
                     duration: durations.entry,
                     delay: index * stagger.normal,

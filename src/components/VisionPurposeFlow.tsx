@@ -1,15 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, fadeUpFast, staggerContainer, scaleYReveal, viewportConfig } from "@/lib/motion";
+import { fadeUp, fadeUpFast, staggerContainer, scaleYReveal, useInViewReplay } from "@/lib/motion";
 
 export function VisionPurposeFlow() {
+  const sectionReveal = useInViewReplay({ amount: 0.6 });
+
   return (
     <motion.div
       variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewportConfig}
+      {...sectionReveal}
       className="relative overflow-hidden rounded-2xl border border-[color:var(--rule)] bg-paper/80 p-[clamp(1rem,2vw,1.75rem)] shadow-[0_20px_45px_rgba(11,27,59,0.18)] backdrop-blur-sm"
     >
       <h3 className="mb-[clamp(0.75rem,2vh,1.5rem)] text-[clamp(1.5rem,2.4vw,2rem)] font-semibold text-ink">
@@ -18,9 +18,7 @@ export function VisionPurposeFlow() {
 
       <motion.div
         variants={staggerContainer(0.12)}
-        initial="hidden"
-        whileInView="visible"
-        viewport={viewportConfig}
+        {...sectionReveal}
         className="space-y-[clamp(0.75rem,1.8vh,1.25rem)]"
       >
         <motion.div

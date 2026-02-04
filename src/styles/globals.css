@@ -129,75 +129,21 @@ h6 {
   }
 }
 
-@keyframes hero-title-rise {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes hero-tagline-rise {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes hero-divider-reveal {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
-@keyframes hero-bg-scale {
-  from {
-    transform: scale(1.04);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-
-.hero-title {
-  animation: hero-title-rise 700ms var(--motion-ease) both;
-}
-
-.hero-tagline {
-  animation: hero-tagline-rise 600ms var(--motion-ease) 300ms both;
-}
-
 .hero-divider {
   height: 1px;
   width: 100%;
   max-width: 260px;
   background: rgba(176, 141, 87, 0.7);
-  transform: scaleX(0);
   transform-origin: left center;
-  animation: hero-divider-reveal 700ms var(--motion-ease) 500ms both;
 }
 
 .hero-bg-motion {
-  animation: hero-bg-scale 14s linear both;
   transform-origin: center;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-title,
-  .hero-tagline,
   .hero-divider,
   .hero-bg-motion {
-    animation: none;
     transform: none;
     opacity: 1;
   }

@@ -4,7 +4,7 @@ import Image from "next/image";
 import type { ChangeEvent, FormEvent } from "react";
 import { forwardRef, useState } from "react";
 import { motion } from "framer-motion";
-import { fadeUp, fadeUpFast, staggerContainer, viewportConfig, stagger } from "@/lib/motion";
+import { fadeUp, fadeUpFast, staggerContainer, stagger, useInViewReplay } from "@/lib/motion";
 
 import contact from "../../data/contact.json";
 
@@ -30,6 +30,7 @@ const initialFormState: FormState = {
 export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
   ({ id, className }, ref) => {
     const [formData, setFormData] = useState<FormState>(initialFormState);
+    const sectionReveal = useInViewReplay({ amount: 0.6 });
 
     const handleChange = (
       event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -65,9 +66,7 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
             <div className="grid gap-[clamp(1rem,2.5vw,2rem)] md:grid-cols-2">
               <motion.div
                 variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportConfig}
+                {...sectionReveal}
                 className="space-y-[clamp(1rem,2.2vh,1.5rem)]"
               >
                 <div className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-muted">
@@ -123,9 +122,7 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
 
               <motion.form
                 variants={staggerContainer(stagger.normal)}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportConfig}
+                {...sectionReveal}
                 className="space-y-[clamp(0.6rem,1.6vh,1rem)]"
                 onSubmit={handleSubmit}
               >

@@ -1,17 +1,19 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { ReactNode, useRef } from "react";
+import { motion } from "framer-motion";
+import { ReactNode } from "react";
+import { useInViewReplay } from "@/lib/motion";
 
 export function SectionReveal({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const sectionReveal = useInViewReplay({ amount: 0.6, margin: "-100px" });
 
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      variants={{
+        hidden: { opacity: 0, y: 24 },
+        visible: { opacity: 1, y: 0 }
+      }}
+      {...sectionReveal}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       {children}

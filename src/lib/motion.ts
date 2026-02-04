@@ -156,12 +156,21 @@ export const reducedMotionVariants = {
   },
 };
 
-export const viewportConfig = {
-  once: true,
-  amount: 0.6 as const,
+type InViewReplayOptions = {
+  amount?: number;
+  margin?: string;
 };
 
-export const viewportConfigPartial = {
-  once: true,
-  amount: 0.35 as const,
-};
+export function useInViewReplay({ amount = 0.6, margin }: InViewReplayOptions = {}) {
+  const prefersReducedMotion = useReducedMotion();
+
+  return {
+    initial: prefersReducedMotion ? "visible" : "hidden",
+    whileInView: "visible",
+    viewport: {
+      once: false,
+      amount,
+      ...(margin ? { margin } : {})
+    }
+  };
+}
