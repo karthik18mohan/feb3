@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { siteTitle } from "@/content/copy";
-import { Cormorant_Garamond, Source_Sans_3 } from "next/font/google";
+import { Barlow, Cormorant_Garamond } from "next/font/google";
 
-const bodyFont = Source_Sans_3({
+const bodyFont = Barlow({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-body",

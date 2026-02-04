@@ -77,7 +77,7 @@ export function TopNav({
             Nathan &amp; Co.
           </a>
           <span className="inline-flex items-center rounded-sm border border-rule bg-paper/80 px-3 py-1 text-[0.58rem] uppercase tracking-[0.26em] text-muted">
-            Since 1954
+            Since 1962
           </span>
         </div>
 
