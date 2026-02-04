@@ -29,7 +29,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
       <section
         ref={ref}
         id={id}
-        className={className ?? "relative isolate min-h-screen w-full overflow-hidden"}
+        className={className ?? "relative isolate h-screen w-screen overflow-hidden"}
       >
         <div className="absolute inset-0">
           <Image
@@ -41,7 +41,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
           />
         </div>
 
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-6 pb-16 overflow-y-auto overscroll-contain section-shell">
+        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col px-6 section-shell">
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -53,15 +53,15 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
               <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />
               Insights
             </div>
-            <h2 className="text-4xl font-semibold sm:text-5xl">
+            <h2 className="text-[clamp(2rem,3.5vw,3rem)] font-semibold">
               Frequently Asked Questions
             </h2>
-            <p className="mt-3 text-sm text-paper/75 sm:text-base">
+            <p className="mt-2 text-[clamp(0.85rem,1.1vw,1rem)] text-paper/75">
               Clear answers to common questions about our services and process.
             </p>
           </motion.div>
 
-          <div className="mt-12 w-full max-w-3xl space-y-5">
+          <div className="mt-[clamp(1.25rem,3vh,2.5rem)] w-full max-w-3xl space-y-[clamp(0.75rem,2vh,1.25rem)]">
             {(faqs as FAQItem[]).map((faq, index) => {
               const isExpanded = expandedIndex === index;
               return (
@@ -76,12 +76,12 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
                     delay: index * stagger.normal,
                     ease: PREMIUM_EASE
                   }}
-                  className="rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-6 shadow-[0_20px_45px_rgba(11,27,59,0.18)] backdrop-blur"
+                  className="rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-[clamp(0.75rem,2vw,1.25rem)] shadow-[0_20px_45px_rgba(11,27,59,0.18)] backdrop-blur"
                 >
                   <button
                     type="button"
                     onClick={() => handleToggle(index)}
-                    className="flex w-full items-center justify-between gap-6 text-left text-lg font-semibold text-ink transition hover:text-ink/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                    className="flex w-full items-center justify-between gap-4 text-left text-[clamp(0.95rem,1.25vw,1.1rem)] font-semibold text-ink transition hover:text-ink/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
                     aria-expanded={isExpanded}
                     aria-controls={`faq-answer-${index}`}
                   >
@@ -89,7 +89,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
                     <motion.span
                       animate={{ rotate: isExpanded ? 180 : 0 }}
                       transition={{ duration: durations.accordion, ease: PREMIUM_EASE }}
-                      className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-[color:var(--rule)] text-xl"
+                      className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border border-[color:var(--rule)] text-base"
                       aria-hidden
                     >
                       +
@@ -110,7 +110,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
                           animate={{ y: 0, opacity: 1 }}
                           exit={{ y: -6, opacity: 0 }}
                           transition={{ duration: durations.accordion, ease: PREMIUM_EASE }}
-                          className="mt-4 text-sm leading-relaxed text-muted sm:text-base"
+                          className="mt-3 text-[clamp(0.85rem,1.1vw,1rem)] leading-relaxed text-muted"
                         >
                           {faq.answer}
                         </motion.p>
