@@ -103,7 +103,7 @@ const SnapPanel = forwardRef<HTMLDivElement, { children: ReactNode; id: string }
         style={{ scrollSnapAlign: "start" }}
       >
         <div
-          className="h-screen w-screen overflow-hidden"
+          className="h-screen w-screen overflow-x-hidden overflow-y-auto"
           style={{ overscrollBehavior: "contain" }}
         >
           {children}
