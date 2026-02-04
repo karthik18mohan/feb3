@@ -8,6 +8,7 @@ import { partners } from "@/content/partners";
 import { servicesData } from "@/content/services";
 import { ClientsSection } from "@/components/ClientsSection";
 import { EnquirySection } from "@/components/EnquirySection";
+import { Footer } from "@/components/Footer";
 import { FAQSection } from "@/components/FAQSection";
 import { TopNav } from "@/components/TopNav";
 import { VisionPurposeFlow } from "@/components/VisionPurposeFlow";
@@ -398,7 +399,7 @@ export default function HomePage() {
       <section
         id="partners"
         ref={partnersRef}
-        className="relative isolate h-screen w-screen overflow-hidden"
+        className="relative isolate flex min-h-screen w-screen flex-col overflow-hidden"
         style={{
           backgroundColor: "var(--ink)",
           backgroundImage: "url('/images/partners/texture/1.jpg')",
@@ -407,7 +408,7 @@ export default function HomePage() {
           backgroundPosition: "center"
         }}
       >
-        <div className="flex h-full flex-col section-shell">
+        <div className="flex flex-1 flex-col section-shell">
           <div className="relative h-[clamp(160px,28vh,240px)] w-full flex-shrink-0 overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center px-6">
               <motion.h2
@@ -473,6 +474,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+        <Footer className="mt-auto" showBackToTop />
       </section>
     </>
   );

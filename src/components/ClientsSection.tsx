@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { forwardRef } from "react";
 import { motion } from "framer-motion";
+import { Footer } from "@/components/Footer";
 import { fadeUp, fadeUpFast, viewportConfig, viewportConfigPartial, durations, stagger, PREMIUM_EASE } from "@/lib/motion";
 
 import clients from "../../data/clients.json";
@@ -23,7 +24,7 @@ export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
       <section
         ref={ref}
         id={id}
-        className={className ?? "h-screen w-screen overflow-hidden"}
+        className={className ?? "relative isolate flex min-h-screen w-screen flex-col overflow-hidden"}
         style={{
           backgroundColor: "var(--ink)",
           backgroundImage: "url('/images/clients/texture/1.jpg')",
@@ -32,7 +33,7 @@ export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
           backgroundPosition: "center"
         }}
       >
-        <div className="flex h-full flex-col section-shell">
+        <div className="flex flex-1 flex-col section-shell">
           <div className="relative h-[clamp(160px,28vh,240px)] w-full flex-shrink-0 overflow-hidden">
             <div className="absolute inset-0 bg-ink/55" />
             <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-ink/55 to-ink/70" />
@@ -84,6 +85,7 @@ export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
             </div>
           </div>
         </div>
+        <Footer className="mt-auto" />
       </section>
     );
   }

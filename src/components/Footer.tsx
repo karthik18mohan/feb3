@@ -1,5 +1,7 @@
 "use client";
 
+import contact from "../../data/contact.json";
+
 const socials = [
   {
     label: "LinkedIn",
@@ -32,32 +34,71 @@ const socials = [
   }
 ];
 
-export function Footer() {
+type FooterProps = {
+  className?: string;
+  showBackToTop?: boolean;
+};
+
+export function Footer({ className, showBackToTop = false }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-ink/15 bg-ivory/80 py-12">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 lg:flex-row lg:items-start lg:justify-between">
+    <footer className={`border-t border-ink/15 bg-paper/85 py-12 backdrop-blur ${className ?? ""}`}>
+      <div className="mx-auto flex w-full max-w-[1180px] flex-col gap-10 px-6 lg:flex-row lg:items-start lg:justify-between">
         <div className="space-y-3">
-          <p className="text-sm font-medium uppercase tracking-[0.35em] text-ink">Nathan &amp; Co.</p>
+          <div className="space-y-1">
+            <p className="text-sm font-semibold uppercase tracking-[0.35em] text-ink">Nathan &amp; Co.</p>
+            <p className="text-sm text-ink/70">Nathan &amp; Co. Chartered Accountants</p>
+          </div>
           <p className="text-sm text-ink/70">© {year} Nathan &amp; Co. All rights reserved.</p>
+          {showBackToTop ? (
+            <a
+              href="#home"
+              className="inline-flex text-sm font-medium text-ink/80 underline-offset-4 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+            >
+              Back to top
+            </a>
+          ) : null}
         </div>
         <div className="space-y-2 text-sm text-ink/70">
-          <p>Email: hello@example.com</p>
-          <p>Phone: +00 0000 0000</p>
-          <p>Address: Placeholder address</p>
-        </div>
-        <div className="flex items-center gap-4 text-ink/70">
-          {socials.map((social) => (
+          <div className="space-y-1">
+            {contact.addressLines.map((line) => (
+              <p key={line}>{line}</p>
+            ))}
+          </div>
+          <p>
+            <span className="font-medium text-ink">Phone:</span>{" "}
             <a
-              key={social.label}
-              href={social.href}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-ink/15 transition hover:border-ink/30 hover:text-ink"
-              aria-label={social.label}
+              href={`tel:${contact.phone}`}
+              className="underline-offset-4 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
             >
-              {social.icon}
+              {contact.phone}
             </a>
-          ))}
+          </p>
+          <p>
+            <span className="font-medium text-ink">Email:</span>{" "}
+            <a
+              href={`mailto:${contact.email}`}
+              className="underline-offset-4 transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+            >
+              {contact.email}
+            </a>
+          </p>
+        </div>
+        <div className="space-y-3">
+          <div className="flex items-center gap-4 text-ink/70">
+            {socials.map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-ink/20 transition hover:border-ink/40 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                aria-label={`${social.label} (TODO: add link)`}
+              >
+                {social.icon}
+              </a>
+            ))}
+          </div>
+          <p className="text-xs uppercase tracking-[0.32em] text-ink/50">TODO: add social links</p>
         </div>
       </div>
     </footer>
