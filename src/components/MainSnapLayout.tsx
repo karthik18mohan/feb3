@@ -105,6 +105,7 @@ const SnapPanel = forwardRef<HTMLDivElement, { children: ReactNode; id: string }
         <div
           className="h-screen w-screen overflow-x-hidden overflow-y-auto"
           style={{ overscrollBehavior: "contain" }}
+          data-panel-scroll="true"
         >
           {children}
         </div>
@@ -115,7 +116,10 @@ const SnapPanel = forwardRef<HTMLDivElement, { children: ReactNode; id: string }
 
 SnapPanel.displayName = "SnapPanel";
 
-export function scrollToPanel(panelId: PanelId) {
+export function scrollToPanel(
+  panelId: PanelId,
+  options: { behavior?: ScrollBehavior; sectionId?: string } = {}
+) {
   const panelIdMap: Record<PanelId, string> = {
     about: "panel-about",
     work: "panel-work",
@@ -124,6 +128,17 @@ export function scrollToPanel(panelId: PanelId) {
 
   const element = document.getElementById(panelIdMap[panelId]);
   if (element) {
-    element.scrollIntoView({ behavior: "smooth" });
+    const behavior = options.behavior ?? "smooth";
+    element.scrollIntoView({ behavior, inline: "start", block: "nearest" });
+    const scrollContainer = element.querySelector<HTMLElement>("[data-panel-scroll='true']");
+    if (!scrollContainer) return;
+    if (options.sectionId) {
+      const targetSection = document.getElementById(options.sectionId);
+      if (targetSection && scrollContainer.contains(targetSection)) {
+        targetSection.scrollIntoView({ behavior, block: "start" });
+        return;
+      }
+    }
+    scrollContainer.scrollTo({ top: 0, behavior });
   }
 }

@@ -24,6 +24,34 @@ const PANEL_NAV_ITEMS = [
   { id: "contact", label: "Contact Us", href: "#contact" }
 ];
 
+const SECTION_ANCHORS = new Set([
+  "home",
+  "about",
+  "partners",
+  "services",
+  "clients",
+  "enquiry",
+  "faq"
+]);
+
+const SECTION_TO_PANEL: Record<string, PanelId> = {
+  home: "about",
+  about: "about",
+  partners: "about",
+  services: "work",
+  clients: "work",
+  enquiry: "contact",
+  faq: "contact",
+  work: "work",
+  contact: "contact"
+};
+
+const PANEL_DEFAULT_SECTION: Record<PanelId, string> = {
+  about: "home",
+  work: "services",
+  contact: "enquiry"
+};
+
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -182,17 +210,34 @@ export default function HomePage() {
     setActivePanel(panel);
   }, []);
 
-  const handleNavigate = useCallback((href: string) => {
-    const panelId = href.replace("#", "") as PanelId;
-    scrollToPanel(panelId);
+  const navigateToSection = useCallback((target: string, behavior: ScrollBehavior = "smooth") => {
+    const sectionId = target.replace("#", "");
+    const panelId = SECTION_TO_PANEL[sectionId];
+    if (!panelId) return;
+    const targetSectionId = SECTION_ANCHORS.has(sectionId)
+      ? sectionId
+      : PANEL_DEFAULT_SECTION[panelId];
+    scrollToPanel(panelId, { behavior, sectionId: targetSectionId });
   }, []);
+
+  const navigateToPanelTop = useCallback((panelId: PanelId, behavior: ScrollBehavior = "smooth") => {
+    const targetSectionId = PANEL_DEFAULT_SECTION[panelId];
+    scrollToPanel(panelId, { behavior, sectionId: targetSectionId });
+  }, []);
+
+  const handleNavigate = useCallback(
+    (href: string) => {
+      navigateToSection(href, "smooth");
+    },
+    [navigateToSection]
+  );
 
   const handlePanelNav = useCallback((index: number) => {
     const panelId = PANEL_NAV_ITEMS[index]?.id as PanelId;
     if (panelId) {
-      scrollToPanel(panelId);
+      navigateToPanelTop(panelId, "smooth");
     }
-  }, []);
+  }, [navigateToPanelTop]);
 
   const handleServiceClick = useCallback((serviceId: string) => {
     setActiveServiceId(serviceId);
@@ -216,6 +261,21 @@ export default function HomePage() {
 
     return () => window.clearInterval(intervalId);
   }, [slideCount]);
+
+  useEffect(() => {
+    const handleHashChange = (behavior: ScrollBehavior) => {
+      const hash = window.location.hash;
+      if (!hash) return;
+      navigateToSection(hash, behavior);
+    };
+
+    handleHashChange("auto");
+    const onHashChange = () => handleHashChange("smooth");
+    window.addEventListener("hashchange", onHashChange);
+    return () => {
+      window.removeEventListener("hashchange", onHashChange);
+    };
+  }, [navigateToSection]);
 
   useEffect(() => {
     const sections = [
