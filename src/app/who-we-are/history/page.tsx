@@ -5,11 +5,12 @@ import { SectionReveal } from "@/components/SectionReveal";
 import { TopNav } from "@/components/TopNav";
 import { Footer } from "@/components/Footer";
 import { historyBody } from "@/content/copy";
+import { SECTION_ITEMS } from "@/content/sections";
 
 export default function HistoryPage() {
   return (
     <>
-      <TopNav isVisible={true} />
+      <TopNav items={SECTION_ITEMS} isVisible={true} />
       <main className="relative isolate min-h-screen overflow-hidden">
         <div className="absolute inset-0">
           <Image

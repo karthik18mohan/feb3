@@ -11,6 +11,7 @@ import contact from "../../data/contact.json";
 type EnquirySectionProps = {
   id?: string;
   className?: string;
+  sectionLabel?: string;
 };
 
 type FormState = {
@@ -28,7 +29,7 @@ const initialFormState: FormState = {
 };
 
 export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
-  ({ id, className }, ref) => {
+  ({ id, className, sectionLabel }, ref) => {
     const [formData, setFormData] = useState<FormState>(initialFormState);
     const sectionReveal = useInViewReplay({ amount: 0.6 });
 
@@ -48,8 +49,10 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
       <section
         ref={ref}
         id={id}
+        aria-label={sectionLabel}
         className={className ?? "relative isolate h-screen w-screen overflow-hidden"}
       >
+        {sectionLabel ? <span className="sr-only">{sectionLabel}</span> : null}
         <div className="absolute inset-0">
           <Image
             src="/images/enquiry/1.jpg"

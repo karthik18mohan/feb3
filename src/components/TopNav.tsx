@@ -5,19 +5,15 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { navItemVariants } from "@/lib/motion";
 
-type NavItem = { label: string; href: string; panelId?: string };
-
-const NAV_ITEMS: NavItem[] = [
-  { label: "About Us", href: "#about", panelId: "about" },
-  { label: "What We Do", href: "#work", panelId: "work" },
-  { label: "Contact Us", href: "#contact", panelId: "contact" }
-];
+type NavItem = { id: string; name: string; numeral: string };
 
 export function TopNav({
+  items,
   activeSection,
   onNavigate,
   isVisible = true
 }: {
+  items: NavItem[];
   activeSection?: string;
   onNavigate?: (href: string) => void;
   isVisible?: boolean;
@@ -83,23 +79,25 @@ export function TopNav({
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-6 text-xs uppercase tracking-[0.3em] text-ink">
-          {NAV_ITEMS.map((item, index) => (
+          {items.map((item, index) => {
+            const label = `${item.numeral} ${item.name.toUpperCase()}`;
+            return (
             <motion.div
-              key={item.href}
+              key={item.id}
               variants={navItemVariants}
               initial="hidden"
               animate={hasLoaded ? "visible" : "hidden"}
               custom={index}
             >
               <a
-                href={getHref(item.href)}
-                onClick={(e) => handleNavClick(e, item.href)}
+                href={getHref(`#${item.id}`)}
+                onClick={(e) => handleNavClick(e, `#${item.id}`)}
                 className="group relative rounded-sm pb-1 text-muted transition-colors duration-200 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
               >
-                {item.label}
+                {label}
                 <span
                   className={`absolute bottom-0 left-0 h-px bg-ink transition-all duration-250 origin-left ${
-                    activeSection === item.href.replace("#", "")
+                    activeSection === item.id
                       ? "w-full"
                       : "w-0 group-hover:w-full"
                   }`}
@@ -107,7 +105,7 @@ export function TopNav({
                 />
               </a>
             </motion.div>
-          ))}
+          )})}
         </nav>
 
         {/* Mobile Hamburger Button */}
@@ -144,20 +142,22 @@ export function TopNav({
         }`}
       >
         <nav className="flex flex-col items-center gap-8 pt-12 px-6">
-          {NAV_ITEMS.map((item) => (
+          {items.map((item) => {
+            const label = `${item.numeral} ${item.name.toUpperCase()}`;
+            return (
             <a
-              key={item.href}
-              href={getHref(item.href)}
-              onClick={(e) => handleNavClick(e, item.href)}
+              key={item.id}
+              href={getHref(`#${item.id}`)}
+              onClick={(e) => handleNavClick(e, `#${item.id}`)}
               className={`rounded-sm text-lg uppercase tracking-[0.3em] transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
-                activeSection === item.href.replace("#", "")
+                activeSection === item.id
                   ? "text-ink font-semibold"
                   : "text-muted"
               }`}
             >
-              {item.label}
+              {label}
             </a>
-          ))}
+          )})}
         </nav>
       </div>
     </header>

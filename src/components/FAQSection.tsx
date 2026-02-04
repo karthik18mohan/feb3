@@ -15,10 +15,11 @@ type FAQItem = {
 type FAQSectionProps = {
   id?: string;
   className?: string;
+  sectionLabel?: string;
 };
 
 export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
-  ({ id, className }, ref) => {
+  ({ id, className, sectionLabel }, ref) => {
     const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
     const sectionReveal = useInViewReplay({ amount: 0.6 });
     const sectionRevealPartial = useInViewReplay({ amount: 0.35 });
@@ -31,6 +32,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
       <section
         ref={ref}
         id={id}
+        aria-label={sectionLabel}
         className={className ?? "relative isolate flex min-h-screen w-screen flex-col overflow-hidden"}
         style={{
           backgroundColor: "var(--ink)",
@@ -40,6 +42,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
           backgroundPosition: "center"
         }}
       >
+        {sectionLabel ? <span className="sr-only">{sectionLabel}</span> : null}
 
         <div className="relative z-10 mx-auto flex w-full max-w-[1180px] flex-1 flex-col px-6 section-shell">
           <motion.div

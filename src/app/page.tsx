@@ -1,56 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Playfair_Display } from "next/font/google";
 import { motion } from "framer-motion";
-import { partners } from "@/content/partners";
 import { servicesData } from "@/content/services";
-import { ClientsSection } from "@/components/ClientsSection";
+import { SECTION_ITEMS } from "@/content/sections";
 import { EnquirySection } from "@/components/EnquirySection";
-import { Footer } from "@/components/Footer";
 import { FAQSection } from "@/components/FAQSection";
 import { TopNav } from "@/components/TopNav";
 import { VisionPurposeFlow } from "@/components/VisionPurposeFlow";
 import { ServiceModal } from "@/components/ServiceModal";
-import { MainSnapLayout, PanelId, scrollToPanel } from "@/components/MainSnapLayout";
-import { fadeUp, fadeUpFast, fadeLeft, fadeRight, fadeIn, staggerContainer, scaleXReveal, stagger, durations, PREMIUM_EASE, useInViewReplay } from "@/lib/motion";
+import { fadeUp, fadeUpFast, fadeLeft, fadeRight, staggerContainer, scaleXReveal, stagger, durations, PREMIUM_EASE, useInViewReplay } from "@/lib/motion";
 
-const ROMAN_NUMERALS = ["I", "II", "III"];
-
-const PANEL_NAV_ITEMS = [
-  { id: "about", label: "About Us", href: "#about" },
-  { id: "work", label: "What We Do", href: "#work" },
-  { id: "contact", label: "Contact Us", href: "#contact" }
-];
-
-const SECTION_ANCHORS = new Set([
-  "home",
-  "about",
-  "partners",
-  "services",
-  "clients",
-  "enquiry",
-  "faq"
-]);
-
-const SECTION_TO_PANEL: Record<string, PanelId> = {
-  home: "about",
-  about: "about",
-  partners: "about",
-  services: "work",
-  clients: "work",
-  enquiry: "contact",
-  faq: "contact",
-  work: "work",
-  contact: "contact"
-};
-
-const PANEL_DEFAULT_SECTION: Record<PanelId, string> = {
-  about: "home",
-  work: "services",
-  contact: "enquiry"
-};
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -193,7 +155,6 @@ const services = [
 ];
 
 export default function HomePage() {
-  const [activePanel, setActivePanel] = useState<PanelId>("about");
   const [activeSection, setActiveSection] = useState<string>("home");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
@@ -204,35 +165,41 @@ export default function HomePage() {
   const touchStartXRef = useRef<number | null>(null);
   const touchEndXRef = useRef<number | null>(null);
 
-  const aboutPanelRef = useRef<HTMLDivElement>(null);
-  const workPanelRef = useRef<HTMLDivElement>(null);
-  const contactPanelRef = useRef<HTMLDivElement>(null);
-
   const homeRef = useRef<HTMLElement | null>(null);
   const aboutRef = useRef<HTMLElement | null>(null);
-  const partnersRef = useRef<HTMLElement | null>(null);
   const servicesRef = useRef<HTMLElement | null>(null);
-  const clientsRef = useRef<HTMLElement | null>(null);
   const enquiryRef = useRef<HTMLElement | null>(null);
   const faqRef = useRef<HTMLElement | null>(null);
+  const sections = useMemo(() => SECTION_ITEMS, []);
 
-  const handlePanelChange = useCallback((panel: PanelId) => {
-    setActivePanel(panel);
-  }, []);
+  const sectionRefs = useMemo(
+    () => ({
+      home: homeRef,
+      about: aboutRef,
+      services: servicesRef,
+      enquiry: enquiryRef,
+      faq: faqRef
+    }),
+    []
+  );
+
+  const sectionMeta = useMemo(
+    () =>
+      sections.reduce<Record<string, { id: string; name: string; numeral: string }>>(
+        (acc, section) => {
+          acc[section.id] = section;
+          return acc;
+        },
+        {}
+      ),
+    [sections]
+  );
 
   const navigateToSection = useCallback((target: string, behavior: ScrollBehavior = "smooth") => {
     const sectionId = target.replace("#", "");
-    const panelId = SECTION_TO_PANEL[sectionId];
-    if (!panelId) return;
-    const targetSectionId = SECTION_ANCHORS.has(sectionId)
-      ? sectionId
-      : PANEL_DEFAULT_SECTION[panelId];
-    scrollToPanel(panelId, { behavior, sectionId: targetSectionId });
-  }, []);
-
-  const navigateToPanelTop = useCallback((panelId: PanelId, behavior: ScrollBehavior = "smooth") => {
-    const targetSectionId = PANEL_DEFAULT_SECTION[panelId];
-    scrollToPanel(panelId, { behavior, sectionId: targetSectionId });
+    const targetSection = document.getElementById(sectionId);
+    if (!targetSection) return;
+    targetSection.scrollIntoView({ behavior, block: "start" });
   }, []);
 
   const handleNavigate = useCallback(
@@ -242,12 +209,12 @@ export default function HomePage() {
     [navigateToSection]
   );
 
-  const handlePanelNav = useCallback((index: number) => {
-    const panelId = PANEL_NAV_ITEMS[index]?.id as PanelId;
-    if (panelId) {
-      navigateToPanelTop(panelId, "smooth");
+  const handleSectionNav = useCallback((index: number) => {
+    const sectionId = sections[index]?.id;
+    if (sectionId) {
+      navigateToSection(`#${sectionId}`, "smooth");
     }
-  }, [navigateToPanelTop]);
+  }, [navigateToSection, sections]);
 
   const handleServiceClick = useCallback((serviceId: string) => {
     setActiveServiceId(serviceId);
@@ -288,15 +255,10 @@ export default function HomePage() {
   }, [navigateToSection]);
 
   useEffect(() => {
-    const sections = [
-      { ref: homeRef, id: "home" },
-      { ref: aboutRef, id: "about" },
-      { ref: partnersRef, id: "partners" },
-      { ref: servicesRef, id: "services" },
-      { ref: clientsRef, id: "clients" },
-      { ref: enquiryRef, id: "enquiry" },
-      { ref: faqRef, id: "faq" }
-    ];
+    const observedSections = sections.map((section) => ({
+      ref: sectionRefs[section.id],
+      id: section.id
+    }));
 
     const observerOptions = {
       root: null,
@@ -315,20 +277,20 @@ export default function HomePage() {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    sections.forEach(({ ref }) => {
+    observedSections.forEach(({ ref }) => {
       if (ref.current) {
         observer.observe(ref.current);
       }
     });
 
     return () => {
-      sections.forEach(({ ref }) => {
+      observedSections.forEach(({ ref }) => {
         if (ref.current) {
           observer.unobserve(ref.current);
         }
       });
     };
-  }, []);
+  }, [sectionRefs, sections]);
 
   const handlePrevSlide = useCallback(() => {
     setActiveSlideIndex((prev) => (prev - 1 + slideCount) % slideCount);
@@ -370,8 +332,12 @@ export default function HomePage() {
       <section
         id="home"
         ref={homeRef}
+        aria-label={`${sectionMeta.home.numeral} ${sectionMeta.home.name}`}
         className="relative isolate h-screen w-screen overflow-hidden"
       >
+        <span className="sr-only">
+          {sectionMeta.home.numeral} {sectionMeta.home.name}
+        </span>
         <motion.div
           className="absolute inset-0 hero-bg-motion"
           variants={heroBgVariants}
@@ -442,8 +408,12 @@ export default function HomePage() {
       <section
         id="about"
         ref={aboutRef}
+        aria-label={`${sectionMeta.about.numeral} ${sectionMeta.about.name}`}
         className="relative isolate h-screen w-screen overflow-hidden bg-paper"
       >
+        <span className="sr-only">
+          {sectionMeta.about.numeral} {sectionMeta.about.name}
+        </span>
         <div className="absolute inset-0">
           <Image src="/images/about/1.jpg" alt="" fill className="object-cover object-center" sizes="100vw" />
         </div>
@@ -479,81 +449,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section
-        id="partners"
-        ref={partnersRef}
-        className="relative isolate flex min-h-screen w-screen flex-col overflow-hidden"
-        style={{
-          backgroundColor: "var(--ink)",
-          backgroundImage: "url('/images/partners/texture/1.jpg')",
-          backgroundRepeat: "repeat",
-          backgroundSize: "auto",
-          backgroundPosition: "center"
-        }}
-      >
-        <div className="flex flex-1 flex-col section-shell">
-          <div className="relative h-[clamp(160px,28vh,240px)] w-full flex-shrink-0 overflow-hidden">
-            <div className="absolute inset-0 flex items-center justify-center px-6">
-              <motion.h2
-                variants={fadeUp}
-                {...sectionReveal}
-                className="text-center text-[clamp(2rem,3.5vw,3rem)] font-semibold text-paper drop-shadow-[0_12px_30px_rgba(3,7,18,0.55)]"
-              >
-                Our Partners
-              </motion.h2>
-            </div>
-          </div>
-          <div
-            data-scrollable
-            className="flex-1 bg-paper px-6 py-[clamp(1rem,2.5vh,2rem)]"
-          >
-            <div className="mx-auto w-full max-w-[1180px] space-y-[clamp(1rem,2.5vh,2rem)]">
-              <div className="grid gap-[clamp(1rem,2.5vw,2rem)] sm:grid-cols-2 lg:grid-cols-4">
-                {partners.map((partner, index) => (
-                  <motion.div
-                    key={partner.name}
-                    variants={fadeUp}
-                    {...sectionRevealPartial}
-                    transition={{
-                      duration: durations.entry,
-                      delay: index * stagger.tight,
-                      ease: PREMIUM_EASE
-                    }}
-                    whileHover={{
-                      y: -2,
-                      transition: { duration: durations.hover, ease: PREMIUM_EASE }
-                    }}
-                    className="flex flex-col"
-                  >
-                    <div className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-rule shadow-[0_18px_40px_rgba(11,27,59,0.16)] transition-all duration-300 hover:border-[color:var(--gold)] hover:shadow-[0_22px_45px_rgba(11,27,59,0.20)]">
-                      <Image
-                        src={partner.image}
-                        alt={partner.name}
-                        fill
-                        className="object-cover object-center"
-                        sizes="(min-width: 1024px) 22vw, (min-width: 640px) 42vw, 80vw"
-                      />
-                    </div>
-                    <motion.p
-                      variants={fadeIn}
-                      {...sectionRevealPartial}
-                      transition={{
-                        duration: durations.entryFast,
-                        delay: index * stagger.tight + 0.1,
-                        ease: PREMIUM_EASE
-                      }}
-                      className="mt-3 text-center text-[clamp(0.65rem,0.9vw,0.85rem)] font-semibold uppercase tracking-[0.24em] text-ink"
-                    >
-                      {partner.name}
-                    </motion.p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-        <Footer className="mt-auto" showBackToTop />
-      </section>
     </>
   );
 
@@ -562,8 +457,12 @@ export default function HomePage() {
       <section
         id="services"
         ref={servicesRef}
+        aria-label={`${sectionMeta.services.numeral} ${sectionMeta.services.name}`}
         className="relative isolate h-screen w-screen overflow-hidden"
       >
+        <span className="sr-only">
+          {sectionMeta.services.numeral} {sectionMeta.services.name}
+        </span>
         <div className="absolute inset-0">
           <Image src="/images/services/1.jpg" alt="" fill className="object-cover object-center" sizes="100vw" />
         </div>
@@ -621,38 +520,40 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <ClientsSection id="clients" ref={clientsRef} />
     </>
   );
 
   const contactPanel = (
     <>
-      <EnquirySection id="enquiry" ref={enquiryRef} />
-      <FAQSection id="faq" ref={faqRef} />
+      <EnquirySection
+        id="enquiry"
+        ref={enquiryRef}
+        sectionLabel={`${sectionMeta.enquiry.numeral} ${sectionMeta.enquiry.name}`}
+      />
+      <FAQSection
+        id="faq"
+        ref={faqRef}
+        sectionLabel={`${sectionMeta.faq.numeral} ${sectionMeta.faq.name}`}
+      />
     </>
   );
 
   return (
     <>
       <TopNav
-        activeSection={activePanel}
+        items={sections}
+        activeSection={activeSection}
         onNavigate={handleNavigate}
         isVisible={!isOnHome}
       />
       <main className="relative">
-        <MainSnapLayout
-          aboutPanel={aboutPanel}
-          workPanel={workPanel}
-          contactPanel={contactPanel}
-          activePanel={activePanel}
-          onPanelChange={handlePanelChange}
-          aboutPanelRef={aboutPanelRef}
-          workPanelRef={workPanelRef}
-          contactPanelRef={contactPanelRef}
-        />
+        {aboutPanel}
+        {workPanel}
+        {contactPanel}
         <PanelProgress
-          activeIndex={PANEL_NAV_ITEMS.findIndex(p => p.id === activePanel)}
-          onNavigate={handlePanelNav}
+          sections={sections}
+          activeIndex={sections.findIndex((section) => section.id === activeSection)}
+          onNavigate={handleSectionNav}
           activeSlideIndex={activeSlideIndex}
           setActiveSlideIndex={setActiveSlideIndex}
           landingSlides={landingSlides}
@@ -671,6 +572,7 @@ export default function HomePage() {
 }
 
 function PanelProgress({
+  sections,
   activeIndex,
   onNavigate,
   activeSlideIndex,
@@ -679,6 +581,7 @@ function PanelProgress({
   playfairDisplayClassName,
   isOnHome
 }: {
+  sections: Array<{ id: string; name: string; numeral: string }>;
   activeIndex: number;
   onNavigate: (index: number) => void;
   activeSlideIndex: number;
@@ -718,7 +621,7 @@ function PanelProgress({
         </span>
         <div className="h-px w-12 bg-[color:var(--rule)]" aria-hidden />
         <div className="flex items-center gap-2">
-          {PANEL_NAV_ITEMS.map((item, index) => (
+          {sections.map((item, index) => (
             <motion.button
               key={item.id}
               type="button"
@@ -741,12 +644,12 @@ function PanelProgress({
               style={{
                 boxShadow: activeIndex === index ? "0 12px 30px rgba(11, 27, 59, 0.25)" : "none"
               }}
-              aria-label={item.label}
+              aria-label={item.name}
             >
               <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-white/90 px-2 py-1 text-[0.65rem] text-[#333] opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100">
-                {item.label}
+                {item.name}
               </span>
-              {ROMAN_NUMERALS[index] ?? `${index + 1}`}
+              {item.numeral}
             </motion.button>
           ))}
         </div>
