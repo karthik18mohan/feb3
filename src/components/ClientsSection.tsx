@@ -20,9 +20,9 @@ type ClientsSectionProps = {
 export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
   ({ id, className }, ref) => {
     return (
-      <section ref={ref} id={id} className={className ?? "w-full min-h-screen"}>
-        <div className="flex min-h-screen flex-col section-shell">
-          <div className="relative h-[30vh] min-h-[200px] w-full flex-shrink-0 overflow-hidden">
+      <section ref={ref} id={id} className={className ?? "h-screen w-screen overflow-hidden"}>
+        <div className="flex h-full flex-col section-shell">
+          <div className="relative h-[clamp(160px,28vh,240px)] w-full flex-shrink-0 overflow-hidden">
             <Image
               src="/images/clients/1.jpg"
               alt="Clients hero background"
@@ -46,9 +46,9 @@ export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
             </div>
           </div>
 
-          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-paper py-12">
+          <div className="flex-1 bg-paper py-[clamp(1rem,2.5vh,2.5rem)]">
             <div className="mx-auto w-full max-w-[1180px] px-6">
-              <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
+              <div className="grid grid-cols-2 gap-[clamp(0.75rem,2vw,1.5rem)] sm:grid-cols-3 lg:grid-cols-4">
                 {(clients as Client[]).map((client, index) => (
                   <motion.div
                     key={client.id}
@@ -63,17 +63,17 @@ export const ClientsSection = forwardRef<HTMLElement, ClientsSectionProps>(
                     }}
                     className="flex flex-col items-center text-center"
                   >
-                    <div className="flex h-24 w-full items-center justify-center group">
+                    <div className="flex h-[clamp(56px,10vh,96px)] w-full items-center justify-center group">
                       <Image
                         src={`/images/clients/${client.id}/1.jpg`}
                         alt={client.name ? `${client.name} logo` : "Client logo"}
                         width={200}
                         height={120}
-                        className="h-16 w-auto object-contain transition-all duration-300 ease-out group-hover:opacity-70"
+                        className="h-[clamp(32px,5vh,64px)] w-auto object-contain transition-all duration-300 ease-out group-hover:opacity-70"
                       />
                     </div>
                     {client.name ? (
-                      <p className="mt-3 text-sm font-medium text-ink/70">{client.name}</p>
+                      <p className="mt-2 text-[clamp(0.7rem,1vw,0.85rem)] font-medium text-ink/70">{client.name}</p>
                     ) : null}
                   </motion.div>
                 ))}

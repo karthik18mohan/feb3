@@ -299,7 +299,7 @@ export default function HomePage() {
       <section
         id="home"
         ref={homeRef}
-        className="relative isolate min-h-screen overflow-hidden"
+        className="relative isolate h-screen w-screen overflow-hidden"
       >
         <div
           className="absolute inset-0 hero-bg-motion"
@@ -328,22 +328,22 @@ export default function HomePage() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.7)] via-[rgba(11,27,59,0.58)] to-[rgba(11,27,59,0.46)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(176,141,87,0.16),transparent_40%)]" />
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col justify-center px-6 pb-20">
-          <div className="max-w-2xl space-y-7 text-paper">
+        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col justify-center px-6 py-[clamp(2rem,6vh,5rem)]">
+          <div className="max-w-2xl space-y-[clamp(1rem,2.5vh,1.75rem)] text-paper">
             <div data-animate className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-paper/80">
               <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />
               Chartered Accountants
             </div>
             <h1
               data-animate
-              className="hero-title text-5xl font-semibold sm:text-6xl md:text-7xl"
+              className="hero-title text-[clamp(2.5rem,5vw,4.5rem)] font-semibold"
             >
               Nathan &amp; Co.
             </h1>
             <div className="hero-divider" aria-hidden />
             <p
               data-animate
-              className="hero-tagline max-w-xl text-xl leading-relaxed text-paper/85"
+              className="hero-tagline max-w-xl text-[clamp(1.05rem,2.1vw,1.35rem)] leading-relaxed text-paper/85"
             >
               Upholding the highest ideals of quality, integrity, and trust.
             </p>
@@ -354,21 +354,21 @@ export default function HomePage() {
       <section
         id="about"
         ref={aboutRef}
-        className="relative isolate min-h-screen overflow-hidden bg-paper"
+        className="relative isolate h-screen w-screen overflow-hidden bg-paper"
       >
         <div className="absolute inset-0">
           <Image src="/images/about/1.jpg" alt="" fill className="object-cover object-center" sizes="100vw" />
         </div>
         <div className="absolute inset-0 bg-white/80" />
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] items-center px-6 pb-16 section-shell">
-          <div className="grid w-full gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-            <div className="space-y-6">
+        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] items-center px-6 section-shell">
+          <div className="grid w-full gap-[clamp(1.5rem,3vw,3rem)] lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+            <div className="space-y-[clamp(1rem,2.2vh,1.75rem)]">
               <motion.h2
                 variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportConfig}
-                className="text-4xl font-semibold text-ink sm:text-5xl"
+                className="text-[clamp(2rem,3.5vw,3rem)] font-semibold text-ink"
               >
                 Who We Are
               </motion.h2>
@@ -377,13 +377,13 @@ export default function HomePage() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportConfig}
-                className="space-y-4"
+                className="space-y-[clamp(0.75rem,1.6vh,1.25rem)]"
               >
                 {aboutParagraphs.map((paragraph) => (
                   <motion.p
                     key={paragraph}
                     variants={fadeUpFast}
-                    className="text-lg leading-relaxed text-muted sm:text-xl"
+                    className="text-[clamp(0.98rem,1.25vw,1.2rem)] leading-relaxed text-muted"
                   >
                     {paragraph}
                   </motion.p>
@@ -398,10 +398,10 @@ export default function HomePage() {
       <section
         id="partners"
         ref={partnersRef}
-        className="relative isolate min-h-screen overflow-hidden"
+        className="relative isolate h-screen w-screen overflow-hidden"
       >
-        <div className="flex min-h-screen flex-col section-shell">
-          <div className="relative h-[30vh] min-h-[200px] w-full flex-shrink-0 overflow-hidden">
+        <div className="flex h-full flex-col section-shell">
+          <div className="relative h-[clamp(160px,28vh,240px)] w-full flex-shrink-0 overflow-hidden">
             <Image
               src="/images/partners/1.jpg"
               alt=""
@@ -415,7 +415,7 @@ export default function HomePage() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportConfig}
-                className="text-center text-4xl font-semibold text-paper drop-shadow-[0_12px_30px_rgba(3,7,18,0.55)] sm:text-5xl"
+                className="text-center text-[clamp(2rem,3.5vw,3rem)] font-semibold text-paper drop-shadow-[0_12px_30px_rgba(3,7,18,0.55)]"
               >
                 Our Partners
               </motion.h2>
@@ -423,10 +423,10 @@ export default function HomePage() {
           </div>
           <div
             data-scrollable
-            className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-paper px-6 py-8"
+            className="flex-1 bg-paper px-6 py-[clamp(1rem,2.5vh,2rem)]"
           >
-            <div className="mx-auto w-full max-w-[1180px] space-y-8">
-              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mx-auto w-full max-w-[1180px] space-y-[clamp(1rem,2.5vh,2rem)]">
+              <div className="grid gap-[clamp(1rem,2.5vw,2rem)] sm:grid-cols-2 lg:grid-cols-4">
                 {partners.map((partner, index) => (
                   <motion.div
                     key={partner.name}
@@ -463,7 +463,7 @@ export default function HomePage() {
                         delay: index * stagger.tight + 0.1,
                         ease: PREMIUM_EASE
                       }}
-                      className="mt-4 text-center text-sm font-semibold uppercase tracking-[0.24em] text-ink"
+                      className="mt-3 text-center text-[clamp(0.65rem,0.9vw,0.85rem)] font-semibold uppercase tracking-[0.24em] text-ink"
                     >
                       {partner.name}
                     </motion.p>
@@ -482,22 +482,22 @@ export default function HomePage() {
       <section
         id="services"
         ref={servicesRef}
-        className="relative isolate min-h-screen overflow-hidden"
+        className="relative isolate h-screen w-screen overflow-hidden"
       >
         <div className="absolute inset-0">
           <Image src="/images/services/1.jpg" alt="" fill className="object-cover object-center" sizes="100vw" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.68)] via-[rgba(11,27,59,0.6)] to-[rgba(11,27,59,0.72)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_25%,rgba(176,141,87,0.14),transparent_38%)]" />
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1180px] flex-col px-6 pb-16 section-shell">
-          <div className="flex-shrink-0 space-y-6 text-paper">
-            <div className="max-w-3xl space-y-3">
+        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col px-6 section-shell">
+          <div className="flex-shrink-0 space-y-[clamp(1rem,2.2vh,1.75rem)] text-paper">
+            <div className="max-w-3xl space-y-[clamp(0.5rem,1.4vh,1rem)]">
               <motion.h2
                 variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportConfig}
-                className="text-4xl font-semibold sm:text-5xl"
+                className="text-[clamp(2rem,3.5vw,3rem)] font-semibold"
               >
                 What We Do
               </motion.h2>
@@ -506,13 +506,13 @@ export default function HomePage() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportConfig}
-                className="text-lg leading-relaxed text-paper/80 sm:text-xl"
+                className="text-[clamp(0.98rem,1.25vw,1.2rem)] leading-relaxed text-paper/80"
               >
                 Seamless support across audit, taxation, risk advisory, virtual CFO, and strategic consulting—delivered with the discipline of a heritage practice and the pace of modern business.
               </motion.p>
             </div>
-            <div className="flex-1 mt-6">
-              <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-6">
+            <div className="flex-1 mt-[clamp(0.75rem,2vh,1.5rem)]">
+              <div className="grid auto-rows-fr grid-cols-1 gap-[clamp(0.75rem,1.8vw,1.25rem)] sm:grid-cols-2 lg:grid-cols-3">
                 {servicesData.map((service, index) => {
                   const isOdd = index % 2 === 0;
                   return (
@@ -533,11 +533,11 @@ export default function HomePage() {
                         y: -3,
                         transition: { duration: durations.hover, ease: PREMIUM_EASE }
                       }}
-                      className="group relative flex min-h-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-[color:var(--rule)] bg-paper/85 p-5 text-center text-ink shadow-[0_20px_45px_rgba(11,27,59,0.18)] transition-shadow duration-300 ease-out hover:border-[color:var(--gold)] hover:shadow-[0_24px_60px_rgba(11,27,59,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                      className="group relative flex min-h-[clamp(90px,12vh,120px)] cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-[color:var(--rule)] bg-paper/85 p-[clamp(0.75rem,1.6vw,1.25rem)] text-center text-ink shadow-[0_20px_45px_rgba(11,27,59,0.18)] transition-shadow duration-300 ease-out hover:border-[color:var(--gold)] hover:shadow-[0_24px_60px_rgba(11,27,59,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-[rgba(11,27,59,0.03)] to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
                       <div className="relative">
-                        <h3 className="text-lg font-semibold text-ink">{service.title}</h3>
+                        <h3 className="text-[clamp(0.95rem,1.2vw,1.1rem)] font-semibold text-ink">{service.title}</h3>
                       </div>
                     </motion.button>
                   );
