@@ -163,6 +163,7 @@ export default function HomePage() {
   const slideCount = landingSlides.length;
   const touchStartXRef = useRef<number | null>(null);
   const touchEndXRef = useRef<number | null>(null);
+  const navRef = useRef<HTMLElement | null>(null);
 
   const homeRef = useRef<HTMLElement | null>(null);
   const aboutRef = useRef<HTMLElement | null>(null);
@@ -189,7 +190,7 @@ export default function HomePage() {
     { id: "about", name: "Who We Are", numeral: "II" },
     { id: "services", name: "What We Do", numeral: "III" },
     { id: "enquiry", name: "Start an Enquiry", numeral: "IV" },
-    { id: "faq", name: "Frequently Asked Questions", numeral: "V" }
+    { id: "faq", name: "FAQ", numeral: "V" }
   ] satisfies ReadonlyArray<Section>;
 
   const sections = useMemo<Section[]>(() => SECTION_ITEMS, []);
@@ -206,26 +207,40 @@ export default function HomePage() {
     [sections]
   );
 
-  const navigateToSection = useCallback((target: string, behavior: ScrollBehavior = "smooth") => {
-    const sectionId = target.replace("#", "");
-    const targetSection = document.getElementById(sectionId);
-    if (!targetSection) return;
-    targetSection.scrollIntoView({ behavior, block: "start" });
-  }, []);
+  const scrollToSection = useCallback((id: SectionId) => {
+    const el = sectionRefs[id]?.current;
+    if (!el) return;
+
+    const navH = navRef.current?.getBoundingClientRect().height ?? 0;
+    const y = el.getBoundingClientRect().top + window.scrollY - navH;
+
+    const root = document.documentElement;
+    const prevSnap = root.style.scrollSnapType;
+    root.style.scrollSnapType = "none";
+
+    window.scrollTo({
+      top: y,
+      behavior: "smooth"
+    });
+
+    window.setTimeout(() => {
+      root.style.scrollSnapType = prevSnap;
+    }, 450);
+  }, [sectionRefs]);
 
   const handleNavigate = useCallback(
-    (href: string) => {
-      navigateToSection(href, "smooth");
+    (sectionId: SectionId) => {
+      scrollToSection(sectionId);
     },
-    [navigateToSection]
+    [scrollToSection]
   );
 
   const handleSectionNav = useCallback((index: number) => {
     const sectionId = sections[index]?.id;
     if (sectionId) {
-      navigateToSection(`#${sectionId}`, "smooth");
+      scrollToSection(sectionId);
     }
-  }, [navigateToSection, sections]);
+  }, [scrollToSection, sections]);
 
   const handleServiceClick = useCallback((serviceId: string) => {
     setActiveServiceId(serviceId);
@@ -251,19 +266,22 @@ export default function HomePage() {
   }, [slideCount]);
 
   useEffect(() => {
-    const handleHashChange = (behavior: ScrollBehavior) => {
+    const handleHashChange = () => {
       const hash = window.location.hash;
       if (!hash) return;
-      navigateToSection(hash, behavior);
+      const sectionId = hash.replace("#", "") as SectionId;
+      if (sectionId in sectionRefs) {
+        scrollToSection(sectionId);
+      }
     };
 
-    handleHashChange("auto");
-    const onHashChange = () => handleHashChange("smooth");
+    handleHashChange();
+    const onHashChange = () => handleHashChange();
     window.addEventListener("hashchange", onHashChange);
     return () => {
       window.removeEventListener("hashchange", onHashChange);
     };
-  }, [navigateToSection]);
+  }, [scrollToSection, sectionRefs]);
 
   useEffect(() => {
     const observedSections = sections.map((section) => ({
@@ -558,6 +576,7 @@ export default function HomePage() {
         activeSection={activeSection}
         onNavigate={handleNavigate}
         isVisible={!isOnHome}
+        navRef={navRef}
       />
       <main className="relative">
         {aboutPanel}
