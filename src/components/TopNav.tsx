@@ -18,7 +18,7 @@ export function TopNav({
   activeSection?: string;
   onNavigate?: (id: string) => void;
   isVisible?: boolean;
-  navRef?: RefObject<HTMLElement | null>;
+  navRef?: RefObject<HTMLElement>;
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);

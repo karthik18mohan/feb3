@@ -163,7 +163,7 @@ export default function HomePage() {
   const slideCount = landingSlides.length;
   const touchStartXRef = useRef<number | null>(null);
   const touchEndXRef = useRef<number | null>(null);
-  const navRef = useRef<HTMLElement | null>(null);
+  const navRef = useRef<HTMLElement>(null);
 
   const homeRef = useRef<HTMLElement | null>(null);
   const aboutRef = useRef<HTMLElement | null>(null);
