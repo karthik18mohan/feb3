@@ -302,6 +302,7 @@ export default function HomePage() {
     };
 
     type ObservedSection = { id: SectionId; top: number };
+    const isSectionId = (id: string): id is SectionId => id in sectionRefs;
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       let topmostVisible: ObservedSection | null = null;
@@ -310,7 +311,7 @@ export default function HomePage() {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         const sectionId = entry.target.id;
-        if (!(sectionId in sectionRefs)) return;
+        if (!isSectionId(sectionId)) return;
 
         const top = entry.boundingClientRect.top;
         if (top >= 0) {
