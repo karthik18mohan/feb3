@@ -309,13 +309,12 @@ export default function HomePage() {
       threshold: 0
     };
 
-    type ObservedSection = { id: SectionId; top: number };
     const isSectionId = (id: string): id is SectionId =>
       (SECTION_IDS as readonly string[]).includes(id);
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      let topmostVisible: ObservedSection | null = null;
-      let closestAbove: ObservedSection | null = null;
+      let topmostVisible: { id: SectionId; top: number } | null = null;
+      let closestAbove: { id: SectionId; top: number } | null = null;
 
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
@@ -332,9 +331,9 @@ export default function HomePage() {
         }
       });
 
-      const nextActive: ObservedSection | null = topmostVisible ?? closestAbove;
-      if (nextActive) {
-        setActiveSection(nextActive.id);
+      const nextActiveId = topmostVisible?.id ?? closestAbove?.id;
+      if (nextActiveId) {
+        setActiveSection(nextActiveId);
       }
     };
 
