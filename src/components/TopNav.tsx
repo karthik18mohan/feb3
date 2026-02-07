@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, type RefObject } from "react";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { navItemVariants } from "@/lib/motion";
@@ -11,12 +11,14 @@ export function TopNav({
   items,
   activeSection,
   onNavigate,
-  isVisible = true
+  isVisible = true,
+  navRef
 }: {
   items: NavItem[];
   activeSection?: string;
-  onNavigate?: (href: string) => void;
+  onNavigate?: (id: string) => void;
   isVisible?: boolean;
+  navRef?: RefObject<HTMLElement>;
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
@@ -46,16 +48,16 @@ export function TopNav({
     return isLandingPage ? "#home" : "/";
   };
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     if (onNavigate && isLandingPage) {
       e.preventDefault();
-      onNavigate(href);
+      onNavigate(id);
     }
     setIsMobileMenuOpen(false);
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-40 min-h-[var(--nav-h)] border-b border-rule bg-paper/70 backdrop-blur-md transition-all duration-300 ${
+    <header ref={navRef} className={`fixed top-0 left-0 right-0 z-40 min-h-[var(--nav-h)] border-b border-rule bg-paper/70 backdrop-blur-md transition-all duration-300 ${
       isVisible ? "translate-y-0 opacity-100 shadow-[0_4px_16px_rgba(11,27,59,0.08)]" : "-translate-y-full opacity-0 pointer-events-none shadow-none"
     }`}>
       <div className="mx-auto flex w-full max-w-[1180px] items-center justify-between gap-6 px-6 py-5">
@@ -66,7 +68,7 @@ export function TopNav({
             onClick={(e) => {
               if (onNavigate && isLandingPage) {
                 e.preventDefault();
-                onNavigate("#home");
+                onNavigate("home");
               }
             }}
           >
@@ -78,9 +80,9 @@ export function TopNav({
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-6 text-xs uppercase tracking-[0.3em] text-ink">
+        <nav className="hidden lg:flex flex-nowrap items-center gap-x-6 text-xs tracking-[0.3em] text-ink">
           {items.map((item, index) => {
-            const label = `${item.numeral} ${item.name.toUpperCase()}`;
+            const label = item.name;
             return (
             <motion.div
               key={item.id}
@@ -91,8 +93,8 @@ export function TopNav({
             >
               <a
                 href={getHref(`#${item.id}`)}
-                onClick={(e) => handleNavClick(e, `#${item.id}`)}
-                className="group relative rounded-sm pb-1 text-muted transition-colors duration-200 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                onClick={(e) => handleNavClick(e, item.id)}
+                className="group relative whitespace-nowrap rounded-sm pb-1 text-muted transition-colors duration-200 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
               >
                 {label}
                 <span
@@ -143,13 +145,13 @@ export function TopNav({
       >
         <nav className="flex flex-col items-center gap-8 pt-12 px-6">
           {items.map((item) => {
-            const label = `${item.numeral} ${item.name.toUpperCase()}`;
+            const label = item.name;
             return (
             <a
               key={item.id}
               href={getHref(`#${item.id}`)}
-              onClick={(e) => handleNavClick(e, `#${item.id}`)}
-              className={`rounded-sm text-lg uppercase tracking-[0.3em] transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
+              onClick={(e) => handleNavClick(e, item.id)}
+              className={`whitespace-nowrap rounded-sm text-lg tracking-[0.3em] transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
                 activeSection === item.id
                   ? "text-ink font-semibold"
                   : "text-muted"
