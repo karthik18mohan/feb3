@@ -297,19 +297,26 @@ export default function HomePage() {
 
     const observerOptions = {
       root: null,
-      rootMargin: "-20% 0px -20% 0px",
+      rootMargin: "-50% 0px -50% 0px",
       threshold: 0
     };
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      let topmost: { id: string; top: number } | null = null;
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const sectionId = entry.target.id;
           if (sectionId in sectionRefs) {
-            setActiveSection(sectionId as SectionId);
+            const top = entry.boundingClientRect.top;
+            if (!topmost || top < topmost.top) {
+              topmost = { id: sectionId, top };
+            }
           }
         }
       });
+      if (topmost) {
+        setActiveSection((topmost as { id: string; top: number }).id as SectionId);
+      }
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
