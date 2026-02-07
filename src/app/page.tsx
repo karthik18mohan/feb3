@@ -451,7 +451,7 @@ export default function HomePage() {
           <Image src="/images/about/1.jpg" alt="" fill className="object-cover object-center" sizes="100vw" />
         </div>
         <div className="absolute inset-0 bg-white/80" />
-        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] items-center px-6 section-shell">
+        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] items-start px-6 section-shell">
           <div className="grid w-full gap-[clamp(1.5rem,3vw,3rem)] lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
             <div className="space-y-[clamp(1rem,2.2vh,1.75rem)]">
               <motion.h2
@@ -477,7 +477,9 @@ export default function HomePage() {
                 ))}
               </motion.div>
             </div>
-            <VisionPurposeFlow />
+            <div className="lg:mt-[22vh]">
+              <VisionPurposeFlow />
+            </div>
           </div>
         </div>
       </section>
@@ -502,7 +504,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.68)] via-[rgba(11,27,59,0.6)] to-[rgba(11,27,59,0.72)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_25%,rgba(176,141,87,0.14),transparent_38%)]" />
         <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col px-6 section-shell">
-          <div className="flex-shrink-0 space-y-[clamp(1rem,2.2vh,1.75rem)] text-paper">
+          <div className="flex-shrink-0 space-y-[clamp(0.5rem,1.5vh,1rem)] text-paper">
             <div className="max-w-3xl space-y-[clamp(0.5rem,1.4vh,1rem)]">
               <motion.h2
                 variants={fadeUp}
@@ -519,7 +521,7 @@ export default function HomePage() {
                 Seamless support across audit, taxation, risk advisory, virtual CFO, and strategic consulting—delivered with the discipline of a heritage practice and the pace of modern business.
               </motion.p>
             </div>
-            <div className="flex-1 mt-[clamp(0.75rem,2vh,1.5rem)]">
+            <div className="flex-1 mt-[clamp(0.5rem,1vh,0.75rem)]">
               <div className="grid auto-rows-fr grid-cols-1 gap-[clamp(0.75rem,1.8vw,1.25rem)] sm:grid-cols-2 lg:grid-cols-3">
                 {servicesData.map((service, index) => {
                   const isOdd = index % 2 === 0;
