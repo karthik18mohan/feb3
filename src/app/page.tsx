@@ -281,7 +281,9 @@ export default function HomePage() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const sectionId = entry.target.id;
-          setActiveSection(sectionId);
+          if (sectionId in sectionRefs) {
+            setActiveSection(sectionId as SectionId);
+          }
         }
       });
     };
