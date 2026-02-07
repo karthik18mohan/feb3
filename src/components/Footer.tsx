@@ -43,7 +43,7 @@ export function Footer({ className, showBackToTop = false }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className={`border-t border-ink/15 bg-paper/85 py-12 backdrop-blur ${className ?? ""}`}>
+    <footer className={`border-t border-ink/15 bg-paper/85 pt-12 pb-24 backdrop-blur ${className ?? ""}`}>
       <div className="mx-auto flex w-full max-w-[1180px] flex-col gap-10 px-6 lg:flex-row lg:items-start lg:justify-between">
         <div className="space-y-3">
           <div className="space-y-1">
