@@ -302,20 +302,27 @@ export default function HomePage() {
     };
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      let topmost: { id: string; top: number } | null = null;
+      let topmostVisible: { id: string; top: number } | null = null;
+      let closestAbove: { id: string; top: number } | null = null;
+
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const sectionId = entry.target.id;
-          if (sectionId in sectionRefs) {
-            const top = entry.boundingClientRect.top;
-            if (!topmost || top < topmost.top) {
-              topmost = { id: sectionId, top };
-            }
+        if (!entry.isIntersecting) return;
+        const sectionId = entry.target.id;
+        if (!(sectionId in sectionRefs)) return;
+
+        const top = entry.boundingClientRect.top;
+        if (top >= 0) {
+          if (!topmostVisible || top < topmostVisible.top) {
+            topmostVisible = { id: sectionId, top };
           }
+        } else if (!closestAbove || top > closestAbove.top) {
+          closestAbove = { id: sectionId, top };
         }
       });
-      if (topmost) {
-        setActiveSection((topmost as { id: string; top: number }).id as SectionId);
+
+      const nextActive = topmostVisible ?? closestAbove;
+      if (nextActive) {
+        setActiveSection(nextActive.id as SectionId);
       }
     };
 
