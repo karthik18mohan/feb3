@@ -50,7 +50,7 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
         ref={ref}
         id={id}
         aria-label={sectionLabel}
-        className={className ?? "relative isolate h-screen w-screen overflow-hidden"}
+        className={className ?? "relative isolate min-h-screen w-screen"}
       >
         {sectionLabel ? <span className="sr-only">{sectionLabel}</span> : null}
         <div className="absolute inset-0">
@@ -64,9 +64,9 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
         </div>
         <div className="absolute inset-0 bg-[rgba(6,10,20,0.72)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(176,141,87,0.2),transparent_45%)]" />
-        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] items-center px-6 section-shell">
-          <div className="w-full rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-[clamp(1rem,2.5vw,2rem)] shadow-[0_24px_60px_rgba(11,27,59,0.25)] backdrop-blur">
-            <div className="grid gap-[clamp(1rem,2.5vw,2rem)] md:grid-cols-2">
+        <div className="relative z-10 mx-auto flex w-full max-w-[1180px] items-start px-6 section-shell !h-auto min-h-[calc(100vh-var(--nav-h))] !pt-4 !pb-4">
+          <div className="w-full rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-[clamp(0.9rem,2.2vw,1.75rem)] shadow-[0_24px_60px_rgba(11,27,59,0.25)] backdrop-blur">
+            <div className="grid gap-[clamp(0.85rem,2vw,1.5rem)] md:grid-cols-2">
               <motion.div
                 variants={fadeUp}
                 {...sectionReveal}
@@ -126,7 +126,7 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
               <motion.form
                 variants={staggerContainer(stagger.normal)}
                 {...sectionReveal}
-                className="space-y-[clamp(0.6rem,1.6vh,1rem)]"
+                className="space-y-[clamp(0.5rem,1.4vh,0.9rem)]"
                 onSubmit={handleSubmit}
               >
                 <motion.div variants={fadeUpFast} className="space-y-1">

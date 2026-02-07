@@ -2,7 +2,6 @@
 
 import { forwardRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Footer } from "@/components/Footer";
 import { fadeUp, fadeUpFast, durations, stagger, PREMIUM_EASE, useInViewReplay } from "@/lib/motion";
 
 import faqs from "../../data/faqs.json";
@@ -33,7 +32,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
         ref={ref}
         id={id}
         aria-label={sectionLabel}
-        className={className ?? "relative isolate flex min-h-screen w-screen flex-col overflow-hidden"}
+        className={className ?? "relative isolate flex min-h-screen w-screen flex-col"}
         style={{
           backgroundColor: "var(--ink)",
           backgroundImage: "url('/images/faq/texture/1.jpg')",
@@ -44,7 +43,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
       >
         {sectionLabel ? <span className="sr-only">{sectionLabel}</span> : null}
 
-        <div className="relative z-10 mx-auto flex w-full max-w-[1180px] flex-1 flex-col px-6 section-shell">
+        <div className="relative z-10 mx-auto flex w-full max-w-[1180px] flex-col px-6 section-shell !h-auto min-h-[calc(100vh-var(--nav-h))] !pt-4 !pb-6">
           <motion.div
             variants={fadeUp}
             {...sectionReveal}
@@ -121,7 +120,6 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
             })}
           </div>
         </div>
-        <Footer className="mt-auto" showBackToTop />
       </section>
     );
   }

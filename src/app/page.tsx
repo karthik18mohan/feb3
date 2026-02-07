@@ -400,7 +400,7 @@ export default function HomePage() {
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.7)] via-[rgba(11,27,59,0.58)] to-[rgba(11,27,59,0.46)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(176,141,87,0.16),transparent_40%)]" />
-        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col justify-center px-6 py-[clamp(2rem,6vh,5rem)]">
+        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col justify-center px-6 py-[clamp(2rem,6vh,5rem)] -translate-y-[10vh]">
           <div className="max-w-2xl space-y-[clamp(1rem,2.5vh,1.75rem)] text-paper">
             <motion.div
               variants={fadeUpFast}
@@ -501,7 +501,7 @@ export default function HomePage() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.68)] via-[rgba(11,27,59,0.6)] to-[rgba(11,27,59,0.72)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_25%,rgba(176,141,87,0.14),transparent_38%)]" />
-        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col px-6 section-shell">
+        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col px-6 section-shell !pt-4">
           <div className="flex-shrink-0 space-y-[clamp(1rem,2.2vh,1.75rem)] text-paper">
             <div className="max-w-3xl space-y-[clamp(0.5rem,1.4vh,1rem)]">
               <motion.h2
@@ -571,6 +571,8 @@ export default function HomePage() {
     </>
   );
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <>
       <TopNav
@@ -595,6 +597,13 @@ export default function HomePage() {
           isOnHome={isOnHome}
         />
       </main>
+      <footer className="border-t border-[color:var(--rule)] bg-paper/85 py-8 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-[1180px] flex-col gap-2 px-6 text-sm text-ink/70 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs uppercase tracking-[0.32em] text-ink/60">Nathan &amp; Co.</p>
+          <p className="text-sm text-ink/70">© {currentYear} Nathan &amp; Co. All rights reserved.</p>
+          <p className="text-xs uppercase tracking-[0.28em] text-ink/50">Since 1962</p>
+        </div>
+      </footer>
       <ServiceModal
         isOpen={isServiceModalOpen}
         activeServiceId={activeServiceId}
