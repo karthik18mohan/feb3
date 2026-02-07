@@ -121,11 +121,9 @@ h6 {
   }
 
   .section-shell {
-    height: calc(100vh - var(--nav-h));
-    margin-top: var(--nav-h);
-    padding-top: clamp(1rem, 2.5vh, 1.75rem);
+    padding-top: calc(var(--nav-h) + clamp(0.75rem, 2.5vh, 1.5rem));
     padding-bottom: clamp(1rem, 2.5vh, 1.75rem);
-    scroll-margin-top: calc(var(--nav-h) + 1rem);
+    scroll-margin-top: 0;
   }
 }
 

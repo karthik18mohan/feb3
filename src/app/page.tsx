@@ -6,6 +6,7 @@ import { Playfair_Display } from "next/font/google";
 import { motion } from "framer-motion";
 import { servicesData } from "@/content/services";
 import { EnquirySection } from "@/components/EnquirySection";
+import { Footer } from "@/components/Footer";
 import { FAQSection } from "@/components/FAQSection";
 import { TopNav } from "@/components/TopNav";
 import { VisionPurposeFlow } from "@/components/VisionPurposeFlow";
@@ -211,8 +212,7 @@ export default function HomePage() {
     const el = sectionRefs[id]?.current;
     if (!el) return;
 
-    const navH = navRef.current?.getBoundingClientRect().height ?? 0;
-    const y = el.getBoundingClientRect().top + window.scrollY - navH;
+    const y = el.getBoundingClientRect().top + window.scrollY;
 
     const root = document.documentElement;
     const prevSnap = root.style.scrollSnapType;
@@ -400,7 +400,7 @@ export default function HomePage() {
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,27,59,0.7)] via-[rgba(11,27,59,0.58)] to-[rgba(11,27,59,0.46)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(176,141,87,0.16),transparent_40%)]" />
-        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col justify-center px-6 py-[clamp(2rem,6vh,5rem)]">
+        <div className="relative z-10 mx-auto flex h-full w-full max-w-[1180px] flex-col justify-center px-6 py-[clamp(2rem,6vh,5rem)] -translate-y-[10vh]">
           <div className="max-w-2xl space-y-[clamp(1rem,2.5vh,1.75rem)] text-paper">
             <motion.div
               variants={fadeUpFast}
@@ -595,6 +595,7 @@ export default function HomePage() {
           isOnHome={isOnHome}
         />
       </main>
+      <Footer />
       <ServiceModal
         isOpen={isServiceModalOpen}
         activeServiceId={activeServiceId}
