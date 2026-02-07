@@ -477,9 +477,7 @@ export default function HomePage() {
                 ))}
               </motion.div>
             </div>
-            <div className="lg:mt-[22vh]">
-              <VisionPurposeFlow />
-            </div>
+            <VisionPurposeFlow />
           </div>
         </div>
       </section>
