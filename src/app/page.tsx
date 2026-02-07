@@ -155,8 +155,15 @@ const services = [
   }
 ];
 
-const SECTION_IDS = ["home", "about", "services", "sectors", "enquiry", "faq"] as const;
-type SectionId = (typeof SECTION_IDS)[number];
+type SectionId = "home" | "about" | "services" | "sectors" | "enquiry" | "faq";
+const SECTION_IDS: readonly SectionId[] = [
+  "home",
+  "about",
+  "services",
+  "sectors",
+  "enquiry",
+  "faq"
+];
 type Section = { id: SectionId; name: string; numeral: string };
 
 const SECTION_ITEMS = [
