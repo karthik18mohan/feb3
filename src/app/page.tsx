@@ -155,6 +155,19 @@ const services = [
   }
 ];
 
+const SECTION_IDS = ["home", "about", "services", "sectors", "enquiry", "faq"] as const;
+type SectionId = (typeof SECTION_IDS)[number];
+type Section = { id: SectionId; name: string; numeral: string };
+
+const SECTION_ITEMS = [
+  { id: "home", name: "Home", numeral: "I" },
+  { id: "about", name: "Who We Are", numeral: "II" },
+  { id: "services", name: "What We Do", numeral: "III" },
+  { id: "sectors", name: "Sectors", numeral: "IV" },
+  { id: "enquiry", name: "Start an Enquiry", numeral: "V" },
+  { id: "faq", name: "FAQ", numeral: "VI" }
+] satisfies ReadonlyArray<Section>;
+
 export default function HomePage() {
   const [activeSection, setActiveSection] = useState<SectionId>("home");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -182,21 +195,9 @@ export default function HomePage() {
         sectors: sectorsRef,
         enquiry: enquiryRef,
         faq: faqRef
-      } as const),
+      } satisfies Record<SectionId, typeof homeRef>),
     []
   );
-
-  type SectionId = keyof typeof sectionRefs;
-  type Section = { id: SectionId; name: string; numeral: string };
-
-  const SECTION_ITEMS = [
-    { id: "home", name: "Home", numeral: "I" },
-    { id: "about", name: "Who We Are", numeral: "II" },
-    { id: "services", name: "What We Do", numeral: "III" },
-    { id: "sectors", name: "Sectors", numeral: "IV" },
-    { id: "enquiry", name: "Start an Enquiry", numeral: "V" },
-    { id: "faq", name: "FAQ", numeral: "VI" }
-  ] satisfies ReadonlyArray<Section>;
 
   const sections = useMemo<Section[]>(() => SECTION_ITEMS, []);
 
@@ -302,7 +303,8 @@ export default function HomePage() {
     };
 
     type ObservedSection = { id: SectionId; top: number };
-    const isSectionId = (id: string): id is SectionId => id in sectionRefs;
+    const isSectionId = (id: string): id is SectionId =>
+      (SECTION_IDS as readonly string[]).includes(id);
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       let topmostVisible: ObservedSection | null = null;
