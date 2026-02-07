@@ -24,7 +24,7 @@ const playfairDisplay = Playfair_Display({
 const landingSlides = [
   {
     src: "/images/landing-page/1.jpg",
-    caption: "Rooted in Heritage — Serving Since 1962"
+    caption: "A Legacy of Trust Since 1962"
   },
   {
     src: "/images/landing-page/2.jpg",
@@ -32,7 +32,7 @@ const landingSlides = [
   },
   {
     src: "/images/landing-page/3.jpg",
-    caption: "Evolving from Manual to Digital Era"
+    caption: "Rooted in Tradition. Ready for Tomorrow"
   }
 ];
 
