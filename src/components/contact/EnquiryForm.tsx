@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import type { Location } from "config/locations";
 
 const formatLocation = (location?: Location | null) => {
@@ -13,16 +16,37 @@ type EnquiryFormProps = {
 };
 
 export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
+  const nextUrlRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (!nextUrlRef.current) {
+      return;
+    }
+    const origin = window.location.origin;
+    nextUrlRef.current.value = `${origin}/thank-you`;
+  }, []);
+
+  const handleSubmit = () => {
+    if (!nextUrlRef.current) {
+      return;
+    }
+    if (!nextUrlRef.current.value) {
+      const origin = window.location.origin;
+      nextUrlRef.current.value = `${origin}/thank-you`;
+    }
+  };
+
   return (
     <form
       method="POST"
       action="https://formsubmit.co/karthikmohan133@gmail.com"
+      onSubmit={handleSubmit}
       className="flex h-full flex-col"
     >
       <input type="hidden" name="_subject" value="New Website Enquiry" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="true" />
-      <input type="hidden" name="_next" value="/thank-you" />
+      <input ref={nextUrlRef} type="hidden" name="_next" value="" />
       <div className="space-y-[clamp(0.5rem,1.2vh,0.75rem)]">
         <div className="space-y-1">
           <label className="text-xs font-semibold uppercase tracking-[0.28em] text-ink" htmlFor="enquiry-name">
