@@ -41,7 +41,7 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
         ref={ref}
         id={id}
         aria-label={sectionLabel}
-        className={className ?? "relative isolate min-h-screen w-screen"}
+        className={className ?? "relative isolate h-screen w-screen"}
       >
         {sectionLabel ? <span className="sr-only">{sectionLabel}</span> : null}
         <div className="absolute inset-0">
@@ -55,7 +55,7 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
         </div>
         <div className="absolute inset-0 bg-[rgba(6,10,20,0.72)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(176,141,87,0.2),transparent_45%)]" />
-        <div className="relative z-10 mx-auto flex w-full max-w-[1180px] min-h-[calc(100vh-var(--nav-h))] items-center px-6 section-shell">
+        <div className="relative z-10 mx-auto flex h-[calc(100vh-var(--nav-h))] w-full max-w-[1180px] items-center overflow-hidden px-6 section-shell">
           <div className="w-full rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-[clamp(0.9rem,2.2vw,1.75rem)] shadow-[0_24px_60px_rgba(11,27,59,0.25)] backdrop-blur">
             <motion.div
               variants={fadeUp}
@@ -79,19 +79,19 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
             <motion.div
               variants={staggerContainer(stagger.normal)}
               {...sectionReveal}
-              className="grid gap-[clamp(0.85rem,2vw,1.5rem)] lg:grid-cols-12"
+              className="grid h-full gap-[clamp(0.85rem,2vw,1.5rem)] lg:grid-cols-12"
             >
-              <div className="lg:col-span-3">
+              <div className="min-h-0 lg:col-span-3">
                 <LocationsList
                   locations={LOCATIONS}
                   selectedId={selectedLocationId ?? ""}
                   onSelect={handleSelectLocation}
                 />
               </div>
-              <div className="lg:col-span-5">
+              <div className="min-h-0 lg:col-span-5">
                 <MapPanel location={selectedLocation} />
               </div>
-              <div className="relative lg:col-span-4">
+              <div className="relative min-h-0 lg:col-span-4">
                 <EnquiryForm selectedLocation={selectedLocation} />
                 {showThankYou ? (
                   <div

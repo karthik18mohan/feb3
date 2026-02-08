@@ -39,6 +39,8 @@ export const LOCATIONS: Location[] = [
     state: "Karnataka",
     country: "India",
     postalCode: "560001",
+    email: "info@nathanandco.in",
+    phone: "+91 8089388655",
     lat: 12.9741854,
     lng: 77.6124135
   }
