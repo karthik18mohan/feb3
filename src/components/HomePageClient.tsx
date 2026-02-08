@@ -34,6 +34,10 @@ const landingSlides = [
   {
     src: "/images/landing-page/3.jpg",
     caption: "Rooted in Tradition. Ready for Tomorrow"
+  },
+  {
+    src: "/images/landing-page/4.jpg",
+    caption: "Manual to Automatic"
   }
 ];
 
