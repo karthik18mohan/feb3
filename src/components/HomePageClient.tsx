@@ -37,7 +37,7 @@ const landingSlides = [
   },
   {
     src: "/images/landing-page/4.jpg",
-    caption: "Manual to Automatic"
+    caption: "Manual Era to Modern Era"
   }
 ];
 
