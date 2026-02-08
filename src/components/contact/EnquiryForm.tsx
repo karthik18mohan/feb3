@@ -95,21 +95,9 @@ export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
             <option value="careers">Careers</option>
           </select>
         </div>
-        <div className="space-y-1">
-          <label className="text-xs font-semibold uppercase tracking-[0.28em] text-ink" htmlFor="enquiry-message">
-            Message
-          </label>
-          <textarea
-            id="enquiry-message"
-            name="message"
-            rows={4}
-            placeholder="Tell us about your enquiry..."
-            className="h-[clamp(120px,18vh,200px)] w-full resize-none rounded-lg border border-[color:var(--rule)] bg-white/90 px-4 py-2 text-[clamp(0.8rem,1vw,0.95rem)] text-ink placeholder:text-muted shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:shadow-[0_0_0_3px_rgba(176,141,87,0.1)]"
-          />
-        </div>
         <input type="hidden" name="location" value={formatLocation(selectedLocation)} />
       </div>
-      <div className="mt-auto pt-[clamp(0.75rem,1.5vh,1rem)]">
+      <div className="mt-auto pt-[clamp(0.6rem,1.2vh,0.9rem)]">
         <button
           type="submit"
           formAction="https://formsubmit.co/karthikmohan133@gmail.com"

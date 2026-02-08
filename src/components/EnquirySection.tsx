@@ -59,15 +59,15 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(176,141,87,0.2),transparent_45%)]" />
         <div
           style={{ minHeight: `calc(100vh - ${NAV_H}px)` }}
-          className="relative z-10 mx-auto flex w-full max-w-[1180px] items-center justify-center px-4 md:px-6 section-shell"
+          className="relative z-10 mx-auto flex w-full max-w-[1180px] items-start justify-center px-4 md:px-6 section-shell py-[clamp(1rem,3vh,2rem)]"
         >
           <div
-            className="flex w-full max-w-[1180px] flex-col rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-[clamp(0.9rem,2.2vw,1.75rem)] shadow-[0_24px_60px_rgba(11,27,59,0.25)] backdrop-blur overflow-hidden"
+            className="flex w-full max-w-[1180px] flex-col rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-[clamp(0.8rem,1.8vw,1.4rem)] shadow-[0_24px_60px_rgba(11,27,59,0.25)] backdrop-blur overflow-hidden"
           >
             <motion.div
               variants={fadeUp}
               {...sectionReveal}
-              className="mb-[clamp(0.8rem,1.8vh,1.4rem)] space-y-[clamp(0.4rem,1.1vh,0.75rem)]"
+              className="mb-[clamp(0.6rem,1.4vh,1rem)] space-y-[clamp(0.3rem,0.9vh,0.6rem)]"
             >
               <div className="flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.42em] text-muted">
                 <span className="inline-block h-px w-8 bg-[color:var(--gold)]" aria-hidden />
@@ -77,28 +77,25 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
                 <h2 className="text-[clamp(1.6rem,2.8vw,2.4rem)] font-semibold text-ink">
                   Start an enquiry
                 </h2>
-                <p className="text-[clamp(0.9rem,1.1vw,1rem)] leading-relaxed text-muted">
-                  Share your requirements and we will respond with thoughtful guidance.
-                </p>
               </div>
             </motion.div>
 
             <motion.div
               variants={staggerContainer(stagger.normal)}
               {...sectionReveal}
-              className="grid min-h-0 flex-1 gap-[clamp(0.85rem,2vw,1.5rem)] lg:grid-cols-12"
+              className="grid min-h-0 flex-1 items-stretch gap-[clamp(0.75rem,1.6vw,1.2rem)] lg:grid-cols-12"
             >
-              <div className="min-h-0 lg:col-span-3">
+              <div className="min-h-0 lg:col-span-3 lg:flex lg:flex-col">
                 <LocationsList
                   locations={LOCATIONS}
                   selectedId={selectedLocationId ?? ""}
                   onSelect={handleSelectLocation}
                 />
               </div>
-              <div className="min-h-0 lg:col-span-5">
+              <div className="min-h-0 lg:col-span-5 lg:flex lg:flex-col">
                 <MapPanel location={selectedLocation} />
               </div>
-              <div className="relative min-h-0 lg:col-span-4">
+              <div className="relative min-h-0 lg:col-span-4 lg:flex lg:flex-col">
                 <EnquiryForm selectedLocation={selectedLocation} />
                 {showThankYou ? (
                   <div
