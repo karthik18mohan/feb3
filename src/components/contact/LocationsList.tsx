@@ -32,7 +32,7 @@ export function LocationsList({ locations, selectedId, onSelect }: LocationsList
   }, [locations, query]);
 
   return (
-    <div className="flex h-full flex-col gap-3">
+    <div className="flex h-full min-h-0 flex-col gap-3">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold uppercase tracking-[0.32em] text-ink">
           Locations
@@ -52,7 +52,7 @@ export function LocationsList({ locations, selectedId, onSelect }: LocationsList
         onChange={(event) => setQuery(event.target.value)}
         className="w-full rounded-lg border border-[color:var(--rule)] bg-white/90 px-3 py-2 text-sm text-ink placeholder:text-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
       />
-      <div className="flex-1 space-y-3 overflow-y-auto pr-1 lg:max-h-[520px]">
+      <div className="flex-1 min-h-0 space-y-3 overflow-y-auto pr-1">
         {filtered.map((location) => {
           const isSelected = location.id === selectedId;
           return (

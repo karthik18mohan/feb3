@@ -44,21 +44,13 @@ export function MapPanel({ location }: MapPanelProps) {
   const isAllLocations = !location;
 
   return (
-    <div className="flex h-full flex-col gap-3">
-      <div className="overflow-hidden rounded-xl border border-[color:var(--rule)] bg-white/80 shadow-sm">
-        <div
-          className={`relative overflow-hidden ${
-            isAllLocations ? "h-[240px] sm:h-[260px] lg:h-[430px]" : ""
-          }`}
-        >
+    <div className="flex h-full min-h-0 flex-col gap-3">
+      <div className="flex-1 min-h-0 overflow-hidden rounded-2xl border border-[color:var(--rule)] bg-white/80 shadow-sm">
+        <div className="relative h-full overflow-hidden">
           <iframe
             title={mapTitle}
             src={mapSrc}
-            className={
-              isAllLocations
-                ? "h-[calc(100%+70px)] w-full -translate-y-[70px]"
-                : "h-[240px] w-full sm:h-[260px] lg:h-[430px]"
-            }
+            className={isAllLocations ? "h-[calc(100%+70px)] w-full -translate-y-[70px] border-0" : "h-full w-full border-0"}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen

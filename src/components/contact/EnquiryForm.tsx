@@ -44,13 +44,13 @@ export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
       method="POST"
       action="https://formsubmit.co/karthikmohan133@gmail.com"
       onSubmit={handleSubmit}
-      className="flex h-full flex-col"
+      className="flex h-full min-h-0 flex-col"
     >
       <input type="hidden" name="_subject" value="New Website Enquiry" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="true" />
       <input ref={nextUrlRef} type="hidden" name="_next" value="" />
-      <div className="space-y-[clamp(0.5rem,1.2vh,0.75rem)]">
+      <div className="space-y-2">
         <div className="space-y-1">
           <label className="text-xs font-semibold uppercase tracking-[0.28em] text-ink" htmlFor="enquiry-name">
             Name
@@ -60,7 +60,7 @@ export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
             name="name"
             required
             placeholder="Your name"
-            className="w-full rounded-lg border border-[color:var(--rule)] bg-white/90 px-4 py-[clamp(0.5rem,1.2vh,0.75rem)] text-[clamp(0.8rem,1vw,0.95rem)] text-ink placeholder:text-muted shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:shadow-[0_0_0_3px_rgba(176,141,87,0.1)]"
+            className="w-full rounded-lg border border-[color:var(--rule)] bg-white/90 px-4 py-2 text-[clamp(0.8rem,1vw,0.95rem)] text-ink placeholder:text-muted shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:shadow-[0_0_0_3px_rgba(176,141,87,0.1)]"
           />
         </div>
         <div className="space-y-1">
@@ -73,7 +73,7 @@ export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
             type="email"
             required
             placeholder="you@example.com"
-            className="w-full rounded-lg border border-[color:var(--rule)] bg-white/90 px-4 py-[clamp(0.5rem,1.2vh,0.75rem)] text-[clamp(0.8rem,1vw,0.95rem)] text-ink placeholder:text-muted shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:shadow-[0_0_0_3px_rgba(176,141,87,0.1)]"
+            className="w-full rounded-lg border border-[color:var(--rule)] bg-white/90 px-4 py-2 text-[clamp(0.8rem,1vw,0.95rem)] text-ink placeholder:text-muted shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:shadow-[0_0_0_3px_rgba(176,141,87,0.1)]"
           />
         </div>
         <div className="space-y-1">
@@ -84,7 +84,7 @@ export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
             id="enquiry-category"
             name="category"
             defaultValue=""
-            className="w-full rounded-lg border border-[color:var(--rule)] bg-white/90 px-4 py-[clamp(0.5rem,1.2vh,0.75rem)] text-[clamp(0.8rem,1vw,0.95rem)] text-ink shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:shadow-[0_0_0_3px_rgba(176,141,87,0.1)]"
+            className="w-full rounded-lg border border-[color:var(--rule)] bg-white/90 px-4 py-2 text-[clamp(0.8rem,1vw,0.95rem)] text-ink shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:shadow-[0_0_0_3px_rgba(176,141,87,0.1)]"
           >
             <option value="" disabled>
               Select an option
@@ -104,7 +104,7 @@ export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
             name="message"
             rows={4}
             placeholder="Tell us about your enquiry..."
-            className="w-full resize-none rounded-lg border border-[color:var(--rule)] bg-white/90 px-4 py-[clamp(0.5rem,1.2vh,0.75rem)] text-[clamp(0.8rem,1vw,0.95rem)] text-ink placeholder:text-muted shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:shadow-[0_0_0_3px_rgba(176,141,87,0.1)]"
+            className="h-[clamp(120px,18vh,200px)] w-full resize-none rounded-lg border border-[color:var(--rule)] bg-white/90 px-4 py-2 text-[clamp(0.8rem,1vw,0.95rem)] text-ink placeholder:text-muted shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:shadow-[0_0_0_3px_rgba(176,141,87,0.1)]"
           />
         </div>
         <input type="hidden" name="location" value={formatLocation(selectedLocation)} />
