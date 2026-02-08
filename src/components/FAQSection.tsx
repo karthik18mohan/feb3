@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { forwardRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, fadeUpFast, durations, stagger, PREMIUM_EASE, useInViewReplay } from "@/lib/motion";
@@ -32,16 +33,17 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
         ref={ref}
         id={id}
         aria-label={sectionLabel}
-        className={className ?? "relative isolate flex min-h-screen w-screen flex-col"}
-        style={{
-          backgroundColor: "var(--ink)",
-          backgroundImage: "url('/images/faq/0.jpg')",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center"
-        }}
+        className={className ?? "relative isolate flex min-h-screen w-screen flex-col bg-[color:var(--ink)]"}
       >
         {sectionLabel ? <span className="sr-only">{sectionLabel}</span> : null}
+
+        <div className="absolute inset-0">
+          <Image src="/images/faq/0.jpg" alt="" fill className="object-cover object-center" sizes="100vw" />
+        </div>
+        <div className="absolute inset-0 opacity-70">
+          <Image src="/images/sectors/0.png" alt="" fill className="object-cover object-center" sizes="100vw" />
+        </div>
+        <div className="absolute inset-0 bg-[rgba(11,27,59,0.72)]" />
 
         <div className="relative z-10 mx-auto flex w-full max-w-[1180px] flex-col px-6 section-shell min-h-[calc(100vh-var(--nav-h))]">
           <motion.div
