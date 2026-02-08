@@ -35,7 +35,7 @@ export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(
         className={className ?? "relative isolate flex min-h-screen w-screen flex-col"}
         style={{
           backgroundColor: "var(--ink)",
-          backgroundImage: "url('/images/faqs/0.jpg')",
+          backgroundImage: "url('/images/faq/0.jpg')",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center"
