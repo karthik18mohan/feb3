@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Playfair_Display } from "next/font/google";
 import { motion } from "framer-motion";
 import { servicesData } from "@/content/services";
@@ -155,6 +156,8 @@ const services = [
 ];
 
 export default function HomePage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [activeSection, setActiveSection] = useState<SectionId>("home");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
@@ -593,6 +596,14 @@ export default function HomePage() {
         id="enquiry"
         ref={enquiryRef}
         sectionLabel={`${sectionMeta.enquiry.numeral} ${sectionMeta.enquiry.name}`}
+        showThankYou={searchParams.get("enquiry") === "success"}
+        onCloseThankYou={() => {
+          const params = new URLSearchParams(searchParams.toString());
+          params.delete("enquiry");
+          const query = params.toString();
+          const target = query ? `/?${query}#enquiry` : "/#enquiry";
+          router.replace(target);
+        }}
       />
       <FAQSection
         id="faq"

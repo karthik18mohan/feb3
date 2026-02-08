@@ -18,12 +18,16 @@ type EnquiryFormProps = {
 export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
   const nextUrlRef = useRef<HTMLInputElement | null>(null);
 
+  const buildNextUrl = () => {
+    const origin = window.location.origin;
+    return `${origin}/?enquiry=success#enquiry`;
+  };
+
   useEffect(() => {
     if (!nextUrlRef.current) {
       return;
     }
-    const origin = window.location.origin;
-    nextUrlRef.current.value = `${origin}/thank-you`;
+    nextUrlRef.current.value = buildNextUrl();
   }, []);
 
   const handleSubmit = () => {
@@ -31,8 +35,7 @@ export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
       return;
     }
     if (!nextUrlRef.current.value) {
-      const origin = window.location.origin;
-      nextUrlRef.current.value = `${origin}/thank-you`;
+      nextUrlRef.current.value = buildNextUrl();
     }
   };
 
