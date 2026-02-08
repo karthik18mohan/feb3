@@ -62,8 +62,8 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
           className="relative z-10 mx-auto flex w-full max-w-[1180px] items-center justify-center px-4 md:px-6 section-shell"
         >
           <div
-            style={{ height: `clamp(520px, calc(100vh - ${NAV_H}px - 32px), 760px)` }}
-            className="flex w-full max-w-[1180px] flex-col rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-[clamp(0.9rem,2.2vw,1.75rem)] shadow-[0_24px_60px_rgba(11,27,59,0.25)] backdrop-blur overflow-hidden"
+            style={{ maxHeight: `calc(100vh - ${NAV_H}px - 32px)` }}
+            className="flex h-full w-full max-w-[1180px] flex-col rounded-2xl border border-[color:var(--rule)] bg-paper/85 p-[clamp(0.9rem,2.2vw,1.75rem)] shadow-[0_24px_60px_rgba(11,27,59,0.25)] backdrop-blur overflow-hidden"
           >
             <motion.div
               variants={fadeUp}
