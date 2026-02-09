@@ -113,7 +113,7 @@ export function TopNav({
         {/* Mobile Hamburger Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden flex h-6 w-6 flex-col items-center justify-center gap-1.5 rounded-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+          className="lg:hidden flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
           aria-label="Toggle mobile menu"
           aria-expanded={isMobileMenuOpen}
         >
@@ -137,13 +137,14 @@ export function TopNav({
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`lg:hidden fixed inset-0 top-[var(--nav-h)] bg-paper backdrop-blur-xl transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 top-[var(--nav-h)] bg-paper/80 backdrop-blur-2xl transition-all duration-300 ${
           isMobileMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
         }`}
       >
-        <nav className="flex flex-col items-center gap-8 pt-12 px-6">
+        <div className="absolute inset-0 bg-ink/35 backdrop-blur-2xl [background-image:radial-gradient(circle_at_top,_rgba(11,27,59,0.2),_transparent_60%)]" aria-hidden />
+        <nav className="relative z-10 flex flex-col items-center gap-8 pt-12 px-6">
           {items.map((item) => {
             const label = item.name;
             return (
@@ -154,7 +155,7 @@ export function TopNav({
               className={`whitespace-nowrap rounded-sm text-lg tracking-[0.3em] transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
                 activeSection === item.id
                   ? "text-ink font-semibold"
-                  : "text-muted"
+                  : "text-ink/80"
               }`}
             >
               {label}
