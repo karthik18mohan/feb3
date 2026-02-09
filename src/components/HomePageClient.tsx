@@ -455,7 +455,7 @@ export default function HomePageClient() {
         </div>
         <div className="absolute bottom-[6.5rem] left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3">
           <p
-            className={`${playfairDisplay.className} text-center text-base text-paper drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)] sm:text-xl max-w-[600px] px-4`}
+            className={`${playfairDisplay.className} w-[90vw] max-w-none whitespace-nowrap text-center text-[0.75rem] text-paper drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)] sm:w-auto sm:max-w-[600px] sm:text-xl px-4`}
           >
             {landingSlides[activeSlideIndex]?.caption}
           </p>

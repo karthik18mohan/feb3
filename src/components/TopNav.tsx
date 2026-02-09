@@ -137,13 +137,13 @@ export function TopNav({
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`lg:hidden fixed inset-0 top-[var(--nav-h)] z-50 bg-ink/60 backdrop-blur-md transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 z-50 bg-ink/60 backdrop-blur-xl transition-all duration-300 ${
           isMobileMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
         }`}
       >
-        <nav className="relative z-10 flex flex-col items-center gap-6 pt-12 px-6">
+        <nav className="relative z-10 flex flex-col items-center gap-6 px-6 pt-[calc(var(--nav-h)+3rem)]">
           {items.map((item) => {
             const label = item.name;
             return (
