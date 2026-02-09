@@ -137,13 +137,13 @@ export function TopNav({
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`lg:hidden fixed inset-0 top-[var(--nav-h)] bg-paper backdrop-blur-xl transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 top-[var(--nav-h)] z-50 bg-ink/60 backdrop-blur-md transition-all duration-300 ${
           isMobileMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
         }`}
       >
-        <nav className="flex flex-col items-center gap-8 pt-12 px-6">
+        <nav className="relative z-10 flex flex-col items-center gap-6 pt-12 px-6">
           {items.map((item) => {
             const label = item.name;
             return (
@@ -151,10 +151,10 @@ export function TopNav({
               key={item.id}
               href={getHref(`#${item.id}`)}
               onClick={(e) => handleNavClick(e, item.id)}
-              className={`whitespace-nowrap rounded-sm text-lg tracking-[0.3em] transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
+              className={`flex w-full max-w-xs items-center justify-center whitespace-nowrap rounded-full border px-6 py-3 text-base font-medium tracking-[0.3em] shadow-[0_12px_30px_rgba(11,27,59,0.18)] transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
                 activeSection === item.id
-                  ? "text-ink font-semibold"
-                  : "text-muted"
+                  ? "border-ink bg-ink text-paper"
+                  : "border-white/40 bg-paper/95 text-ink"
               }`}
             >
               {label}
