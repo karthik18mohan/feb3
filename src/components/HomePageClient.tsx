@@ -455,7 +455,7 @@ export default function HomePageClient() {
         </div>
         <div className="absolute bottom-[6.5rem] left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3">
           <p
-            className={`${playfairDisplay.className} text-center text-base text-paper drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)] sm:text-xl max-w-[600px] px-4`}
+            className={`${playfairDisplay.className} w-[90vw] max-w-none whitespace-nowrap text-center text-[0.75rem] text-paper drop-shadow-[0_3px_16px_rgba(0,0,0,0.65)] sm:w-auto sm:max-w-[600px] sm:text-xl px-4`}
           >
             {landingSlides[activeSlideIndex]?.caption}
           </p>
@@ -662,13 +662,13 @@ function PanelProgress({
   onNavigate: (index: number) => void;
 }) {
   return (
-    <div className="pointer-events-none fixed bottom-8 left-1/2 z-40 flex -translate-x-1/2 items-center justify-center">
-      <div className="flex items-center gap-3 rounded-full border border-[color:var(--rule)] bg-paper/80 px-5 py-3 shadow-[0_18px_40px_rgba(11,27,59,0.18)] backdrop-blur">
-        <span className="text-[0.65rem] uppercase tracking-[0.32em] text-muted">
+    <div className="pointer-events-none fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 items-center justify-center sm:bottom-8">
+      <div className="flex items-center gap-2 rounded-full border border-[color:var(--rule)] bg-paper/80 px-4 py-2 shadow-[0_18px_40px_rgba(11,27,59,0.18)] backdrop-blur sm:gap-3 sm:px-5 sm:py-3">
+        <span className="text-[0.55rem] uppercase tracking-[0.32em] text-muted sm:text-[0.65rem]">
           Sections
         </span>
-        <div className="h-px w-12 bg-[color:var(--rule)]" aria-hidden />
-        <div className="flex items-center gap-2">
+        <div className="h-px w-8 bg-[color:var(--rule)] sm:w-12" aria-hidden />
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {sections.map((item, index) => (
             <motion.button
               key={item.id}
@@ -688,13 +688,13 @@ function PanelProgress({
                 duration: 0.4,
                 ease: PREMIUM_EASE
               }}
-              className="pointer-events-auto group relative flex h-8 w-8 items-center justify-center rounded-full border shadow-[0_12px_30px_rgba(11,27,59,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+              className="pointer-events-auto group relative flex h-7 w-7 items-center justify-center rounded-full border text-[0.6rem] shadow-[0_12px_30px_rgba(11,27,59,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper sm:h-8 sm:w-8 sm:text-[0.7rem]"
               style={{
                 boxShadow: activeIndex === index ? "0 12px 30px rgba(11, 27, 59, 0.25)" : "none"
               }}
               aria-label={item.name}
             >
-              <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-white/90 px-2 py-1 text-[0.65rem] text-[#333] opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100">
+              <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-white/90 px-2 py-1 text-[0.55rem] text-[#333] opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100 sm:-top-8 sm:text-[0.65rem]">
                 {item.name}
               </span>
               {item.numeral}
