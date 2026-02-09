@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { siteTitle } from "@/content/copy";
 import { Barlow, Cormorant_Garamond } from "next/font/google";
+import { FaqChatWidget } from "@/components/FaqChatWidget/FaqChatWidget";
 
 const bodyFont = Barlow({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`min-h-screen bg-paper text-ink ${bodyFont.variable} ${headingFont.variable}`}>
         {children}
+        <FaqChatWidget />
       </body>
     </html>
   );
