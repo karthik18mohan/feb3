@@ -137,13 +137,25 @@ export function TopNav({
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`lg:hidden fixed inset-0 z-50 bg-ink/60 backdrop-blur-xl transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 z-50 bg-ink/90 backdrop-blur-2xl transition-all duration-300 ${
           isMobileMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
         }`}
+        onClick={() => setIsMobileMenuOpen(false)}
       >
-        <nav className="relative z-10 flex flex-col items-center gap-6 px-6 pt-[calc(var(--nav-h)+3rem)]">
+        <nav
+          className="relative z-10 flex flex-col items-center gap-6 px-6 pt-[calc(var(--nav-h)+3rem)]"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="absolute right-6 top-[calc(var(--nav-h)+1rem)] inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-paper/95 text-ink shadow-[0_12px_30px_rgba(11,27,59,0.18)] transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+            aria-label="Close mobile menu"
+          >
+            <span className="text-lg leading-none">×</span>
+          </button>
           {items.map((item) => {
             const label = item.name;
             return (
