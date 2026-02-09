@@ -664,7 +664,7 @@ function PanelProgress({
   return (
     <div className="pointer-events-none fixed bottom-8 left-1/2 z-40 flex -translate-x-1/2 items-center justify-center">
       <div
-        className={`flex items-center gap-3 rounded-full border border-[color:var(--rule)] bg-paper/80 px-5 py-3 shadow-[0_18px_40px_rgba(11,27,59,0.18)] backdrop-blur ${
+        className={`flex w-[calc(100vw-2rem)] max-w-[22rem] items-center gap-3 rounded-full border border-[color:var(--rule)] bg-paper/80 px-4 py-3 shadow-[0_18px_40px_rgba(11,27,59,0.18)] backdrop-blur ${
           activeIndex === 0 ? "hidden md:flex" : "flex"
         }`}
       >
