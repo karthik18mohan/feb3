@@ -120,7 +120,6 @@ export function Footer({ className, showBackToTop = false }: FooterProps) {
               </a>
             ))}
           </div>
-          <p className="text-xs uppercase tracking-[0.32em] text-ink/50">TODO: add social links</p>
         </div>
       </div>
     </footer>
