@@ -626,7 +626,7 @@ export default function HomePageClient() {
         isVisible={!isOnHome}
         navRef={navRef}
       />
-      <main className="relative">
+      <main className="relative pb-24 md:pb-0">
         {aboutPanel}
         {workPanel}
         <SectorsSection
@@ -663,7 +663,11 @@ function PanelProgress({
 }) {
   return (
     <div className="pointer-events-none fixed bottom-8 left-1/2 z-40 flex -translate-x-1/2 items-center justify-center">
-      <div className="flex items-center gap-3 rounded-full border border-[color:var(--rule)] bg-paper/80 px-5 py-3 shadow-[0_18px_40px_rgba(11,27,59,0.18)] backdrop-blur">
+      <div
+        className={`flex items-center gap-3 rounded-full border border-[color:var(--rule)] bg-paper/80 px-5 py-3 shadow-[0_18px_40px_rgba(11,27,59,0.18)] backdrop-blur ${
+          activeIndex === 0 ? "hidden md:flex" : "flex"
+        }`}
+      >
         <span className="text-[0.65rem] uppercase tracking-[0.32em] text-muted">
           Sections
         </span>
@@ -688,7 +692,7 @@ function PanelProgress({
                 duration: 0.4,
                 ease: PREMIUM_EASE
               }}
-              className="pointer-events-auto group relative flex h-8 w-8 items-center justify-center rounded-full border shadow-[0_12px_30px_rgba(11,27,59,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+              className="pointer-events-auto group relative flex h-10 w-10 items-center justify-center rounded-full border shadow-[0_12px_30px_rgba(11,27,59,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
               style={{
                 boxShadow: activeIndex === index ? "0 12px 30px rgba(11, 27, 59, 0.25)" : "none"
               }}

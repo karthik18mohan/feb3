@@ -113,7 +113,7 @@ export function TopNav({
         {/* Mobile Hamburger Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden flex h-6 w-6 flex-col items-center justify-center gap-1.5 rounded-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+          className="lg:hidden flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
           aria-label="Toggle mobile menu"
           aria-expanded={isMobileMenuOpen}
         >
@@ -137,7 +137,7 @@ export function TopNav({
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`lg:hidden fixed inset-0 top-[var(--nav-h)] bg-paper backdrop-blur-xl transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 top-[var(--nav-h)] bg-paper/90 backdrop-blur-2xl transition-all duration-300 ${
           isMobileMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -154,7 +154,7 @@ export function TopNav({
               className={`whitespace-nowrap rounded-sm text-lg tracking-[0.3em] transition hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
                 activeSection === item.id
                   ? "text-ink font-semibold"
-                  : "text-muted"
+                  : "text-ink/80"
               }`}
             >
               {label}
