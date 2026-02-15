@@ -13,6 +13,8 @@ import { TopNav } from "@/components/TopNav";
 import { VisionPurposeFlow } from "@/components/VisionPurposeFlow";
 import { ServiceModal } from "@/components/ServiceModal";
 import { SectorsSection } from "@/components/SectorsSection";
+import { InteractiveChatbotPanel } from "@/components/chatbot/InteractiveChatbotPanel";
+import { useInteractiveChatbot } from "@/components/chatbot/useInteractiveChatbot";
 import { fadeUp, fadeUpFast, fadeLeft, fadeRight, staggerContainer, scaleXReveal, stagger, durations, PREMIUM_EASE, useInViewReplay } from "@/lib/motion";
 
 
@@ -166,6 +168,8 @@ export default function HomePageClient() {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
   const [activeServiceId, setActiveServiceId] = useState<string | null>(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const chatbotState = useInteractiveChatbot();
   const sectionReveal = useInViewReplay({ amount: 0.6 });
   const sectionRevealPartial = useInViewReplay({ amount: 0.35 });
   const slideCount = landingSlides.length;
@@ -648,6 +652,19 @@ export default function HomePageClient() {
         onClose={handleServiceModalClose}
         onServiceChange={handleServiceChange}
       />
+      {!isOnHome ? (
+        <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+          {isChatOpen ? <InteractiveChatbotPanel state={chatbotState} /> : null}
+        <button
+          type="button"
+          onClick={() => setIsChatOpen((prev) => !prev)}
+          className="flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--rule)] bg-paper/80 text-2xl font-semibold text-ink shadow-[0_12px_30px_rgba(11,27,59,0.18)] backdrop-blur-md transition hover:scale-[1.03]"
+          aria-label={isChatOpen ? "Close chat" : "Open chat"}
+        >
+          {isChatOpen ? "×" : "?"}
+          </button>
+        </div>
+      ) : null}
     </>
   );
 }
