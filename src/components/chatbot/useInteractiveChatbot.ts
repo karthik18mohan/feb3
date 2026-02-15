@@ -1,8 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { caFirmFlows } from "../../data/chatbot/caFirmFlows";
 import { ChatMessage, ChatbotNode, ChatbotOption } from "../../types/chatbot";
+
+const BOT_TYPING_DELAY_MS = 650;
 
 const createId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
@@ -19,8 +21,17 @@ export const useInteractiveChatbot = () => {
     { id: createId(), author: "bot", text: initialNode.message },
   ]);
   const [nodeTrail, setNodeTrail] = useState<string[]>([initialNode.id]);
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const currentNode = caFirmFlows.nodes[currentNodeId];
+
+  const clearTypingTimeout = () => {
+    if (!typingTimeoutRef.current) return;
+    clearTimeout(typingTimeoutRef.current);
+    typingTimeoutRef.current = null;
+    setIsTyping(false);
+  };
 
   const pushBotNode = (node: ChatbotNode) => {
     setCurrentNodeId(node.id);
@@ -28,7 +39,20 @@ export const useInteractiveChatbot = () => {
     setMessages((prev) => [...prev, { id: createId(), author: "bot", text: node.message }]);
   };
 
+  const pushBotNodeWithTyping = (node: ChatbotNode) => {
+    clearTypingTimeout();
+    setIsTyping(true);
+
+    typingTimeoutRef.current = setTimeout(() => {
+      pushBotNode(node);
+      setIsTyping(false);
+      typingTimeoutRef.current = null;
+    }, BOT_TYPING_DELAY_MS);
+  };
+
   const onSelectOption = (option: ChatbotOption) => {
+    if (isTyping) return;
+
     setMessages((prev) => [...prev, { id: createId(), author: "user", text: option.label }]);
 
     if (option.action.type === "link") {
@@ -38,11 +62,12 @@ export const useInteractiveChatbot = () => {
 
     const nextNode = caFirmFlows.nodes[option.action.nextNodeId];
     if (!nextNode) return;
-    pushBotNode(nextNode);
+    pushBotNodeWithTyping(nextNode);
   };
 
   const onSubmitInput = (value: string) => {
-    if (!currentNode.input) return;
+    if (isTyping || !currentNode.input) return;
+
     const trimmed = value.trim();
     if (!trimmed) return;
 
@@ -55,10 +80,11 @@ export const useInteractiveChatbot = () => {
 
     const nextNode = caFirmFlows.nodes[currentNode.input.nextNodeId];
     if (!nextNode) return;
-    pushBotNode(nextNode);
+    pushBotNodeWithTyping(nextNode);
   };
 
   const goHome = () => {
+    clearTypingTimeout();
     setCurrentNodeId(initialNode.id);
     setNodeTrail([initialNode.id]);
     setMessages([{ id: createId(), author: "bot", text: initialNode.message }]);
@@ -66,6 +92,7 @@ export const useInteractiveChatbot = () => {
 
   const goBack = () => {
     if (nodeTrail.length < 2) return;
+    clearTypingTimeout();
 
     const updatedTrail = nodeTrail.slice(0, -1);
     const prevNodeId = updatedTrail[updatedTrail.length - 1];
@@ -89,13 +116,18 @@ export const useInteractiveChatbot = () => {
     setMessages(messages.slice(0, lastBotIndex + 1));
   };
 
+  useEffect(() => {
+    return () => clearTypingTimeout();
+  }, []);
+
   const state = useMemo(
     () => ({
       messages,
       currentNode,
       canGoBack: nodeTrail.length > 1,
+      isTyping,
     }),
-    [messages, currentNode, nodeTrail.length]
+    [messages, currentNode, nodeTrail.length, isTyping]
   );
 
   return {
