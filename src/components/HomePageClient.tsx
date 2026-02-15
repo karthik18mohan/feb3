@@ -652,17 +652,19 @@ export default function HomePageClient() {
         onClose={handleServiceModalClose}
         onServiceChange={handleServiceChange}
       />
-      <div className="fixed bottom-5 left-5 z-50 flex flex-col items-start gap-3">
-        {isChatOpen ? <InteractiveChatbotPanel state={chatbotState} /> : null}
+      {!isOnHome ? (
+        <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+          {isChatOpen ? <InteractiveChatbotPanel state={chatbotState} /> : null}
         <button
           type="button"
           onClick={() => setIsChatOpen((prev) => !prev)}
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-[#0b1b3b] text-2xl font-semibold text-paper shadow-[0_18px_35px_rgba(11,27,59,0.35)] transition hover:scale-[1.03]"
+          className="flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--rule)] bg-paper/80 text-2xl font-semibold text-ink shadow-[0_12px_30px_rgba(11,27,59,0.18)] backdrop-blur-md transition hover:scale-[1.03]"
           aria-label={isChatOpen ? "Close chat" : "Open chat"}
         >
           {isChatOpen ? "×" : "?"}
-        </button>
-      </div>
+          </button>
+        </div>
+      ) : null}
     </>
   );
 }

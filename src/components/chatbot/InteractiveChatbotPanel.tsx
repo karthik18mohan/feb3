@@ -10,11 +10,11 @@ type InteractiveChatbotPanelProps = {
 
 const bubbleClass: Record<ChatMessage["author"], string> = {
   bot: "self-start bg-white text-ink border border-[color:var(--rule)]",
-  user: "self-end bg-[#0b1b3b] text-paper",
+  user: "self-end bg-[color:var(--rule)] text-ink border border-[color:var(--rule)]",
 };
 
 export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps) => {
-  const { currentNode, messages, onSelectOption, onSubmitInput, goBack, goHome, restart, canGoBack } = state;
+  const { currentNode, messages, onSelectOption, onSubmitInput, goBack, restart, canGoBack } = state;
   const [inputValue, setInputValue] = useState("");
 
   const showActionButtons = useMemo(
@@ -30,16 +30,13 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
 
   return (
     <div className="flex h-[28rem] w-[22rem] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-[color:var(--rule)] bg-paper shadow-[0_25px_55px_rgba(11,27,59,0.28)]">
-      <div className="flex items-center justify-between border-b border-[color:var(--rule)] bg-[#0b1b3b] px-4 py-3 text-paper">
+      <div className="flex items-center justify-between border-b border-[color:var(--rule)] bg-paper/80 px-4 py-3 text-ink backdrop-blur-md">
         <h3 className="text-sm font-semibold tracking-wide">Nathan & Co Help</h3>
         <div className="flex items-center gap-2 text-[0.65rem]">
-          <button type="button" onClick={goBack} disabled={!canGoBack} className="rounded border border-paper/40 px-2 py-1 disabled:opacity-40">
+          <button type="button" onClick={goBack} disabled={!canGoBack} className="rounded border border-[color:var(--rule)] px-2 py-1 disabled:opacity-40">
             Back
           </button>
-          <button type="button" onClick={goHome} className="rounded border border-paper/40 px-2 py-1">
-            Home
-          </button>
-          <button type="button" onClick={restart} className="rounded border border-paper/40 px-2 py-1">
+          <button type="button" onClick={restart} className="rounded border border-[color:var(--rule)] px-2 py-1">
             Restart
           </button>
         </div>
@@ -61,7 +58,7 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
                 key={option.label}
                 type="button"
                 onClick={() => onSelectOption(option)}
-                className="rounded-full border border-[#0b1b3b] px-3 py-1 text-xs font-medium text-[#0b1b3b] transition hover:bg-[#0b1b3b] hover:text-paper"
+                className="rounded-full border border-[color:var(--rule)] bg-paper/90 px-3 py-1 text-xs font-medium text-ink transition hover:bg-paper"
               >
                 {option.label}
               </button>
@@ -71,7 +68,7 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
                 key={option.label}
                 type="button"
                 onClick={() => onSelectOption(option)}
-                className="rounded-full bg-[#0b1b3b] px-3 py-1 text-xs font-semibold text-paper transition hover:opacity-90"
+                className="rounded-full border border-[color:var(--rule)] bg-paper/90 px-3 py-1 text-xs font-semibold text-ink transition hover:bg-paper"
               >
                 {option.label}
               </button>
@@ -86,7 +83,7 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
                 value={inputValue}
                 onChange={(event) => setInputValue(event.target.value)}
                 placeholder={currentNode.input.placeholder}
-                className="h-20 w-full rounded-lg border border-[color:var(--rule)] px-3 py-2 text-sm outline-none focus:border-[#0b1b3b]"
+                className="h-20 w-full rounded-lg border border-[color:var(--rule)] bg-white px-3 py-2 text-sm outline-none focus:border-ink"
               />
             ) : (
               <input
@@ -94,10 +91,10 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
                 onChange={(event) => setInputValue(event.target.value)}
                 placeholder={currentNode.input.placeholder}
                 type={currentNode.input.type === "email" ? "email" : "text"}
-                className="w-full rounded-lg border border-[color:var(--rule)] px-3 py-2 text-sm outline-none focus:border-[#0b1b3b]"
+                className="w-full rounded-lg border border-[color:var(--rule)] bg-white px-3 py-2 text-sm outline-none focus:border-ink"
               />
             )}
-            <button type="submit" className="rounded-lg bg-[#0b1b3b] px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-paper">
+            <button type="submit" className="rounded-lg border border-[color:var(--rule)] bg-paper px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink">
               {currentNode.input.submitLabel}
             </button>
           </form>
