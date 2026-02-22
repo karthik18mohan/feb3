@@ -348,39 +348,39 @@ export const caFirmFlows: ChatbotFlow = {
 
     "service-terminal-audit": {
       id: "service-terminal-audit",
-      message: "To help you faster, please share your contact details or open the enquiry form.",
+      message: "To help you faster, please share your name and email or phone number.",
     },
     "service-terminal-tax": {
       id: "service-terminal-tax",
-      message: "To help you faster, please share your contact details or open the enquiry form.",
+      message: "To help you faster, please share your name and email or phone number.",
     },
     "service-terminal-corporate": {
       id: "service-terminal-corporate",
-      message: "To help you faster, please share your contact details or open the enquiry form.",
+      message: "To help you faster, please share your name and email or phone number.",
     },
     "service-terminal-accounting": {
       id: "service-terminal-accounting",
-      message: "To help you faster, please share your contact details or open the enquiry form.",
+      message: "To help you faster, please share your name and email or phone number.",
     },
     "service-terminal-fpna": {
       id: "service-terminal-fpna",
-      message: "To help you faster, please share your contact details or open the enquiry form.",
+      message: "To help you faster, please share your name and email or phone number.",
     },
     "service-terminal-virtual-cfo": {
       id: "service-terminal-virtual-cfo",
-      message: "To help you faster, please share your contact details or open the enquiry form.",
+      message: "To help you faster, please share your name and email or phone number.",
     },
     "service-terminal-erp": {
       id: "service-terminal-erp",
-      message: "To help you faster, please share your contact details or open the enquiry form.",
+      message: "To help you faster, please share your name and email or phone number.",
     },
     "service-terminal-esg": {
       id: "service-terminal-esg",
-      message: "To help you faster, please share your contact details or open the enquiry form.",
+      message: "To help you faster, please share your name and email or phone number.",
     },
     "service-terminal-other": {
       id: "service-terminal-other",
-      message: "To help you faster, please share your contact details or open the enquiry form.",
+      message: "To help you faster, please share your name and email or phone number.",
     },
   },
 };

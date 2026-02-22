@@ -89,7 +89,7 @@ export const useInteractiveChatbot = () => {
     addMessage("bot", node.message);
     if (node.id.startsWith("service-terminal-")) {
       setPendingContact(null);
-      setIsCallbackOpen(false);
+      setIsCallbackOpen(true);
       setIsLeadSubmitted(false);
       setCallbackForm(initialForm);
     }
@@ -170,7 +170,7 @@ export const useInteractiveChatbot = () => {
       }
 
       setIsLeadSubmitted(true);
-      setIsCallbackOpen(false);
+      setIsCallbackOpen(true);
       setPendingContact(null);
       addMessage("bot", "Thank you. Our team will contact you shortly.");
     } catch {
@@ -195,11 +195,6 @@ export const useInteractiveChatbot = () => {
     addMessage("user", "No");
     addMessage("bot", "Sure — continue with your query and use Request a Callback whenever you are ready.");
     setPendingContact(null);
-  };
-
-  const openCallbackForm = () => {
-    setPendingContact(null);
-    setIsCallbackOpen(true);
   };
 
   const submitCallbackForm = async () => {
@@ -284,7 +279,6 @@ export const useInteractiveChatbot = () => {
     goHome,
     goBack,
     restart: goHome,
-    openCallbackForm,
     setCallbackForm,
     submitCallbackForm,
     confirmDetectedContact,
