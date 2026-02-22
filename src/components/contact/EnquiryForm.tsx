@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Location } from "config/locations";
 
 const formatLocation = (location?: Location | null) => {
@@ -17,6 +18,21 @@ type EnquiryFormProps = {
 
 export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
   const nextUrlRef = useRef<HTMLInputElement | null>(null);
+  const searchParams = useSearchParams();
+
+  const prefillService = searchParams.get("service") ?? "";
+  const prefillSource = searchParams.get("source") ?? "";
+  const prefillMessage = searchParams.get("message") ?? "";
+
+  const prefillCategory = useMemo(() => {
+    if (!prefillService) return "";
+    return "services";
+  }, [prefillService]);
+
+  const combinedMessage = useMemo(() => {
+    const bits = [prefillMessage, prefillSource ? `Source: ${prefillSource}` : "", prefillService ? `Service: ${prefillService}` : ""].filter(Boolean);
+    return bits.join("\n");
+  }, [prefillMessage, prefillService, prefillSource]);
 
   const buildNextUrl = () => {
     const origin = window.location.origin;
@@ -50,6 +66,8 @@ export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="true" />
       <input ref={nextUrlRef} type="hidden" name="_next" value="" />
+      <input type="hidden" name="source" value={prefillSource || "website"} />
+      <input type="hidden" name="service" value={prefillService} />
       <div className="space-y-2">
         <div className="space-y-1">
           <label className="text-xs font-semibold uppercase tracking-[0.28em] text-ink" htmlFor="enquiry-name">
@@ -83,7 +101,7 @@ export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
           <select
             id="enquiry-category"
             name="category"
-            defaultValue=""
+            defaultValue={prefillCategory}
             className="w-full rounded-lg border border-[color:var(--rule)] bg-white/90 px-4 py-2 text-[clamp(0.8rem,1vw,0.95rem)] text-ink shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:shadow-[0_0_0_3px_rgba(176,141,87,0.1)]"
           >
             <option value="" disabled>
@@ -103,6 +121,7 @@ export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
             id="enquiry-message"
             name="message"
             rows={4}
+            defaultValue={combinedMessage}
             placeholder="Tell us about your enquiry..."
             className="h-[clamp(120px,18vh,200px)] w-full resize-none rounded-lg border border-[color:var(--rule)] bg-white/90 px-4 py-2 text-[clamp(0.8rem,1vw,0.95rem)] text-ink placeholder:text-muted shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)] focus:shadow-[0_0_0_3px_rgba(176,141,87,0.1)]"
           />

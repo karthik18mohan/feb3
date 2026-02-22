@@ -1,13 +1,5 @@
 import { ChatbotFlow } from "../../types/chatbot";
 
-const CONTACT_FALLBACK = "mailto:info@nathanandco.com";
-const ENQUIRY_ROUTE = "/#enquiry";
-
-const contactAction = {
-  type: "link" as const,
-  href: ENQUIRY_ROUTE || CONTACT_FALLBACK,
-};
-
 export const caFirmFlows: ChatbotFlow = {
   startNodeId: "welcome",
   nodes: {
@@ -57,11 +49,7 @@ export const caFirmFlows: ChatbotFlow = {
       id: "audit-cta",
       message:
         "Would you like to schedule a complimentary preliminary document review with one of our audit specialists?",
-      cta: {
-        message:
-          "Would you like to schedule a complimentary preliminary document review with one of our audit specialists?",
-        buttons: [{ label: "Schedule review", action: contactAction }],
-      },
+      options: [{ label: "Continue", action: { type: "node", nextNodeId: "service-terminal-audit" } }],
     },
 
     "tax-initial": {
@@ -94,14 +82,7 @@ export const caFirmFlows: ChatbotFlow = {
     "tax-cta": {
       id: "tax-cta",
       message: "You can check our interactive Tax Calendar for important deadlines or speak directly with a tax expert now.",
-      cta: {
-        message:
-          "You can check our interactive Tax Calendar for important deadlines or speak directly with a tax expert now.",
-        buttons: [
-          { label: "Tax Calendar", action: { type: "link", href: "#" } },
-          { label: "Speak to expert", action: contactAction },
-        ],
-      },
+      options: [{ label: "Continue", action: { type: "node", nextNodeId: "service-terminal-tax" } }],
     },
 
     "corporate-initial": {
@@ -172,11 +153,7 @@ export const caFirmFlows: ChatbotFlow = {
       id: "accounting-cta",
       message:
         "Based on your needs, we can provide a customized quote for our outsourced bookkeeping services. Would you like to request one?",
-      cta: {
-        message:
-          "Based on your needs, we can provide a customized quote for our outsourced bookkeeping services. Would you like to request one?",
-        buttons: [{ label: "Request a quote", action: contactAction }],
-      },
+      options: [{ label: "Continue", action: { type: "node", nextNodeId: "service-terminal-accounting" } }],
     },
 
     "fpna-initial": {
@@ -200,10 +177,7 @@ export const caFirmFlows: ChatbotFlow = {
       id: "fpna-cta",
       message:
         "We can schedule a brief demo of our FP&A reporting and analytics platform. Does that sound interesting?",
-      cta: {
-        message: "We can schedule a brief demo of our FP&A reporting and analytics platform. Does that sound interesting?",
-        buttons: [{ label: "Schedule demo", action: contactAction }],
-      },
+      options: [{ label: "Continue", action: { type: "node", nextNodeId: "service-terminal-fpna" } }],
     },
 
     "virtual-cfo-initial": {
@@ -226,10 +200,7 @@ export const caFirmFlows: ChatbotFlow = {
       id: "virtual-cfo-cta",
       message:
         "Let's schedule a 15-minute, no-obligation discovery call with our lead Virtual CFO consultant.",
-      cta: {
-        message: "Let's schedule a 15-minute, no-obligation discovery call with our lead Virtual CFO consultant.",
-        buttons: [{ label: "Book 15-min call", action: contactAction }],
-      },
+      options: [{ label: "Continue", action: { type: "node", nextNodeId: "service-terminal-virtual-cfo" } }],
     },
 
     "erp-initial": {
@@ -292,10 +263,12 @@ export const caFirmFlows: ChatbotFlow = {
     "erp-send-confirmation": {
       id: "erp-send-confirmation",
       message: "Thanks — our team will share the checklist shortly.",
+      options: [{ label: "Continue", action: { type: "node", nextNodeId: "service-terminal-erp" } }],
     },
     "erp-no-confirmation": {
       id: "erp-no-confirmation",
       message: "No problem. Let me know if you'd like it later.",
+      options: [{ label: "Continue", action: { type: "node", nextNodeId: "service-terminal-erp" } }],
     },
 
     "esg-initial": {
@@ -347,10 +320,12 @@ export const caFirmFlows: ChatbotFlow = {
     "esg-newsletter-confirmation": {
       id: "esg-newsletter-confirmation",
       message: "Thanks — you're subscribed for updates.",
+      options: [{ label: "Continue", action: { type: "node", nextNodeId: "service-terminal-esg" } }],
     },
     "esg-no-confirmation": {
       id: "esg-no-confirmation",
       message: "Understood. You can subscribe any time.",
+      options: [{ label: "Continue", action: { type: "node", nextNodeId: "service-terminal-esg" } }],
     },
 
     "other-areas-input": {
@@ -368,6 +343,44 @@ export const caFirmFlows: ChatbotFlow = {
       id: "other-areas-confirmation",
       message:
         "Thank you for providing the details. Our team will review your request and get back to you within four business hours.",
+      options: [{ label: "Continue", action: { type: "node", nextNodeId: "service-terminal-other" } }],
+    },
+
+    "service-terminal-audit": {
+      id: "service-terminal-audit",
+      message: "To help you faster, please share your contact details or open the enquiry form.",
+    },
+    "service-terminal-tax": {
+      id: "service-terminal-tax",
+      message: "To help you faster, please share your contact details or open the enquiry form.",
+    },
+    "service-terminal-corporate": {
+      id: "service-terminal-corporate",
+      message: "To help you faster, please share your contact details or open the enquiry form.",
+    },
+    "service-terminal-accounting": {
+      id: "service-terminal-accounting",
+      message: "To help you faster, please share your contact details or open the enquiry form.",
+    },
+    "service-terminal-fpna": {
+      id: "service-terminal-fpna",
+      message: "To help you faster, please share your contact details or open the enquiry form.",
+    },
+    "service-terminal-virtual-cfo": {
+      id: "service-terminal-virtual-cfo",
+      message: "To help you faster, please share your contact details or open the enquiry form.",
+    },
+    "service-terminal-erp": {
+      id: "service-terminal-erp",
+      message: "To help you faster, please share your contact details or open the enquiry form.",
+    },
+    "service-terminal-esg": {
+      id: "service-terminal-esg",
+      message: "To help you faster, please share your contact details or open the enquiry form.",
+    },
+    "service-terminal-other": {
+      id: "service-terminal-other",
+      message: "To help you faster, please share your contact details or open the enquiry form.",
     },
   },
 };
