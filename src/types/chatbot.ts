@@ -50,4 +50,5 @@ export type ChatMessage = {
   id: string;
   author: ChatbotMessageAuthor;
   text: string;
+  ts: number;
 };
