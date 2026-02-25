@@ -44,8 +44,8 @@ export function MapPanel({ location }: MapPanelProps) {
   const isAllLocations = !location;
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-3">
-      <div className="flex-1 min-h-0 overflow-hidden rounded-2xl border border-[color:var(--rule)] bg-white/80 shadow-sm">
+    <div className="flex h-full min-h-0 flex-col gap-2">
+      <div className="min-h-0 flex-[1.25] overflow-hidden rounded-2xl border border-[color:var(--rule)] bg-white/80 shadow-sm">
         <div className="relative h-full overflow-hidden">
           <iframe
             title={mapTitle}
@@ -57,7 +57,7 @@ export function MapPanel({ location }: MapPanelProps) {
           />
         </div>
       </div>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-1.5">
         {directionsUrl ? (
           <a
             href={directionsUrl}
