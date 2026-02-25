@@ -110,6 +110,34 @@ export const servicesData: ServiceDetail[] = [
     ]
   },
   {
+    id: "esg-blockchain-accounting",
+    title: "ESG & Blockchain Accounting",
+    intro: "Our ESG & Blockchain Accounting solutions are designed around each client’s sustainability priorities and evolving digital asset structures. Senior leadership provides hands-on oversight throughout the engagement to ensure precision, governance, and regulatory confidence. This approach delivers clear, credible insights that drive compliance, accountability, and long-term value creation.",
+    offerings: [
+      "Setting up ESG Goals",
+      "Monitoring ESG Strategy",
+      "Reporting & Compliances",
+      "ESG Assurance",
+      "Block chain - Crypto Accounting",
+      "Ledger reconciliations",
+      "Tax structuring",
+      "Reporting & Compliances"
+    ]
+  },
+  {
+    id: "erp-process-roadmap",
+    title: "ERP & Process Roadmap",
+    intro: "Our ERP & Process Roadmap services are structured to align technology, operations, and business strategy for scalable growth. Leadership oversight ensures disciplined execution, seamless integration, and informed decision-making at every phase. The outcome is a future-ready operating model that improves efficiency, control, and enterprise-wide performance.",
+    offerings: [
+      "Translating business requirements for ERP readiness",
+      "Process Mapping & Optimization",
+      "ERP Setup & Go-Live",
+      "User Training and SOP",
+      "Compliance & Reporting",
+      "Monitor & Control Risk"
+    ]
+  },
+  {
     id: "other-services",
     title: "Other Services",
     intro: "Integrated financial, corporate, and strategic advisory — delivering end-to-end solutions for startups, MSMEs, M&A, collaborations, valuations, forensic investigations, ERP and IND AS implementations, and financial restructuring, enabling businesses to grow, transform, and create sustained value.",
