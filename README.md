@@ -24,3 +24,11 @@ npm run start
 2. Create a new project in Vercel and import the repository.
 3. Keep the default framework preset (Next.js).
 4. Deploy — Vercel will run `npm install` and `npm run build` automatically.
+
+
+## Chatbot callback lead configuration
+
+Set these environment variables in Vercel (or `.env.local`) to enable chatbot callback email notifications:
+
+- `LEAD_TO_EMAIL=your-inbox@example.com`
+- `FORMSUBMIT_ENDPOINT=https://formsubmit.co` (optional)
