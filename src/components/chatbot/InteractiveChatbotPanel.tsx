@@ -14,9 +14,30 @@ const bubbleClass: Record<ChatMessage["author"], string> = {
 };
 
 export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps) => {
-  const { currentNode, messages, onSelectOption, onSubmitInput, goBack, restart, canGoBack, isTyping } = state;
+  const {
+    currentNode,
+    messages,
+    onSelectOption,
+    onSubmitInput,
+    goBack,
+    restart,
+    canGoBack,
+    isTyping,
+    pendingContact,
+    isCallbackOpen,
+    callbackForm,
+    isSubmittingLead,
+    isLeadSubmitted,
+    currentServiceLabel,
+    setCallbackForm,
+    submitCallbackForm,
+    confirmDetectedContact,
+    declineDetectedContact,
+  } = state;
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  const isServiceTerminal = currentNode.id.startsWith("service-terminal-");
 
   const showActionButtons = useMemo(
     () => Boolean(currentNode.options?.length || currentNode.cta?.buttons?.length),
@@ -25,7 +46,7 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages, isTyping]);
+  }, [messages, isTyping, isCallbackOpen, pendingContact]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,7 +55,7 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
   };
 
   return (
-    <div className="flex h-[28rem] w-[22rem] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-[color:var(--rule)] bg-paper shadow-[0_25px_55px_rgba(11,27,59,0.28)]">
+    <div className="flex h-[30rem] w-[22rem] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-[color:var(--rule)] bg-paper shadow-[0_25px_55px_rgba(11,27,59,0.28)]">
       <div className="flex items-center justify-between border-b border-[color:var(--rule)] bg-paper/80 px-4 py-3 text-ink backdrop-blur-md">
         <h3 className="text-sm font-semibold tracking-wide">Nathan & Co Help</h3>
         <div className="flex items-center gap-2 text-[0.65rem]">
@@ -64,6 +85,17 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
       </div>
 
       <div className="space-y-2 border-t border-[color:var(--rule)] bg-paper p-3">
+        {pendingContact ? (
+          <div className="flex gap-2">
+            <button type="button" onClick={confirmDetectedContact} disabled={isSubmittingLead || isLeadSubmitted} className="rounded-full border border-[color:var(--rule)] px-3 py-1 text-xs font-semibold">
+              Yes, use this
+            </button>
+            <button type="button" onClick={declineDetectedContact} disabled={isSubmittingLead} className="rounded-full border border-[color:var(--rule)] px-3 py-1 text-xs">
+              No
+            </button>
+          </div>
+        ) : null}
+
         {showActionButtons && (
           <div className="flex flex-wrap gap-2">
             {currentNode.options?.map((option) => (
@@ -91,6 +123,37 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
           </div>
         )}
 
+        {isServiceTerminal && isCallbackOpen ? (
+          <div className="space-y-2 rounded-xl border border-[color:var(--rule)] bg-white p-3">
+            <p className="text-xs text-muted">Share your details and we will get back to you regarding {currentServiceLabel}.</p>
+            <div className="space-y-2">
+              <input value={callbackForm.name} onChange={(event) => setCallbackForm((prev) => ({ ...prev, name: event.target.value }))} placeholder="Name" className="w-full rounded-lg border border-[color:var(--rule)] px-3 py-2 text-sm" />
+              <input value={callbackForm.contact} onChange={(event) => setCallbackForm((prev) => ({ ...prev, contact: event.target.value }))} placeholder="Email or Phone" className="w-full rounded-lg border border-[color:var(--rule)] px-3 py-2 text-sm" />
+              <textarea value={callbackForm.userMessage} onChange={(event) => setCallbackForm((prev) => ({ ...prev, userMessage: event.target.value }))} placeholder="Optional message" rows={2} className="w-full rounded-lg border border-[color:var(--rule)] px-3 py-2 text-sm" />
+              <input value={callbackForm.company} onChange={(event) => setCallbackForm((prev) => ({ ...prev, company: event.target.value }))} tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+              <p className="text-[11px] text-muted">By submitting, you consent to be contacted by Nathan &amp; Co.</p>
+              <button type="button" onClick={submitCallbackForm} disabled={isSubmittingLead || isLeadSubmitted} className="rounded-lg border border-[color:var(--rule)] px-3 py-2 text-xs font-semibold disabled:opacity-50">
+                {isSubmittingLead ? "Submitting..." : isLeadSubmitted ? "Submitted" : "Submit details"}
+              </button>
+            </div>
+          </div>
+        ) : null}
+
+
+        {isLeadSubmitted ? (
+          <div className="space-y-2 rounded-xl border border-[color:var(--rule)] bg-white p-3">
+            <p className="text-xs text-muted">Thanks, your details were submitted successfully.</p>
+            <div className="flex flex-wrap gap-2">
+              <button type="button" onClick={restart} className="rounded-full border border-[color:var(--rule)] px-3 py-1 text-xs font-semibold">
+                Restart Chat
+              </button>
+              <button type="button" onClick={goBack} className="rounded-full border border-[color:var(--rule)] px-3 py-1 text-xs">
+                Back to Previous Step
+              </button>
+            </div>
+          </div>
+        ) : null}
+
         {currentNode.input && (
           <form onSubmit={handleSubmit} className="space-y-2">
             {currentNode.input.type === "multiline" ? (
@@ -116,6 +179,7 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
             </button>
           </form>
         )}
+
       </div>
     </div>
   );
