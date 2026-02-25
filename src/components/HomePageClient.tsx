@@ -363,7 +363,7 @@ export default function HomePageClient() {
   }, []);
 
   const handleTouchEnd = useCallback(() => {
-    if (!touchStartXRef.current || !touchEndXRef.current) return;
+    if (touchStartXRef.current == null || touchEndXRef.current == null) return;
     const distance = touchStartXRef.current - touchEndXRef.current;
     const minSwipeDistance = 50;
 
@@ -399,6 +399,7 @@ export default function HomePageClient() {
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
         >
           {landingSlides.map((slide, index) => (
             <div
@@ -440,6 +441,14 @@ export default function HomePageClient() {
             >
               Nathan &amp; Co.
             </motion.h1>
+            <motion.p
+              variants={fadeUpFast}
+              transition={{ duration: durations.entryFast, ease: PREMIUM_EASE, delay: 0.18 }}
+              {...sectionReveal}
+              className="text-[0.8rem] uppercase tracking-[0.34em] text-paper/80"
+            >
+              Since 1962
+            </motion.p>
             <motion.div
               variants={scaleXReveal}
               transition={{ duration: durations.entry, ease: PREMIUM_EASE, delay: 0.3 }}
@@ -653,7 +662,7 @@ export default function HomePageClient() {
         onServiceChange={handleServiceChange}
       />
       {!isOnHome ? (
-        <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+        <div className="fixed bottom-24 right-5 z-50 flex flex-col items-end gap-3 sm:bottom-5">
           {isChatOpen ? <InteractiveChatbotPanel state={chatbotState} /> : null}
         <button
           type="button"

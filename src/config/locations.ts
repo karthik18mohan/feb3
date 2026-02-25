@@ -43,5 +43,44 @@ export const LOCATIONS: Location[] = [
     phone: "+91 8089388655",
     lat: 12.9741854,
     lng: 77.6124135
+  },
+  {
+    id: "haveri",
+    name: "Nathan & Co. — Haveri",
+    addressLines: ["PB Road", "Vidya Nagar"],
+    city: "Haveri",
+    state: "Karnataka",
+    country: "India",
+    postalCode: "581110",
+    email: "info@nathanandco.in",
+    phone: "+91 8089388655",
+    lat: 14.7934,
+    lng: 75.4043
+  },
+  {
+    id: "thrissur",
+    name: "Nathan & Co. — Thrissur",
+    addressLines: ["MG Road", "Round East"],
+    city: "Thrissur",
+    state: "Kerala",
+    country: "India",
+    postalCode: "680001",
+    email: "info@nathanandco.in",
+    phone: "+91 8089388655",
+    lat: 10.5276,
+    lng: 76.2144
+  },
+  {
+    id: "kochi",
+    name: "Nathan & Co. — Kochi",
+    addressLines: ["Marine Drive", "Ernakulam"],
+    city: "Kochi",
+    state: "Kerala",
+    country: "India",
+    postalCode: "682031",
+    email: "info@nathanandco.in",
+    phone: "+91 8089388655",
+    lat: 9.9795,
+    lng: 76.2804
   }
 ];

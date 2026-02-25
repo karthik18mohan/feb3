@@ -23,11 +23,21 @@ export function LocationsList({ locations, selectedId, onSelect }: LocationsList
     }
     const lower = query.toLowerCase();
     return locations.filter((location) => {
-      return (
-        location.name.toLowerCase().includes(lower) ||
-        location.city.toLowerCase().includes(lower) ||
-        location.addressLines.join(" ").toLowerCase().includes(lower)
-      );
+      const haystack = [
+        location.name,
+        location.city,
+        location.state,
+        location.country,
+        location.postalCode,
+        location.email,
+        location.phone,
+        ...location.addressLines
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return haystack.includes(lower);
     });
   }, [locations, query]);
 
@@ -47,7 +57,7 @@ export function LocationsList({ locations, selectedId, onSelect }: LocationsList
       <input
         id="location-search"
         type="search"
-        placeholder="Search by name or city"
+        placeholder="Search across all location details"
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         className="w-full rounded-lg border border-[color:var(--rule)] bg-white/90 px-3 py-2 text-sm text-ink placeholder:text-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
