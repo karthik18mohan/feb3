@@ -31,5 +31,4 @@ npm run start
 Set these environment variables in Vercel (or `.env.local`) to enable chatbot callback email notifications:
 
 - `LEAD_TO_EMAIL=your-inbox@example.com`
-- `RESEND_API_KEY=re_xxx`
-- `RESEND_FROM=noreply@nathanandco.com` (optional, defaults to this value)
+- `FORMSUBMIT_ENDPOINT=https://formsubmit.co` (optional)

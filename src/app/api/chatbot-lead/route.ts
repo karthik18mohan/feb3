@@ -45,41 +45,44 @@ const validate = (body: LeadBody) => {
   return null;
 };
 
-const sendResendEmail = async (body: LeadBody) => {
-  if (!chatbotLeadConfig.enableResend) {
-    throw new Error("Email integration is not configured");
-  }
-
+const sendViaFormSubmit = async (body: LeadBody) => {
   const transcriptText = body.transcript
     .map((item) => `[${new Date(item.ts).toISOString()}] ${item.role.toUpperCase()}: ${item.text}`)
     .join("\n");
 
-  const payload = {
-    from: chatbotLeadConfig.resendFrom,
-    to: [chatbotLeadConfig.leadToEmail],
-    subject: `[Chatbot Lead] ${body.serviceLabel} - ${body.name}`,
-    text: [
-      `Name: ${body.name}`,
-      `Contact (${body.contactType}): ${body.contact}`,
-      `Service: ${body.serviceLabel} (${body.serviceKey})`,
-      body.userMessage ? `Message: ${body.userMessage}` : "Message: N/A",
-      "",
-      "Transcript:",
-      transcriptText,
-    ].join("\n"),
-  };
+  const messageLines = [
+    `Name: ${body.name}`,
+    `Contact (${body.contactType}): ${body.contact}`,
+    `Service: ${body.serviceLabel} (${body.serviceKey})`,
+    body.userMessage ? `User Message: ${body.userMessage}` : "User Message: N/A",
+    "",
+    "Transcript:",
+    transcriptText,
+  ];
 
-  const response = await fetch("https://api.resend.com/emails", {
+  const formBody = new URLSearchParams({
+    _subject: `[Chatbot Lead] ${body.serviceLabel} - ${body.name}`,
+    _template: "table",
+    _captcha: "true",
+    name: body.name,
+    email: body.contactType === "email" ? body.contact : "",
+    phone: body.contactType === "phone" ? body.contact : "",
+    category: "services",
+    message: messageLines.join("\n"),
+    source: "chatbot",
+    service: body.serviceLabel,
+  });
+
+  const endpoint = `${chatbotLeadConfig.formSubmitEndpoint}/${encodeURIComponent(chatbotLeadConfig.leadToEmail)}`;
+
+  const response = await fetch(endpoint, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: formBody.toString(),
   });
 
   if (!response.ok) {
-    throw new Error("Email send failed");
+    throw new Error("FormSubmit send failed");
   }
 };
 
@@ -100,7 +103,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    await sendResendEmail(body);
+    await sendViaFormSubmit(body);
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ ok: false, error: "Unable to send lead right now." }, { status: 500 });
