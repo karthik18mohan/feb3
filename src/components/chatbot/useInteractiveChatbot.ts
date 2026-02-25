@@ -33,6 +33,50 @@ const TERMINAL_SERVICE_LABELS: Record<string, string> = {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_REGEX = /^(?:\+91[-\s]?)?[6-9]\d{9}$/;
 
+
+const FORMSUBMIT_ACTION = "https://formsubmit.co/karthikmohan133@gmail.com";
+
+const submitLeadWithFormSubmit = async (payload: {
+  name: string;
+  contact: string;
+  contactType: "email" | "phone";
+  serviceKey: string;
+  serviceLabel: string;
+  userMessage?: string;
+  transcript: Array<{ role: "bot" | "user"; text: string; ts: number }>;
+}) => {
+  const transcriptText = payload.transcript
+    .map((entry) => `[${new Date(entry.ts).toISOString()}] ${entry.role.toUpperCase()}: ${entry.text}`)
+    .join("\n");
+
+  const message = [
+    `Service: ${payload.serviceLabel} (${payload.serviceKey})`,
+    payload.userMessage ? `User Message: ${payload.userMessage}` : "User Message: N/A",
+    "",
+    "Transcript:",
+    transcriptText,
+  ].join("\n");
+
+  const formBody = new URLSearchParams({
+    _subject: `[Chatbot Lead] ${payload.serviceLabel} - ${payload.name}`,
+    _template: "table",
+    _captcha: "true",
+    name: payload.name,
+    email: payload.contactType === "email" ? payload.contact : "",
+    phone: payload.contactType === "phone" ? payload.contact : "",
+    category: "services",
+    source: "chatbot",
+    service: payload.serviceLabel,
+    message,
+  });
+
+  await fetch(FORMSUBMIT_ACTION, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: formBody.toString(),
+  });
+};
 const createId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 const nowTs = () => Date.now();
 
@@ -150,24 +194,12 @@ export const useInteractiveChatbot = () => {
     setIsSubmittingLead(true);
 
     try {
-      const response = await fetch("/api/chatbot-lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...payload,
-          company: callbackForm.company,
-          serviceKey: currentServiceKey,
-          serviceLabel: currentServiceLabel,
-          transcript: buildTranscript(),
-        }),
+      await submitLeadWithFormSubmit({
+        ...payload,
+        serviceKey: currentServiceKey,
+        serviceLabel: currentServiceLabel,
+        transcript: buildTranscript(),
       });
-
-      const json = await response.json();
-      if (!response.ok || !json.ok) {
-        addMessage("bot", json.error ?? "Unable to submit your callback request right now.");
-        setIsSubmittingLead(false);
-        return;
-      }
 
       setIsLeadSubmitted(true);
       setIsCallbackOpen(true);
