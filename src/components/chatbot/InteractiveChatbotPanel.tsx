@@ -88,7 +88,7 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
         {pendingContact ? (
           <div className="flex gap-2">
             <button type="button" onClick={confirmDetectedContact} disabled={isSubmittingLead || isLeadSubmitted} className="rounded-full border border-[color:var(--rule)] px-3 py-1 text-xs font-semibold">
-              Yes, request callback
+              Yes, use this
             </button>
             <button type="button" onClick={declineDetectedContact} disabled={isSubmittingLead} className="rounded-full border border-[color:var(--rule)] px-3 py-1 text-xs">
               No
@@ -125,7 +125,7 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
 
         {isServiceTerminal && isCallbackOpen ? (
           <div className="space-y-2 rounded-xl border border-[color:var(--rule)] bg-white p-3">
-            <p className="text-xs text-muted">Share your details and we will call you back regarding {currentServiceLabel}.</p>
+            <p className="text-xs text-muted">Share your details and we will get back to you regarding {currentServiceLabel}.</p>
             <div className="space-y-2">
               <input value={callbackForm.name} onChange={(event) => setCallbackForm((prev) => ({ ...prev, name: event.target.value }))} placeholder="Name" className="w-full rounded-lg border border-[color:var(--rule)] px-3 py-2 text-sm" />
               <input value={callbackForm.contact} onChange={(event) => setCallbackForm((prev) => ({ ...prev, contact: event.target.value }))} placeholder="Email or Phone" className="w-full rounded-lg border border-[color:var(--rule)] px-3 py-2 text-sm" />
@@ -133,7 +133,22 @@ export const InteractiveChatbotPanel = ({ state }: InteractiveChatbotPanelProps)
               <input value={callbackForm.company} onChange={(event) => setCallbackForm((prev) => ({ ...prev, company: event.target.value }))} tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
               <p className="text-[11px] text-muted">By submitting, you consent to be contacted by Nathan &amp; Co.</p>
               <button type="button" onClick={submitCallbackForm} disabled={isSubmittingLead || isLeadSubmitted} className="rounded-lg border border-[color:var(--rule)] px-3 py-2 text-xs font-semibold disabled:opacity-50">
-                {isSubmittingLead ? "Submitting..." : isLeadSubmitted ? "Submitted" : "Submit callback request"}
+                {isSubmittingLead ? "Submitting..." : isLeadSubmitted ? "Submitted" : "Submit details"}
+              </button>
+            </div>
+          </div>
+        ) : null}
+
+
+        {isLeadSubmitted ? (
+          <div className="space-y-2 rounded-xl border border-[color:var(--rule)] bg-white p-3">
+            <p className="text-xs text-muted">Thanks, your details were submitted successfully.</p>
+            <div className="flex flex-wrap gap-2">
+              <button type="button" onClick={restart} className="rounded-full border border-[color:var(--rule)] px-3 py-1 text-xs font-semibold">
+                Restart Chat
+              </button>
+              <button type="button" onClick={goBack} className="rounded-full border border-[color:var(--rule)] px-3 py-1 text-xs">
+                Back to Previous Step
               </button>
             </div>
           </div>

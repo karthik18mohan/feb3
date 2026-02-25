@@ -166,8 +166,8 @@ export const useInteractiveChatbot = () => {
 
   const askCallbackConfirmation = (candidate: PendingContact) => {
     setPendingContact(candidate);
-    addMessage("user", candidate.value);
-    addMessage("bot", `I detected a ${candidate.contactType}. Request callback?`);
+    addMessage("user", "I'd like to share my contact details.");
+    addMessage("bot", "I detected contact details. Should we use this to get back to you?");
   };
 
   const onSubmitInput = (value: string) => {
@@ -202,9 +202,9 @@ export const useInteractiveChatbot = () => {
       });
 
       setIsLeadSubmitted(true);
-      setIsCallbackOpen(true);
+      setIsCallbackOpen(false);
       setPendingContact(null);
-      addMessage("bot", "Thank you. Our team will contact you shortly.");
+      addMessage("bot", "Thank you. Our team will get back to you shortly.");
     } catch {
       addMessage("bot", "Unable to submit your callback request right now.");
     } finally {
@@ -214,7 +214,7 @@ export const useInteractiveChatbot = () => {
 
   const confirmDetectedContact = async () => {
     if (!pendingContact) return;
-    addMessage("user", "Yes, request callback");
+    addMessage("user", "Yes, use this contact");
     await submitLead({
       name: callbackForm.name.trim() || "Website Visitor",
       contact: pendingContact.value,
@@ -225,7 +225,7 @@ export const useInteractiveChatbot = () => {
 
   const declineDetectedContact = () => {
     addMessage("user", "No");
-    addMessage("bot", "Sure — continue with your query and use Request a Callback whenever you are ready.");
+    addMessage("bot", "Sure — continue with your query and share details when you are ready.");
     setPendingContact(null);
   };
 
@@ -238,7 +238,6 @@ export const useInteractiveChatbot = () => {
       return;
     }
 
-    addMessage("user", `Callback details shared by ${callbackForm.name.trim()}`);
     await submitLead({
       name: callbackForm.name.trim(),
       contact: contactValue,
