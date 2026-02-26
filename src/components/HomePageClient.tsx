@@ -632,6 +632,16 @@ export default function HomePageClient() {
     </>
   );
 
+  const handleChatToggle = () => {
+    markPromptDismissed();
+    setIsChatOpen((prev) => !prev);
+  };
+
+  const handlePromptClose = () => {
+    markPromptDismissed();
+    setIsChatOpen(true);
+  };
+
   return (
     <>
       <TopNav
@@ -668,28 +678,38 @@ export default function HomePageClient() {
           {isChatOpen ? <InteractiveChatbotPanel state={chatbotState} /> : null}
           <div className="relative flex items-end justify-end">
             <div
-              className={`pointer-events-none absolute bottom-[calc(100%+0.7rem)] right-0 w-[min(70vw,12rem)] rounded-lg border border-[rgba(62,44,28,0.12)] bg-[#F8F5F0] px-3 py-2 text-right text-xs font-medium text-[#3E2C1C] shadow-[0_8px_22px_rgba(62,44,28,0.15)] transition-opacity duration-300 sm:w-48 ${
-                isPromptVisible ? "opacity-100" : "opacity-0"
+              className={`absolute bottom-[calc(100%+0.7rem)] right-0 w-[min(72vw,13rem)] rounded-lg border border-[rgba(62,44,28,0.12)] bg-[#F8F5F0] pl-3 pr-8 py-2 text-left text-sm font-medium text-[#3E2C1C] shadow-[0_8px_22px_rgba(62,44,28,0.15)] transition-opacity duration-300 sm:w-52 ${
+                isPromptVisible ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
               }`}
               aria-hidden={!isPromptVisible}
             >
               May I help you?
+              <button
+                type="button"
+                onClick={handlePromptClose}
+                className="absolute right-2 top-1 text-sm leading-none text-[#3E2C1C]"
+                aria-label="Open chatbot"
+              >
+                ×
+              </button>
               <span
                 className="absolute -bottom-[6px] right-5 h-3 w-3 rotate-45 border-b border-r border-[rgba(62,44,28,0.12)] bg-[#F8F5F0]"
                 aria-hidden
               />
             </div>
-            <button
-              type="button"
-              onClick={() => {
-                markPromptDismissed();
-                setIsChatOpen((prev) => !prev);
-              }}
-              className="flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--rule)] bg-paper/80 text-2xl font-semibold text-ink shadow-[0_12px_30px_rgba(11,27,59,0.18)] backdrop-blur-md transition hover:scale-[1.03]"
-              aria-label={isChatOpen ? "Close chat" : "Open chat"}
-            >
-              {isChatOpen ? "×" : "?"}
-            </button>
+            <div className="relative">
+              {isPromptVisible ? <span className="chatbot-prompt-ring" aria-hidden /> : null}
+              <button
+                type="button"
+                onClick={handleChatToggle}
+                className={`relative flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--rule)] bg-paper/80 text-2xl font-semibold text-ink shadow-[0_12px_30px_rgba(11,27,59,0.18)] backdrop-blur-md transition hover:scale-[1.03] ${
+                  isPromptVisible ? "chatbot-prompt-pulse" : ""
+                }`}
+                aria-label={isChatOpen ? "Close chat" : "Open chat"}
+              >
+                {isChatOpen ? "×" : "?"}
+              </button>
+            </div>
           </div>
         </div>
       ) : null}
