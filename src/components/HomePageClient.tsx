@@ -15,6 +15,7 @@ import { ServiceModal } from "@/components/ServiceModal";
 import { SectorsSection } from "@/components/SectorsSection";
 import { InteractiveChatbotPanel } from "@/components/chatbot/InteractiveChatbotPanel";
 import { useInteractiveChatbot } from "@/components/chatbot/useInteractiveChatbot";
+import { useChatbotPromptTooltip } from "@/components/chatbot/useChatbotPromptTooltip";
 import { fadeUp, fadeUpFast, fadeLeft, fadeRight, staggerContainer, scaleXReveal, stagger, durations, PREMIUM_EASE, useInViewReplay } from "@/lib/motion";
 
 
@@ -169,6 +170,7 @@ export default function HomePageClient() {
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
   const [activeServiceId, setActiveServiceId] = useState<string | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const { isPromptVisible, markPromptDismissed } = useChatbotPromptTooltip({ isChatOpen });
   const chatbotState = useInteractiveChatbot();
   const sectionReveal = useInViewReplay({ amount: 0.6 });
   const sectionRevealPartial = useInViewReplay({ amount: 0.35 });
@@ -664,14 +666,31 @@ export default function HomePageClient() {
       {!isOnHome ? (
         <div className="fixed bottom-24 right-5 z-50 flex flex-col items-end gap-3 sm:bottom-5">
           {isChatOpen ? <InteractiveChatbotPanel state={chatbotState} /> : null}
-        <button
-          type="button"
-          onClick={() => setIsChatOpen((prev) => !prev)}
-          className="flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--rule)] bg-paper/80 text-2xl font-semibold text-ink shadow-[0_12px_30px_rgba(11,27,59,0.18)] backdrop-blur-md transition hover:scale-[1.03]"
-          aria-label={isChatOpen ? "Close chat" : "Open chat"}
-        >
-          {isChatOpen ? "×" : "?"}
-          </button>
+          <div className="relative flex items-end justify-end">
+            <div
+              className={`pointer-events-none absolute bottom-[calc(100%+0.7rem)] right-0 w-[min(70vw,12rem)] rounded-lg border border-[rgba(62,44,28,0.12)] bg-[#F8F5F0] px-3 py-2 text-right text-xs font-medium text-[#3E2C1C] shadow-[0_8px_22px_rgba(62,44,28,0.15)] transition-opacity duration-300 sm:w-48 ${
+                isPromptVisible ? "opacity-100" : "opacity-0"
+              }`}
+              aria-hidden={!isPromptVisible}
+            >
+              May I help you?
+              <span
+                className="absolute -bottom-[6px] right-5 h-3 w-3 rotate-45 border-b border-r border-[rgba(62,44,28,0.12)] bg-[#F8F5F0]"
+                aria-hidden
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                markPromptDismissed();
+                setIsChatOpen((prev) => !prev);
+              }}
+              className="flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--rule)] bg-paper/80 text-2xl font-semibold text-ink shadow-[0_12px_30px_rgba(11,27,59,0.18)] backdrop-blur-md transition hover:scale-[1.03]"
+              aria-label={isChatOpen ? "Close chat" : "Open chat"}
+            >
+              {isChatOpen ? "×" : "?"}
+            </button>
+          </div>
         </div>
       ) : null}
     </>
