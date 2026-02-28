@@ -71,7 +71,7 @@ export function LocationsList({ locations, selectedId, onSelect }: LocationsList
   }, [locations, query]);
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-2">
+    <div className="flex h-full min-h-0 flex-col gap-2 overflow-hidden">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold uppercase tracking-[0.32em] text-ink">
           Locations
@@ -91,7 +91,7 @@ export function LocationsList({ locations, selectedId, onSelect }: LocationsList
         onChange={(event) => setQuery(event.target.value)}
         className="w-full rounded-lg border border-[color:var(--rule)] bg-white/90 px-3 py-2 text-sm text-ink placeholder:text-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-[color:var(--gold)]"
       />
-      <div className="flex-1 min-h-0 space-y-2 overflow-y-auto pr-1">
+      <div className="max-h-[20.6rem] flex-1 min-h-0 space-y-2 overflow-y-auto overflow-x-hidden pr-1 scroll-smooth lg:max-h-none">
         {filtered.map((location) => {
           const isSelected = location.id === selectedId;
           return (
@@ -99,7 +99,7 @@ export function LocationsList({ locations, selectedId, onSelect }: LocationsList
               key={location.id}
               type="button"
               onClick={() => onSelect(location.id)}
-              className={`w-full rounded-xl border px-3 py-2 text-left transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
+              className={`w-full min-h-[6.4rem] rounded-xl border px-3 py-2 text-left transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${
                 isSelected
                   ? "border-[color:var(--gold)] bg-[rgba(176,141,87,0.12)]"
                   : "border-[color:var(--rule)] bg-white/80 hover:border-[color:var(--gold)]"

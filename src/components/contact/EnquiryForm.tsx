@@ -44,13 +44,13 @@ export function EnquiryForm({ selectedLocation }: EnquiryFormProps) {
       method="POST"
       action="https://formsubmit.co/karthikmohan133@gmail.com"
       onSubmit={handleSubmit}
-      className="flex h-full min-h-0 flex-col"
+      className="flex h-full min-h-0 flex-col overflow-hidden"
     >
       <input type="hidden" name="_subject" value="New Website Enquiry" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="true" />
       <input ref={nextUrlRef} type="hidden" name="_next" value="" />
-      <div className="space-y-1.5">
+      <div className="min-h-0 flex-1 space-y-1.5 overflow-y-auto overflow-x-hidden pr-1 scroll-smooth">
         <div className="space-y-0.5">
           <label className="text-xs font-semibold uppercase tracking-[0.28em] text-ink" htmlFor="enquiry-name">
             Name
