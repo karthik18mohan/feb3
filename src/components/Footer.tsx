@@ -89,8 +89,7 @@ export function Footer({ className, showBackToTop = false }: FooterProps) {
               { href: "#home", label: "Home" },
               { href: "#about", label: "Who We Are" },
               { href: "#services", label: "What We Do" },
-              { href: "#enquiry", label: "Start an Enquiry" },
-              { href: "#faq", label: "FAQ" }
+              { href: "#enquiry", label: "Start an Enquiry" }
             ].map((link) => (
               <li key={link.href}>
                 <a
