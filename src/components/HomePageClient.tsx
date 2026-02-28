@@ -39,7 +39,7 @@ const landingSlides = [
   },
   {
     src: "/images/landing-page/4.jpg",
-    caption: "Manual Era to Modern Era"
+    caption: "Ledger to Crypto"
   }
 ];
 
