@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 import { servicesData } from "@/content/services";
 import { EnquirySection } from "@/components/EnquirySection";
 import { Footer } from "@/components/Footer";
-import { FAQSection } from "@/components/FAQSection";
 import { TopNav } from "@/components/TopNav";
 import { VisionPurposeFlow } from "@/components/VisionPurposeFlow";
 import { ServiceModal } from "@/components/ServiceModal";
@@ -184,7 +183,6 @@ export default function HomePageClient() {
   const servicesRef = useRef<HTMLElement | null>(null);
   const sectorsRef = useRef<HTMLElement | null>(null);
   const enquiryRef = useRef<HTMLElement | null>(null);
-  const faqRef = useRef<HTMLElement | null>(null);
   const sectionRefs = useMemo(
     () =>
       ({
@@ -192,8 +190,7 @@ export default function HomePageClient() {
         about: aboutRef,
         services: servicesRef,
         sectors: sectorsRef,
-        enquiry: enquiryRef,
-        faq: faqRef
+        enquiry: enquiryRef
       } as const),
     []
   );
@@ -206,8 +203,7 @@ export default function HomePageClient() {
     { id: "about", name: "Who We Are", numeral: "II" },
     { id: "services", name: "What We Do", numeral: "III" },
     { id: "sectors", name: "Sectors", numeral: "IV" },
-    { id: "enquiry", name: "Start an Enquiry", numeral: "V" },
-    { id: "faq", name: "FAQ", numeral: "VI" }
+    { id: "enquiry", name: "Start an Enquiry", numeral: "V" }
   ] satisfies ReadonlyArray<Section>;
 
   const sections = useMemo<Section[]>(() => SECTION_ITEMS, []);
@@ -623,11 +619,6 @@ export default function HomePageClient() {
           const target = query ? `/?${query}#enquiry` : "/#enquiry";
           router.replace(target);
         }}
-      />
-      <FAQSection
-        id="faq"
-        ref={faqRef}
-        sectionLabel={`${sectionMeta.faq.numeral} ${sectionMeta.faq.name}`}
       />
     </>
   );
