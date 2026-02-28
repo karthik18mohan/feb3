@@ -58,17 +58,17 @@ export const LOCATIONS: Location[] = [
     lng: 75.4043
   },
   {
-    id: "thrissur",
-    name: "Nathan & Co. — Thrissur",
-    addressLines: ["MG Road", "Round East"],
-    city: "Thrissur",
+    id: "tirur-city",
+    name: "Nathan & Co. — Tirur City",
+    addressLines: ["Main Road", "Tirur"],
+    city: "Tirur City",
     state: "Kerala",
     country: "India",
-    postalCode: "680001",
+    postalCode: "676101",
     email: "info@nathanandco.in",
     phone: "+91 8089388655",
-    lat: 10.5276,
-    lng: 76.2144
+    lat: 10.9167,
+    lng: 75.9222
   },
   {
     id: "kochi",

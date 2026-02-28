@@ -75,19 +75,19 @@ export const EnquirySection = forwardRef<HTMLElement, EnquirySectionProps>(
             <motion.div
               variants={staggerContainer(stagger.normal)}
               {...sectionReveal}
-              className="grid h-full min-h-0 flex-1 gap-[clamp(0.65rem,1.2vw,0.95rem)] overflow-hidden lg:grid-cols-12"
+              className="grid h-full min-h-0 flex-1 grid-cols-1 gap-[clamp(0.65rem,1.2vw,0.95rem)] overflow-y-auto scroll-smooth pr-1 lg:grid-cols-12 lg:overflow-hidden lg:pr-0"
             >
-              <div className="min-h-0 overflow-hidden lg:col-span-3">
+              <div className="h-[26rem] min-h-0 overflow-hidden lg:col-span-3 lg:h-auto">
                 <LocationsList
                   locations={LOCATIONS}
                   selectedId={selectedLocationId ?? ""}
                   onSelect={handleSelectLocation}
                 />
               </div>
-              <div className="min-h-0 overflow-hidden lg:col-span-5">
+              <div className="h-[20rem] min-h-0 overflow-hidden lg:col-span-5 lg:h-auto">
                 <MapPanel location={selectedLocation} />
               </div>
-              <div className="relative min-h-0 overflow-hidden lg:col-span-4">
+              <div className="relative h-[27rem] min-h-0 overflow-hidden lg:col-span-4 lg:h-auto">
                 <EnquiryForm selectedLocation={selectedLocation} />
                 {showThankYou ? (
                   <div
